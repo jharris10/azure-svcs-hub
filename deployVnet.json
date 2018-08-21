@@ -61,16 +61,30 @@
 			"metadata": {
 				"description": "Trust subnet CIDR"
 			}
-		}
+		},
+		"tcpinboundSubnetName": {
+			"type": "string",
+			"defaultValue": "tcpinbound-Untrust",
+			"metadata": {
+				"description": "Subnet for Untrusted Network"
+			}
+		},
+		"tcpinboundSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "192.168.3.0/24",
+			"metadata": {
+				"description": "CIDR for TCPInbound Untrust Network"
+			}
+		},
 	},
 	"variables": {
-		"location"         : "[resourceGroup().location]",
-		"rgname"           : "[resourceGroup().id]",
-		"vnetname"         : "[parameters('virtualNetworkName')]",
-		"vnetID"           : "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetname'))]",
-		"mgmtSubnetRef"    : "[concat(variables('vnetID'),'/subnets/',parameters('mgmtSubnetName'))]",
-		"untrustSubnetRef" : "[concat(variables('vnetID'),'/subnets/',parameters('untrustSubnetName'))]",
-		"trustSubnetRef"   : "[concat(variables('vnetID'),'/subnets/',parameters('trustSubnetName'))]",
+		"location": "[resourceGroup().location]",
+		"rgname": "[resourceGroup().id]",
+		"vnetname": "[parameters('virtualNetworkName')]",
+		"vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetname'))]",
+		"mgmtSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('mgmtSubnetName'))]",
+		"untrustSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('untrustSubnetName'))]",
+		"trustSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('trustSubnetName'))]",
 		"subnets": [
 			{
 				"name": "[parameters('mgmtSubnetName')]",
@@ -91,6 +105,15 @@
 				"name": "[parameters('trustSubnetName')]",
 				"properties": {
 					"addressPrefix": "[parameters('trustSubnetPrefix')]",
+					"networkSecurityGroup": {
+						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
+					}
+				}
+			},
+			{
+				"name": "[parameters('tcpinboundSubnetName')]",
+				"properties": {
+					"addressPrefix": "[parameters('tcpinboundSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}

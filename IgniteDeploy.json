@@ -328,7 +328,13 @@
 					},
 					"trustSubnetPrefix": {
 						"value": "[parameters('trustedSubnetPrefix')]"
-					}
+                    },
+                    "tcpinboundSubnetName": {
+                        "value": "[parameters('tcpinboundSubnetName')]"
+                    },
+                    "tcpinboundSubnetPrefix": {
+                        "value": "[parameters('tcpinboundSubnetPrefix')]"
+                    }
 				}
 			}
 		},
@@ -366,7 +372,7 @@
 					},
                     "loadBalancerIP": {
 						"value": "[parameters('loadBalancerIP')]"
-					}
+                    }
 				}
 			}
         },
