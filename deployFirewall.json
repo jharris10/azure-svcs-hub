@@ -289,7 +289,7 @@
 		// Setup Untrusted (external) Network Interface for Std LB
 		{
 			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
-			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1-std')]",
+			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"dependsOn": [
 				"[concat('Microsoft.Network/publicIPAddresses/', parameters('outboundSubnetName'), '-pip-', copyindex())]"
