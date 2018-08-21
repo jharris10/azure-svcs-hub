@@ -34,7 +34,7 @@
 		"avSetName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the availability set for outbound firewall"
+				"description": "Firewall Availability set prefix"
 			},
 			"defaultValue": "egress-avset"
 		},
@@ -94,7 +94,23 @@
 			"metadata": {
 				"description": "CIDR for Untrusted Network"
 			}
+        },
+        
+        "tcpinboundSubnetName": {
+			"type": "string",
+			"defaultValue": "tcpinbound-Untrust",
+			"metadata": {
+				"description": "Subnet for Untrusted Network"
+			}
 		},
+		"tcpinboundSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "10.0.3.0/24",
+			"metadata": {
+				"description": "CIDR for TCPInbound Untrust Network"
+			}
+		},
+
 		"trustedSubnetName": {
 			"type": "string",
 			"defaultValue": "Trust",
@@ -129,8 +145,22 @@
 			"metadata": {
 				"description": "IP Address for the outbound load balancer resource in the Trust network."
 			},
-			"defaultValue": "10.0.2.4"
+			"defaultValue": "10.0.2.100"
+        },
+        "tcpinboundloadBalancerName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name for the outbound load balancer resource."
+			},
+			"defaultValue": "tcpinbound-lb"
 		},
+		"tcpinboundloadBalancerIP": {
+			"type": "string",
+			"metadata": {
+				"description": "IP Address for the outbound load balancer resource in the Trust network."
+			},
+			"defaultValue": "10.0.3.100"
+        },
 		"firewallModel": {
 			"type": "string",
 			"defaultValue": "bundle1",
@@ -166,17 +196,6 @@
 			},
 			"defaultValue": "Standard_D3_v2"
 		},
-		"authenticationType": {
-			"type": "string",
-			"metadata": {
-				"description": "Type of administrator user authentication "
-			},
-			"allowedValues": [
-				"sshPublicKey",
-				"password"
-			],
-			"defaultValue": "password"
-		},
 		"username": {
 			"type": "string",
 			"defaultValue": "pandemo",
@@ -201,7 +220,12 @@
 	},
 	
 	"variables": {
-		"egressLoadBalancerSku": "Standard",
+        "egressloadBalancerName":"[concat(parameters('loadbalancerName'),'egress')]",
+        "tcpinboundloadBalancerName":"[concat(parameters('loadbalancerName'),'tcpinbound')]",
+        "egressavSetName"      : "[concat(parameters('avSetName'),'egress')]",
+        "tcpinboundavSetName"  : "[concat(parameters('avSetName'),'egress')]",
+        "egressLoadBalancerSku": "Standard",
+        "tcpinboundLoadBalancerSku": "Standard",
 		"baseUrl"              : "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
 		"deployStorageURL"     : "[concat(variables('baseUrl'),'/deployStorage.json')]",
 		"deployNsgURL"         : "[concat(variables('baseUrl'),'/deployNsg.json')]",
@@ -345,7 +369,7 @@
 					}
 				}
 			}
-		},
+        },
 		{	
 			"name": "deployOutboundFirewall",
 			"type": "Microsoft.Resources/deployments",
@@ -372,7 +396,7 @@
 						"value": "[variables('location')]"
 					},
 					"avSetName": {
-						"value": "[parameters('avSetName')]"
+						"value": "[variables('egressavSetName')]"
 					},
 					"storageName": {
 						"value": "[variables('storageName')]"
@@ -393,7 +417,7 @@
 						"value": "[parameters('untrustedSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[parameters('loadBalancerName')]"
+						"value": "[variables('egressloadBalancerName')]"
 					},
 					"mgmtPublicIPName": {
 						"value": "[concat('out', parameters('mgmtPublicIPName'))]"
@@ -421,7 +445,122 @@
 					}
 				}
 			}
-		}
+        },
+        {	
+			"name": "deploytcpinboundLoadBalancer",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/deployVNet"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployLoadBalancerURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"loadBalancerSku": {
+						"value": "[variables('tcpinboundLoadBalancerSku')]"
+					},
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"virtualNetworkRG": {
+						"value": "[variables('rgName')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"subnetName": {
+						"value": "[parameters('tcpinboundSubnetName')]"
+					},
+					"loadBalancerName": {
+						"value": "[parameters('tcpinboundloadBalancerName')]"
+					},
+                    "loadBalancerIP": {
+						"value": "[parameters('tcpinboundloadBalancerIP')]"
+					}
+				}
+			}
+        },
+        {	
+			"name": "deploytcpinboundFirewall",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/deployStorage",
+				"Microsoft.Resources/deployments/deployVNet",
+				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployFirewallURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"loadBalancerSku": {
+						"value": "[variables('tcpinboundLoadBalancerSku')]"
+					},
+					"baseUrl": {
+						"value": "[variables('baseUrl')]"
+					},
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"avSetName": {
+						"value": "[variables('tcpinboundavSetName')]"
+					},
+					"storageName": {
+						"value": "[variables('storageName')]"
+					},
+					"virtualNetworkRG": {
+						"value": "[variables('rgName')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"mgmtSubnetName": {
+						"value": "[parameters('mgmtSubnetName')]"
+					},
+					"inboundSubnetName": {
+						"value": "[parameters('trustedSubnetName')]"
+					},
+					"outboundSubnetName": {
+						"value": "[parameters('tcpinboundSubnetName')]"
+					},
+					"loadBalancerName": {
+						"value": "[variables('tcpinboundloadBalancerName')]"
+					},
+					"mgmtPublicIPName": {
+						"value": "[concat('tcpfw', parameters('mgmtPublicIPName'))]"
+					},
+					"mgmtPublicIPDns":{
+						"value": "[concat('tcpfw', parameters('mgmtPublicIPDns'))]"
+					},
+					"virtualMachineName": {
+						"value": "[concat('tcpfw', parameters('firewallVmName'))]"
+					},
+					"vmSize": {
+						"value": "[parameters('firewallVmSize')]"
+					},
+					"imageSku" : {
+						"value": "[parameters('firewallModel')]"
+					},
+					"adminUsername": {
+						"value": "[parameters('username')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('password')]"
+					},
+					"sshKey": {
+						"value": "[parameters('sshPublicKey')]"
+					}
+				}
+			}
+        },
+        
 	],
 	"outputs": {}
 }
