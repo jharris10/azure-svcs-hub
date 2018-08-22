@@ -341,6 +341,9 @@
 					"untrustSubnetName": {
 						"value": "[parameters('untrustedSubnetName')]"
 					},
+					"tcpinboundSubnetName": {
+                        "value": "[parameters('tcpinboundSubnetName')]"
+                    },
 					"trustSubnetName": {
 						"value": "[parameters('trustedSubnetName')]"
 					},
@@ -352,9 +355,6 @@
 					},
 					"trustSubnetPrefix": {
 						"value": "[parameters('trustedSubnetPrefix')]"
-                    },
-                    "tcpinboundSubnetName": {
-                        "value": "[parameters('tcpinboundSubnetName')]"
                     },
                     "tcpinboundSubnetPrefix": {
                         "value": "[parameters('tcpinboundSubnetPrefix')]"
@@ -476,120 +476,8 @@
 				}
 			}
         },
-        {	
-			"name": "deploytcpinboundLoadBalancer",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/deployVNet"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployLoadBalancerURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"loadBalancerSku": {
-						"value": "[variables('tcpinboundLoadBalancerSku')]"
-					},
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"virtualNetworkRG": {
-						"value": "[variables('rgName')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"subnetName": {
-						"value": "[parameters('tcpinboundSubnetName')]"
-					},
-					"loadBalancerName": {
-						"value": "[parameters('tcpinboundloadBalancerName')]"
-					},
-                    "loadBalancerIP": {
-						"value": "[parameters('tcpinboundloadBalancerIP')]"
-					}
-				}
-			}
-        },
-        {	
-			"name": "deploytcpinboundFirewall",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/ipfwdeployStorage",
-				"Microsoft.Resources/deployments/deployVNet",
-				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployFirewallURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"loadBalancerSku": {
-						"value": "[variables('tcpinboundLoadBalancerSku')]"
-					},
-					"baseUrl": {
-						"value": "[variables('baseUrl')]"
-					},
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"avSetName": {
-						"value": "[variables('tcpinboundavSetName')]"
-					},
-                    "storageName": {
-						"value": "ipfwstor"
-					},
-					"virtualNetworkRG": {
-						"value": "[variables('rgName')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"mgmtSubnetName": {
-						"value": "[parameters('mgmtSubnetName')]"
-					},
-					"inboundSubnetName": {
-						"value": "[parameters('trustedSubnetName')]"
-					},
-					"outboundSubnetName": {
-						"value": "[parameters('tcpinboundSubnetName')]"
-					},
-					"loadBalancerName": {
-						"value": "[variables('tcpinboundloadBalancerName')]"
-					},
-					"mgmtPublicIPName": {
-						"value": "[concat('tcpfw', parameters('mgmtPublicIPName'))]"
-					},
-					"mgmtPublicIPDns":{
-						"value": "[concat('tcpfw', parameters('mgmtPublicIPDns'))]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('tcpfw', parameters('firewallVmName'))]"
-					},
-					"vmSize": {
-						"value": "[parameters('firewallVmSize')]"
-					},
-					"imageSku" : {
-						"value": "[parameters('firewallModel')]"
-					},
-					"adminUsername": {
-						"value": "[parameters('username')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('password')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshPublicKey')]"
-					}
-				}
-			}
-        },
+
+
         
 	],
 	"outputs": {}
