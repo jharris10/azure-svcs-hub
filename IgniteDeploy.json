@@ -235,8 +235,8 @@
 
 		"location"   : "[resourceGroup().location]",
 		"rgname"     : "[resourceGroup().name]",
-        "egresslbstorageName": "[toLower(concat(parameters('storageNamePrefix'),'egresslb'))]",
-        "iplbstorageName": "[toLower(concat(parameters('storageNamePrefix'),'iplb'))]"
+        "egresslbstorageName": "egresslbstor",
+        "iplbstorageName": "iplbstor"
 	},
 
 	"resources": [
