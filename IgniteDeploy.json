@@ -363,44 +363,6 @@
 			}
 		},
 		{	
-			"name": "deployOutboundLoadBalancer",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/deployVNet"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployLoadBalancerURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"loadBalancerSku": {
-						"value": "[variables('egressLoadBalancerSku')]"
-					},
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"virtualNetworkRG": {
-						"value": "[variables('rgName')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"subnetName": {
-						"value": "[parameters('trustedSubnetName')]"
-					},
-					"loadBalancerName": {
-						"value": "[parameters('loadBalancerName')]"
-					},
-                    "loadBalancerIP": {
-						"value": "[parameters('loadBalancerIP')]"
-                    }
-				}
-			}
-        },
-		{	
 			"name": "deployOutboundFirewall",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
@@ -419,14 +381,17 @@
 					"loadBalancerSku": {
 						"value": "[variables('egressLoadBalancerSku')]"
 					},
-					"baseUrl": {
-						"value": "[variables('baseUrl')]"
+					"avSetName": {
+						"value": "[variables('egressavSetName')]"
 					},
 					"location": {
 						"value": "[variables('location')]"
 					},
-					"avSetName": {
-						"value": "[variables('egressavSetName')]"
+					"baseUrl": {
+						"value": "[variables('baseUrl')]"
+					},
+					"virtualMachineName": {
+						"value": "[concat('out', parameters('firewallVmName'))]"
 					},
 					"storageName": {
 						"value": "egressfwstor"
@@ -454,9 +419,6 @@
 					},
 					"mgmtPublicIPDns":{
 						"value": "[concat('out', parameters('mgmtPublicIPDns'))]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('out', parameters('firewallVmName'))]"
 					},
 					"vmSize": {
 						"value": "[parameters('firewallVmSize')]"
