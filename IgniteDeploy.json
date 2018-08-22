@@ -235,8 +235,7 @@
 
 		"location"   : "[resourceGroup().location]",
 		"rgname"     : "[resourceGroup().name]",
-        "egresslbstorageName": "egresslbstor",
-        "iplbstorageName": "iplbstor"
+        
 	},
 
 	"resources": [
@@ -257,9 +256,10 @@
 					"storageType": {
 						"value": "[parameters('storageType')]"
 					},
-					"storageName": {
-						"value": "[variables('egresslbstorageName')]"
-					}
+                    "storageName": {
+                        "value":"egressfwstor"
+                    }
+
 				}
 			}
         },
@@ -281,7 +281,7 @@
 						"value": "[parameters('storageType')]"
 					},
 					"storageName": {
-						"value": "[variables('iplbstorageName')]"
+						"value": "ipfwstor"
 					}
 				}
 			}
@@ -429,7 +429,7 @@
 						"value": "[variables('egressavSetName')]"
 					},
 					"storageName": {
-						"value": "[variables('egresslbstorageName')]"
+						"value": "egressfwstor"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('rgName')]"
@@ -543,7 +543,7 @@
 						"value": "[variables('tcpinboundavSetName')]"
 					},
                     "storageName": {
-						"value": "[variables('iplbstorageName')]"
+						"value": "ipfwstor"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('rgName')]"
