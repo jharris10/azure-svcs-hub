@@ -223,30 +223,8 @@
 
 		{
 			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
-			"apiVersion": "2017-08-01",
-			"type": "Microsoft.Network/publicIPAddresses",
-			"name": "[concat(parameters('outboundSubnetName'), '-pip-', copyindex())]",
-			"sku": {
-				"name": "[parameters('loadBalancerSku')]"
-			},
-			"location": "[parameters('location')]",
-			"copy": {
-				"name": "pipLoop",
-				"count": "[parameters('vmCount')]"
-			},
-			"properties": {
-				"publicIPAllocationMethod": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 'Static', 'Dynamic')]"
-			}
-		},
-
-
-		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1')]",
 			"type": "Microsoft.Network/networkInterfaces",
-			"dependsOn": [
-				"[concat('Microsoft.Network/publicIPAddresses/', parameters('outboundSubnetName'), '-pip-', copyindex())]"
-			],
 			"location": "[parameters('location')]",
 			"apiVersion": "2015-06-15",
 			"copy": {
