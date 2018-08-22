@@ -519,7 +519,6 @@
 					"avSetName": {
 						"value": "[variables('tcpinboundavSetName')]"
 					},
-					
                     "storageName": {
 						"value": "[variables('iplbstorageName')]"
 					},
