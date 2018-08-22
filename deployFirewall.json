@@ -13,7 +13,8 @@
 			},
 			"defaultValue": "Standard"
 		},
-		"egresslbstorageName": {
+		
+		"storageName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name prefix of the new storage account created to store the VM's disks"
@@ -434,8 +435,8 @@
 					"adminPassword": {
 						"value": "[parameters('adminPassword')]"
 					},
-					"egresslbstorageName": {
-						"value": "[parameters('egresslbstorageName')]"
+					"storageName": {
+						"value": "[parameters('storageName')]"
 					},
 					"sshKey": {
 						"value": "[parameters('sshKey')]"
@@ -502,8 +503,8 @@
 					"adminPassword": {
 						"value": "[parameters('adminPassword')]"
 					},
-					"egresslbstorageName": {
-						"value": "[parameters('egresslbstorageName')]"
+					"storageName": {
+						"value": "[parameters('storageName')]"
 					},
 					"sshKey": {
 						"value": "[parameters('sshKey')]"
