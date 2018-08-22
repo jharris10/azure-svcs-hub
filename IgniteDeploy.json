@@ -16,7 +16,6 @@
 			},
 			"defaultValue": "fwpubip"
 		},
-
 		"networkSecurityGroupName": {
 			"type": "string",
 			"defaultValue": "nsg",
@@ -38,7 +37,6 @@
 			},
 			"defaultValue": "egress-avset"
 		},
-
 		"storageType": {
 			"type": "string",
 			"allowedValues": [
@@ -52,7 +50,6 @@
 			},
 			"defaultValue": "Standard_LRS"
 		},
-
 		"virtualNetworkName": {
 			"type": "string",
 			"defaultValue": "hub-vnet",
@@ -95,7 +92,6 @@
 				"description": "CIDR for Untrusted Network"
 			}
         },
-        
         "tcpinboundSubnetName": {
 			"type": "string",
 			"defaultValue": "tcpinbound-Untrust",
@@ -110,7 +106,6 @@
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
 		},
-
 		"trustedSubnetName": {
 			"type": "string",
 			"defaultValue": "Trust",
@@ -132,11 +127,10 @@
 			},
 			"defaultValue": "mgmt-pip"
 		},
-		
 		"loadBalancerName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name for the outbound load balancer resource."
+				"description": "Prefix for loadbalancer Names"
 			},
 			"defaultValue": "egress-lb"
 		},
@@ -147,13 +141,6 @@
 			},
 			"defaultValue": "10.0.2.100"
         },
-        "tcpinboundloadBalancerName": {
-			"type": "string",
-			"metadata": {
-				"description": "Name for the outbound load balancer resource."
-			},
-			"defaultValue": "tcpinbound-lb"
-		},
 		"tcpinboundloadBalancerIP": {
 			"type": "string",
 			"metadata": {
@@ -218,26 +205,28 @@
 			}
 		}
 	},
-	
 	"variables": {
-        "egressloadBalancerName":"[concat(parameters('loadbalancerName'),'egress')]",
-        "tcpinboundloadBalancerName":"[concat(parameters('loadbalancerName'),'tcpinbound')]",
-        "egressavSetName"      : "[concat(parameters('avSetName'),'egress')]",
-        "tcpinboundavSetName"  : "[concat(parameters('avSetName'),'egress')]",
-        "egressLoadBalancerSku": "Standard",
+		"egressloadBalancerName": "[concat(parameters('loadbalancerName'),'egress')]",
+		"tcpinboundloadBalancerName": "[concat(parameters('loadbalancerName'),'tcpinbound')]",
+		"egressavSetName": "[concat(parameters('avSetName'),'egress')]",
+		"tcpinboundavSetName": "[concat(parameters('avSetName'),'egress')]",
+		"egressLoadBalancerSku": "Standard",
+		"ipLoadBalancerSku": "Standard",
         "tcpinboundLoadBalancerSku": "Standard",
-		"baseUrl"              : "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
-		"deployStorageURL"     : "[concat(variables('baseUrl'),'/deployStorage.json')]",
-		"deployNsgURL"         : "[concat(variables('baseUrl'),'/deployNsg.json')]",
-		"deployVnetURL"        : "[concat(variables('baseUrl'),'/deployVnet.json')]",
-		"deployFirewallURL"    : "[concat(variables('baseUrl'),'/deployFirewall.json')]",
+		"baseUrl": "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
+		"deployStorageURL": "[concat(variables('baseUrl'),'/deployStorage.json')]",
+		"deployNsgURL": "[concat(variables('baseUrl'),'/deployNsg.json')]",
+		"deployVnetURL": "[concat(variables('baseUrl'),'/deployVnet.json')]",
+		"deployFirewallURL": "[concat(variables('baseUrl'),'/deployFirewall.json')]",
+		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/deployInboundFirewall.json')]",
 		"deployLoadBalancerURL": "[concat(variables('baseUrl'),'/deployLoadBalancer.json')]",
-
-		"location"   : "[resourceGroup().location]",
-		"rgname"     : "[resourceGroup().name]",
-        
+		"location": "[resourceGroup().location]",
+		"rgname": "[resourceGroup().name]",
+		"egressfwstor" : "[concat(parameters('storageName'),'egress')]",
+		"ipfwstor" : "[concat(parameters('storageName'),'ipfw')]",
+		"egressLoadbalancerName":"[concat(parameters('loadBalancerName'),'')]",
+		"ipLoadbalancerName":"[concat(parameters('loadBalancerName'),'')]"
 	},
-
 	"resources": [
 		{	
 			"name": "egressfwdeployStorage",
@@ -257,9 +246,8 @@
 						"value": "[parameters('storageType')]"
 					},
                     "storageName": {
-                        "value":"egressfwstor"
+						"value": "[variables('egressfwstor')]"
                     }
-
 				}
 			}
         },
@@ -281,7 +269,7 @@
 						"value": "[parameters('storageType')]"
 					},
 					"storageName": {
-						"value": "ipfwstor"
+						"value": "[variables('ipfwstor')]"
 					}
 				}
 			}
@@ -432,7 +420,7 @@
 						"value": "[concat('out', parameters('firewallVmName'))]"
 					},
 					"storageName": {
-						"value": "egressfwstor"
+						"value": "[variables('egressfwstor')]"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('rgName')]"
@@ -450,7 +438,7 @@
 						"value": "[parameters('untrustedSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[variables('egressloadBalancerName')]"
+						"value": "[parameters('loadBalancerName')]"
 					},
 					"mgmtPublicIPName": {
 						"value": "[concat('out', parameters('mgmtPublicIPName'))]"
@@ -475,10 +463,116 @@
 					}
 				}
 			}
+		},
+		{	
+			"name": "deploytcpinboundLoadBalancer",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/deployVNet"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployInboundFirewallURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"loadBalancerSku": {
+						"value": "[variables('ipLoadBalancerSku')]"
+					},
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"virtualNetworkRG": {
+						"value": "[variables('rgName')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"subnetName": {
+						"value": "[parameters('trustedSubnetName')]"
+					},
+					"loadBalancerName": {
+						"value": "[variables('ipLoadbalancerName')]"
+					},
+                    "loadBalancerIP": {
+						"value": "[parameters('tcpinboundloadBalancerIP')]"
+                    }
+				}
+			}
         },
-
-
-        
+        {	
+			"name": "deploytcpinboundFirewall",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/ipfwdeployStorage",
+				"Microsoft.Resources/deployments/deployVNet",
+				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployFirewallURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"loadBalancerSku": {
+						"value": "[variables('tcpinboundLoadBalancerSku')]"
+					},
+					"baseUrl": {
+						"value": "[variables('baseUrl')]"
+					},
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"avSetName": {
+						"value": "[variables('tcpinboundavSetName')]"
+					},
+                    "storageName": {
+						"value": "[variables('ipfwstor')]"
+					},
+					"virtualNetworkRG": {
+						"value": "[variables('rgName')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"mgmtSubnetName": {
+						"value": "[parameters('mgmtSubnetName')]"
+					},
+					"inboundSubnetName": {
+						"value": "[parameters('trustedSubnetName')]"
+					},
+					"outboundSubnetName": {
+						"value": "[parameters('tcpinboundSubnetName')]"
+					},
+					"loadBalancerName": {
+						"value": "[parameters('tcpinboundloadBalancerIP')]"
+					},
+					"virtualMachineName": {
+						"value": "[concat('tcpfw', parameters('firewallVmName'))]"
+					},
+					"vmSize": {
+						"value": "[parameters('firewallVmSize')]"
+					},
+					"imageSku" : {
+						"value": "[parameters('firewallModel')]"
+					},
+					"adminUsername": {
+						"value": "[parameters('username')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('password')]"
+					},
+					"sshKey": {
+						"value": "[parameters('sshPublicKey')]"
+					}
+				}
+			}
+        }
+ 
 	],
 	"outputs": {}
 }
