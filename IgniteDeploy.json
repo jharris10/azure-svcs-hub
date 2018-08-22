@@ -2,12 +2,12 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"storageName": {
+		"storageNamePrefix": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the storage account created to store the VM's disks.  Storage account name must be globally unique."
 			},
-			"defaultValue": "egresslbstor"
+			"defaultValue": "lbstor"
 		},
 		"mgmtPublicIPDns": {
 			"type": "string",
@@ -235,7 +235,8 @@
 
 		"location"   : "[resourceGroup().location]",
 		"rgname"     : "[resourceGroup().name]",
-		"storageName": "[toLower(concat(parameters('storageName')))]"
+        "egresslbstorageName": "[toLower(concat(parameters('storageNamePrefix'),'egresslb'))]",
+        "iplbstorageName": "[toLower(concat(parameters('storageNamePrefix'),'iplb'))]"
 	},
 
 	"resources": [
@@ -256,8 +257,8 @@
 					"storageType": {
 						"value": "[parameters('storageType')]"
 					},
-					"storageName": {
-						"value": "[variables('storageName')]"
+					"egresslbstorageName": {
+						"value": "[variables('egresslbstorageName')]"
 					}
 				}
 			}
@@ -405,7 +406,7 @@
 						"value": "[variables('egressavSetName')]"
 					},
 					"storageName": {
-						"value": "[variables('storageName')]"
+						"value": "[variables('egresslbstorageName')]"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('rgName')]"
@@ -518,8 +519,9 @@
 					"avSetName": {
 						"value": "[variables('tcpinboundavSetName')]"
 					},
-					"storageName": {
-						"value": "[variables('storageName')]"
+					
+                    "storageName": {
+						"value": "[variables('iplbstorageName')]"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('rgName')]"
