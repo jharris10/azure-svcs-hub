@@ -20,7 +20,7 @@
 			}
 		},
 
-		// vnet parameters
+		
 		"virtualNetworkRG": {
 			"type": "string",
 			"metadata": {
