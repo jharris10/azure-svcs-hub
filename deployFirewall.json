@@ -38,7 +38,6 @@
 				"description": "Deployment location"
 			}
 		},
-		
 		"vmCount": {
 			"type": "int",
 			"defaultValue": 2,
@@ -137,9 +136,6 @@
 				"description": "SSH rsa public key file as a string."
 			}
 		},
-
-
-	
 		"virtualNetworkRG": {
 			"type": "string",
 			"metadata": {
@@ -170,15 +166,12 @@
 				"description": "Name of the Trust subnet"
 			}
 		},
-
-
 		"loadBalancerName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the inbound load balancer"
 			}
 		},	
-
 		"mgmtPublicIPDns": {
 			"type": "string",
 			"defaultValue": "panmgmt",
@@ -399,7 +392,8 @@
 				},
 				"parameters": {
 					"loadBalancerSku": {
-						"value": "[parameters('loadBalancerSku')]"
+						"value": "[parameters('loadBalancerSku')]",
+						"defaultValue" : "Standard"
 					},
 					"location": {
 						"value": "[parameters('location')]"
