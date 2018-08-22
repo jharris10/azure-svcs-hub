@@ -241,7 +241,7 @@
 
 	"resources": [
 		{	
-			"name": "deployStorage",
+			"name": "egressfwdeployStorage",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"properties": {
@@ -257,8 +257,31 @@
 					"storageType": {
 						"value": "[parameters('storageType')]"
 					},
-					"egresslbstorageName": {
+					"storageName": {
 						"value": "[variables('egresslbstorageName')]"
+					}
+				}
+			}
+        },
+        {	
+			"name": "ipfwdeployStorage",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployStorageURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"storageType": {
+						"value": "[parameters('storageType')]"
+					},
+					"storageName": {
+						"value": "[variables('iplbstorageName')]"
 					}
 				}
 			}
@@ -382,7 +405,7 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
-				"Microsoft.Resources/deployments/deployStorage",
+				"Microsoft.Resources/deployments/egressfwdeployStorage",
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/deployOutboundLoadBalancer"
 			],
@@ -496,7 +519,7 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
-				"Microsoft.Resources/deployments/deployStorage",
+				"Microsoft.Resources/deployments/ipfwdeployStorage",
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"
 			],
