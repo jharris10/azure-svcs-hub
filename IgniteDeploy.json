@@ -224,8 +224,7 @@
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor" : "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor" : "[concat(parameters('storageName'),'ipfw')]",
-		"egressLoadbalancerName":"[concat(parameters('loadBalancerName'),'')]",
-		"ipLoadbalancerName":"[concat(parameters('loadBalancerName'),'')]"
+
 	},
 	"resources": [
 		{	
@@ -494,10 +493,10 @@
 						"value": "[parameters('trustedSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[variables('ipLoadbalancerName')]"
+						"value": "[variables('egressloadBalancerName')]"
 					},
                     "loadBalancerIP": {
-						"value": "[parameters('tcpinboundloadBalancerIP')]"
+						"value": "[parameters('loadBalancerIP')]"
                     }
 				}
 			}
