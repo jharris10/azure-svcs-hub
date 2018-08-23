@@ -108,7 +108,7 @@
 		},
 		"tcptrustSubnetName": {
 			"type": "string",
-			"defaultValue": "tcpinbound-Untrust",
+			"defaultValue": "tcpinbound-trust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
@@ -122,7 +122,7 @@
 		},
 		"trustedSubnetName": {
 			"type": "string",
-			"defaultValue": "Trust",
+			"defaultValue": "Egress-Trust",
 			"metadata": {
 				"description": "Subnet for Trusted Network"
 			}
@@ -488,6 +488,7 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
+				"Microsoft.Resources/deployments/deployOutboundFirewall",
 				"Microsoft.Resources/deployments/ipfwdeployStorage",
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"
