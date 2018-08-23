@@ -450,10 +450,10 @@
 					"mgmtSubnetName": {
 						"value": "[parameters('mgmtSubnetName')]"
 					},
-					"inboundSubnetName": {
+					"trustSubnetName": {
 						"value": "[parameters('trustedSubnetName')]"
 					},
-					"outboundSubnetName": {
+					"untrustSubnetName": {
 						"value": "[parameters('untrustedSubnetName')]"
 					},
 					"loadBalancerName": {

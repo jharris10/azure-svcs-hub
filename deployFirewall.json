@@ -154,13 +154,13 @@
 				"description": "Name of the Management subnet"
 			}
 		},
-		"outboundSubnetName": {
+		"untrustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the Untrust subnet"
 			}
 		},
-		"inboundSubnetName": {
+		"trustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the Trust subnet"
@@ -263,7 +263,7 @@
 			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
 			"apiVersion": "2017-08-01",
 			"type": "Microsoft.Network/publicIPAddresses",
-			"name": "[concat(parameters('outboundSubnetName'), '-pip-', copyindex())]",
+			"name": "[concat(parameters('untrustSubnetName'), '-pip-', copyindex())]",
 			"sku": {
 				"name": "[parameters('loadBalancerSku')]"
 			},
@@ -283,7 +283,7 @@
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"dependsOn": [
-				"[concat('Microsoft.Network/publicIPAddresses/', parameters('outboundSubnetName'), '-pip-', copyindex())]"
+				"[concat('Microsoft.Network/publicIPAddresses/', parameters('untrustSubnetName'), '-pip-', copyindex())]"
 			],
 			"location": "[parameters('location')]",
 			"apiVersion": "2015-06-15",
@@ -299,10 +299,10 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"publicIPAddress": {
-								"id": "[resourceId('Microsoft.Network/publicIPAddresses/', concat(parameters('outboundSubnetName'), '-pip-', copyindex()))]"
+								"id": "[resourceId('Microsoft.Network/publicIPAddresses/', concat(parameters('untrustSubnetName'), '-pip-', copyindex()))]"
 							},
 							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('outboundSubnetName'))]"
+								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('untrustSubnetName'))]"
 							}
 						}
 					}
@@ -329,7 +329,7 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('outboundSubnetName'))]"
+								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('untrustSubnetName'))]"
 							}
 						}
 					}
@@ -354,7 +354,7 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('inboundSubnetName'))]"
+								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('trustSubnetName'))]"
 							},
 							"loadBalancerBackendAddressPools": [
 								{

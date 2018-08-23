@@ -154,13 +154,13 @@
 				"description": "Name of the Management subnet"
 			}
 		},
-		"outboundSubnetName": {
+		"untrustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the Untrust subnet"
 			}
 		},
-		"inboundSubnetName": {
+		"trustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the Trust subnet"
@@ -235,7 +235,7 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('outboundSubnetName'))]"
+								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('untrustSubnetName'))]"
 							},
 							"loadBalancerBackendAddressPools": [
 								{
@@ -265,7 +265,7 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('outboundSubnetName'))]"
+								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('untrustSubnetName'))]"
 							}
 						}
 					}
@@ -290,7 +290,7 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('inboundSubnetName'))]"
+								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('trustSubnetName'))]"
 							}
 						}
 					}
