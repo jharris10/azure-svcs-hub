@@ -545,11 +545,17 @@
 					"mgmtSubnetName": {
 						"value": "[parameters('mgmtSubnetName')]"
 					},
-					"inboundSubnetName": {
+					"untrustsubnetName": {
 						"value": "[parameters('trustedSubnetName')]"
 					},
-					"outboundSubnetName": {
+					"trustSubnetName": {
+						"value": "[parameters('trustedSubnetName')]"
+					},
+					"tcpuntrustsubnetName": {
 						"value": "[parameters('tcpuntrustSubnetName')]"
+					},
+					"tcptrustSubnetName": {
+						"value": "[parameters('tcptrustSubnetName')]"
 					}
 				}
 			}
