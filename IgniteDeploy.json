@@ -206,8 +206,8 @@
 		}
 	},
 	"variables": {
-		"egressloadBalancerName": "[concat(parameters('loadbalancerName'),'egress')]",
-		"tcpinboundloadBalancerName": "[concat(parameters('loadbalancerName'),'tcpinbound')]",
+		"egressloadBalancerName": "[concat(parameters('loadBalancerName'),'egress')]",
+		"tcpinboundloadBalancerName": "[concat(parameters('loadBalancerName'),'tcpinbound')]",
 		"egressavSetName": "[concat(parameters('avSetName'),'egress')]",
 		"tcpinboundavSetName": "[concat(parameters('avSetName'),'egress')]",
 		"egressLoadBalancerSku": "Standard",
@@ -223,7 +223,7 @@
 		"location": "[resourceGroup().location]",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor" : "[concat(parameters('storageName'),'egress')]",
-		"ipfwstor" : "[concat(parameters('storageName'),'ipfw')]",
+		"ipfwstor" : "[concat(parameters('storageName'),'ipfw')]"
 
 	},
 	"resources": [
@@ -379,7 +379,7 @@
 						"value": "[parameters('trustedSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[parameters('loadBalancerName')]"
+						"value": "[variables('egressloadBalancerName')]"
 					},
                     "loadBalancerIP": {
 						"value": "[parameters('loadBalancerIP')]"
@@ -463,6 +463,7 @@
 				}
 			}
 		},
+		
 		{	
 			"name": "deploytcpinboundLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
@@ -473,7 +474,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployInboundFirewallURL')]",
+					"uri": "[variables('deployLoadBalancerURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -490,18 +491,18 @@
 						"value": "[parameters('virtualNetworkName')]"
 					},
 					"subnetName": {
-						"value": "[parameters('trustedSubnetName')]"
+						"value": "[parameters('tcpinboundSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[variables('egressloadBalancerName')]"
+						"value": "[variables('tcpinboundloadBalancerName')]"
 					},
                     "loadBalancerIP": {
-						"value": "[parameters('loadBalancerIP')]"
+						"value": "[parameters('tcpinboundloadBalancerIP')]"
                     }
 				}
 			}
-        },
-        {	
+		},
+		{	
 			"name": "deploytcpinboundFirewall",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
@@ -520,20 +521,42 @@
 					"loadBalancerSku": {
 						"value": "[variables('tcpinboundLoadBalancerSku')]"
 					},
-					"baseUrl": {
-						"value": "[variables('baseUrl')]"
-					},
-					"location": {
-						"value": "[variables('location')]"
+					"storageName": {
+						"value": "[variables('ipfwstor')]"
 					},
 					"avSetName": {
 						"value": "[variables('tcpinboundavSetName')]"
 					},
-                    "storageName": {
-						"value": "[variables('ipfwstor')]"
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"baseUrl": {
+						"value": "[variables('baseUrl')]"
+					},
+					"vmSize": {
+						"value": "[parameters('firewallVmSize')]"
+					},
+
+					"imageSku" : {
+						"value": "[parameters('firewallModel')]"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('rgName')]"
+					},
+					"loadBalancerName": {
+						"value": "[variables('tcpinboundloadBalancerName')]"
+					},
+					"virtualMachineName": {
+						"value": "[concat('tcpfw', parameters('firewallVmName'))]"
+					},
+					"adminUsername": {
+						"value": "[parameters('username')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('password')]"
+					},
+					"sshKey": {
+						"value": "[parameters('sshPublicKey')]"
 					},
 					"virtualNetworkName": {
 						"value": "[parameters('virtualNetworkName')]"
@@ -546,27 +569,6 @@
 					},
 					"outboundSubnetName": {
 						"value": "[parameters('tcpinboundSubnetName')]"
-					},
-					"loadBalancerName": {
-						"value": "[parameters('tcpinboundloadBalancerIP')]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('tcpfw', parameters('firewallVmName'))]"
-					},
-					"vmSize": {
-						"value": "[parameters('firewallVmSize')]"
-					},
-					"imageSku" : {
-						"value": "[parameters('firewallModel')]"
-					},
-					"adminUsername": {
-						"value": "[parameters('username')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('password')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshPublicKey')]"
 					}
 				}
 			}

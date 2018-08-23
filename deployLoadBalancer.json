@@ -19,8 +19,6 @@
 				"description": "Deployment location"
 			}
 		},
-
-		
 		"virtualNetworkRG": {
 			"type": "string",
 			"metadata": {
@@ -64,8 +62,7 @@
 			"type": "Microsoft.Network/loadBalancers",
 			"name": "[parameters('loadBalancerName')]",
 			"location": "[parameters('location')]",
-            "sku":
-            {
+            "sku": {
                 "name": "[parameters('loadBalancerSku')]"
             },
 			"properties": {
