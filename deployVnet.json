@@ -64,7 +64,7 @@
 		},
 		"tcpuntrustSubnetName": {
 			"type": "string",
-			"defaultValue": "tcpinbound-Untrust",
+			"defaultValue": "tcpUntrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
@@ -78,14 +78,14 @@
 		},
 		"tcptrustSubnetName": {
 			"type": "string",
-			"defaultValue": "tcpinbound-Untrust",
+			"defaultValue": "tcptrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
 		"tcptrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "192.168.3.0/24",
+			"defaultValue": "192.168.6.0/24",
 			"metadata": {
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
