@@ -62,20 +62,35 @@
 				"description": "Trust subnet CIDR"
 			}
 		},
-		"tcpinboundSubnetName": {
+		"tcpuntrustSubnetName": {
 			"type": "string",
 			"defaultValue": "tcpinbound-Untrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"tcpinboundSubnetPrefix": {
+		"tcpuntrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "192.168.3.0/24",
 			"metadata": {
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
 		},
+		"tcptrustSubnetName": {
+			"type": "string",
+			"defaultValue": "tcpinbound-Untrust",
+			"metadata": {
+				"description": "Subnet for Untrusted Network"
+			}
+		},
+		"tcptrustSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "192.168.3.0/24",
+			"metadata": {
+				"description": "CIDR for TCPInbound Untrust Network"
+			}
+		}
+		
 	},
 	"variables": {
 		"location": "[resourceGroup().location]",
@@ -111,9 +126,18 @@
 				}
 			},
 			{
-				"name": "[parameters('tcpinboundSubnetName')]",
+				"name": "[parameters('tcpuntrustSubnetName')]",
 				"properties": {
-					"addressPrefix": "[parameters('tcpinboundSubnetPrefix')]",
+					"addressPrefix": "[parameters('tcpuntrustSubnetPrefix')]",
+					"networkSecurityGroup": {
+						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
+					}
+				}
+			},
+			{
+				"name": "[parameters('tcptrustSubnetName')]",
+				"properties": {
+					"addressPrefix": "[parameters('tcptrustSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}

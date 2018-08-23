@@ -92,16 +92,30 @@
 				"description": "CIDR for Untrusted Network"
 			}
         },
-        "tcpinboundSubnetName": {
+        "tcpuntrustSubnetName": {
 			"type": "string",
 			"defaultValue": "tcpinbound-Untrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"tcpinboundSubnetPrefix": {
+		"tcpuntrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.3.0/24",
+			"metadata": {
+				"description": "CIDR for TCPInbound Untrust Network"
+			}
+		},
+		"tcptrustSubnetName": {
+			"type": "string",
+			"defaultValue": "tcpinbound-Untrust",
+			"metadata": {
+				"description": "Subnet for Untrusted Network"
+			}
+		},
+		"tcptrustSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "10.0.6.0/24",
 			"metadata": {
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
@@ -328,8 +342,11 @@
 					"untrustSubnetName": {
 						"value": "[parameters('untrustedSubnetName')]"
 					},
-					"tcpinboundSubnetName": {
-                        "value": "[parameters('tcpinboundSubnetName')]"
+					"tcpuntrustSubnetName": {
+                        "value": "[parameters('tcpuntrustSubnetName')]"
+					},
+					"tcptrustSubnetName": {
+                        "value": "[parameters('tcptrustSubnetName')]"
                     },
 					"trustSubnetName": {
 						"value": "[parameters('trustedSubnetName')]"
@@ -343,8 +360,11 @@
 					"trustSubnetPrefix": {
 						"value": "[parameters('trustedSubnetPrefix')]"
                     },
-                    "tcpinboundSubnetPrefix": {
-                        "value": "[parameters('tcpinboundSubnetPrefix')]"
+                    "tcpuntrustSubnetPrefix": {
+                        "value": "[parameters('tcpuntrustSubnetPrefix')]"
+                    },
+                    "tcptrustSubnetPrefix": {
+                        "value": "[parameters('tcptrustSubnetPrefix')]"
                     }
 				}
 			}
@@ -529,11 +549,49 @@
 						"value": "[parameters('trustedSubnetName')]"
 					},
 					"outboundSubnetName": {
-						"value": "[parameters('tcpinboundSubnetName')]"
+						"value": "[parameters('tcpuntrustSubnetName')]"
 					}
 				}
 			}
-        }	
+		},
+		{	
+			"name": "deploytcpinboundLoadBalancer",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/deployVNet"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployLoadBalancerURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"loadBalancerSku": {
+						"value": "[variables('ipLoadBalancerSku')]"
+					},
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"virtualNetworkRG": {
+						"value": "[variables('rgName')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"subnetName": {
+						"value": "[parameters('tcpuntrustSubnetName')]"
+					},
+					"loadBalancerName": {
+						"value": "[variables('tcpinboundloadBalancerName')]"
+					},
+                    "loadBalancerIP": {
+						"value": "[parameters('tcpinboundloadBalancerIP')]"
+                    }
+				}
+			}
+		}	
 	],
 	"outputs": {}
 }
