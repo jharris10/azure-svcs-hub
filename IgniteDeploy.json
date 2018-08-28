@@ -296,7 +296,7 @@
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
-		"appgwfwstor":"[concat(parameters('storageName'),'appgwfw')]",
+		"appgwfwstor":"[concat(parameters('storageName'),'appgwfw')]"
 	},
 	"resources": [
 		{
