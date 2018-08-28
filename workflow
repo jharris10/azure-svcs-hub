@@ -1,0 +1,5 @@
+egressfwdeployStorage ok
+ipfwdeployStorage ok
+deployNsg ok
+deployVnet [mgmtSubnetName,untrustSubnetName,trustSubnetName,tcptrustSubnetName] ok
+deployOutboundLoadBalancer

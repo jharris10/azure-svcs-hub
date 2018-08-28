@@ -1,0 +1,23 @@
+{
+  "status": "Failed",
+  "error": {
+    "code": "ResourceDeploymentFailure",
+    "message": "The resource operation completed with terminal provisioning state 'Failed'.",
+    "details": [
+      {
+        "code": "DeploymentFailed",
+        "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/arm-debug for usage details.",
+        "details": [
+          {
+            "code": "BadRequest",
+            "message": "{\r\n  \"error\": {\r\n    \"code\": \"InvalidResourceReference\",\r\n    \"message\": \"Resource /subscriptions/954c5e98-51c5-4327-869c-863c1561a795/resourceGroups/Ignite11/providers/Microsoft.Network/loadBalancers/egress-lbtcpinbound/backendAddressPools/BackendPool referenced by resource /subscriptions/954c5e98-51c5-4327-869c-863c1561a795/resourceGroups/Ignite11/providers/Microsoft.Network/networkInterfaces/tcpfwoutbound-vm-series0-nic2 was not found. Please make sure that the referenced resource exists, and that both resources are in the same region.\",\r\n    \"details\": []\r\n  }\r\n}"
+          },
+          {
+            "code": "BadRequest",
+            "message": "{\r\n  \"error\": {\r\n    \"code\": \"InvalidResourceReference\",\r\n    \"message\": \"Resource /subscriptions/954c5e98-51c5-4327-869c-863c1561a795/resourceGroups/Ignite11/providers/Microsoft.Network/loadBalancers/egress-lbtcpinbound/backendAddressPools/BackendPool referenced by resource /subscriptions/954c5e98-51c5-4327-869c-863c1561a795/resourceGroups/Ignite11/providers/Microsoft.Network/networkInterfaces/tcpfwoutbound-vm-series1-nic2 was not found. Please make sure that the referenced resource exists, and that both resources are in the same region.\",\r\n    \"details\": []\r\n  }\r\n}"
+          }
+        ]
+      }
+    ]
+  }
+}
