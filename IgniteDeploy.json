@@ -1,6 +1,7 @@
 {
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
+	"mode":"complete",
 	"parameters": {
 		"storageName": {
 			"type": "string",
@@ -150,6 +151,22 @@
 				"description": "CIDR for App Gateway"
 			}
 		},
+		"albuntrustedSubnetName":{
+			"type": "string",
+			"defaultValue": "appgwuntrust"
+		},
+		"albuntrustedSubnetPrefix":{
+			"type": "string",
+			"defaultValue": "10.0.9.0/24"
+		},
+		"albtrustedSubnetName":{
+			"type": "string",
+			"defaultValue": "appgtrust"
+		},
+		"albtrustedSubnetPrefix":{
+			"type": "string",
+			"defaultValue": "10.0.10.0/24"
+		},
 		"mgmtPublicIPName": {
 			"type": "string",
 			"metadata": {
@@ -193,7 +210,7 @@
 		"firewallVmName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name prefix of VM-Series VM in the Azure portal"
+				"description": "Name prefix for firewalls"
 			},
 			"defaultValue": "panw-fw"
 		},
@@ -268,7 +285,8 @@
 		"location": "[resourceGroup().location]",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
-		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]"
+		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
+		"appgwfwstor":"[concat(parameters('storageName'),'appgwfw')]",
 	},
 	"resources": [
 		{
@@ -335,7 +353,7 @@
 						"value": "[parameters('storageType')]"
 					},
 					"storageName": {
-						"value": "[variables('ipfwstor')]"
+						"value": "[variables('appgwfwstor')]"
 					}
 				}
 			}
@@ -379,10 +397,10 @@
 						"value": "[parameters('MgmtSubnetName')]"
 					},
 					"albUntrustName": {
-						"value": "[parameters('untrustedSubnetName')]"
+						"value": "[parameters('albuntrustedSubnetName')]"
 					},
 					"albTntrustName": {
-						"value": "[parameters('trustedSubnetName')]"
+						"value": "[parameters('albtrustedSubnetName')]"
 					},
 					"subnetLBName": {
 						"value": "[parameters('appGatewaySubnetName')]"
@@ -391,10 +409,10 @@
 						"value": "[parameters('mgmtSubnetPrefix')]"
 					},
 					"albUntrustPrefix": {
-						"value": "[parameters('untrustedSubnetPrefix')]"
+						"value": "[parameters('albuntrustedSubnetPrefix')]"
 					},
 					"albTntrustPrefix": {
-						"value": "[parameters('trustedSubnetPrefix')]"
+						"value": "[parameters('albtrustedSubnetPrefix')]"
 					},
 					"subnetLBPrefix": {
 						"value": "[parameters('appGatewaySubnetPrefix')]"
