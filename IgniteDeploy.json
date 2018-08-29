@@ -13,6 +13,17 @@
 			  "description": "Deploy firewall for ip based traffic"
 			}
 		},
+		"Deployegressfw": {
+			"type": "string",
+			"defaultValue": "no",
+			"allowedValues": [
+			  "no",
+			  "yes"
+			],
+			"metadata": {
+			  "description": "Deploy firewall for ip based traffic"
+			}
+		},
 		"storageName": {
 			"type": "string",
 			"metadata": {
@@ -161,19 +172,19 @@
 				"description": "CIDR for App Gateway"
 			}
 		},
-		"albuntrustedSubnetName":{
+		"appgwUntrustSubnetName":{
 			"type": "string",
 			"defaultValue": "appgwuntrust"
 		},
-		"albuntrustedSubnetPrefix":{
+		"appgwUntrustSubnetPrefix":{
 			"type": "string",
 			"defaultValue": "10.0.9.0/24"
 		},
-		"albtrustedSubnetName":{
+		"appgwTrustSubnetName":{
 			"type": "string",
 			"defaultValue": "appgtrust"
 		},
-		"albtrustedSubnetPrefix":{
+		"appgwTrustSubnetPrefix":{
 			"type": "string",
 			"defaultValue": "10.0.10.0/24"
 		},
@@ -300,6 +311,7 @@
 	},
 	"resources": [
 		{
+			"condition": "[equals(parameters('Deployegressfw'), 'yes')]",
 			"name": "egressfwdeployStorage",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
@@ -407,11 +419,11 @@
 					"mgtSubnetName": {
 						"value": "[parameters('MgmtSubnetName')]"
 					},
-					"albUntrustName": {
-						"value": "[parameters('albuntrustedSubnetName')]"
+					"appgwUntrustSubnetName": {
+						"value": "[parameters('appgwUntrustSubnetName')]"
 					},
-					"albTntrustName": {
-						"value": "[parameters('albtrustedSubnetName')]"
+					"appgwTrustSubnetName": {
+						"value": "[parameters('appgwTrustSubnetName')]"
 					},
 					"subnetLBName": {
 						"value": "[parameters('appGatewaySubnetName')]"
@@ -419,11 +431,11 @@
 					"mgtSubnetPrefix": {
 						"value": "[parameters('mgmtSubnetPrefix')]"
 					},
-					"albUntrustPrefix": {
-						"value": "[parameters('albuntrustedSubnetPrefix')]"
+					"appgwUntrustSubnetPrefix": {
+						"value": "[parameters('appgwUntrustSubnetPrefix')]"
 					},
-					"albTntrustPrefix": {
-						"value": "[parameters('albtrustedSubnetPrefix')]"
+					"appgwTrustSubnetPrefix": {
+						"value": "[parameters('appgwTrustSubnetPrefix')]"
 					},
 					"subnetLBPrefix": {
 						"value": "[parameters('appGatewaySubnetPrefix')]"
@@ -541,6 +553,7 @@
 			}
 		},
 		{
+			"condition": "[equals(parameters('Deployegressfw'), 'yes')]",
 			"name": "deployOutboundLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
@@ -579,6 +592,7 @@
 			}
 		},
 		{
+			"condition": "[equals(parameters('Deployegressfw'), 'yes')]",
 			"name": "deployOutboundFirewall",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
