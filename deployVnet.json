@@ -171,15 +171,7 @@
 					}
 				}
 			},
-			{
-				"name": "[parameters('appgwTrustSubnetName')]",
-				"properties": {
-					"addressPrefix": "[parameters('appgwTrustSubnetPrefix')]",
-					"networkSecurityGroup": {
-						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
-					}
-				}
-			},
+			
 			{
 				"name": "[parameters('appgwUntrustSubnetName')]",
 				"properties": {
