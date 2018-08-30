@@ -13,6 +13,20 @@
 				"description": "Deploy firewall for ip based traffic "
 			}
 		},
+		"appGatewayName":{
+			"type": "string",
+			"metadata": {
+				"description": "Name of the HTTP loadbalancer."
+			},
+			"defaultValue": "weblb"
+		},
+		"appGatewayDnsName":{
+			"type": "string",
+			"metadata": {
+				"description": "DNS name of the HTTP loadbalancer."
+			},
+			"defaultValue": "demowebserver"
+		},
 		"Deployegressfw": {
 			"type": "string",
 			"defaultValue": "no",
@@ -316,7 +330,10 @@
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
-		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]"
+		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]",
+		"LoadBalancerType" : "layer-7",
+		"webLBURL" : "[concat(variables('baseUrl'),'/web-lb-', variables('LoadBalancerType'), '.json')]",
+
 	},
 	"resources": [
 		{
@@ -801,7 +818,40 @@
 					}
 				}
 			}
-		}
+		},
+		{
+			"name": "SetupwebLoadBalancer",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+			  "Microsoft.Resources/deployments/deployVnet",
+			  "Microsoft.Resources/deployments/SetupVMSeries"
+			],
+			"properties": {
+			  "mode": "Incremental",
+			  "templateLink": {
+				"uri": "[variables('webLBURL')]",
+				"contentVersion": "1.0.0.0"
+			  },
+			  "parameters": {
+				"lbName": {
+					 "value": "[parameters('appGatewayName')]"
+				},
+				"webIPAddressName": {
+					 "value": "[parameters('appGatewayDnsName')]"
+				},
+				"vnetName": {
+					 "value": "[reference('deployVnet').outputs.vnetName.value]"
+				},
+				"subnetName": {
+					 "value": "[parameters('appGatewaySubnetName')]"
+				},
+				"backendIPAddresses": {
+					 "value": "[reference('deployAgwFirewall').outputs.UntrustPrivateIPAddresses.value]"
+				}
+			  }
+			 }
+		   },
 	],
 	"outputs": {}
 }
