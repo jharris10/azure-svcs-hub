@@ -369,7 +369,7 @@
 			}
 		},
 		{
-			"condition": "[equals(parameters('Deployappgwfw'), 'yes')]",
+			"condition": "[equals(parameters('Deployappgwfw'), 'yes')]", 
 			"name": "albfwdeployStorage",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
@@ -464,7 +464,7 @@
 						"value": "[variables('AlbMgmtPublicIPAddressName')]"
 					},
 					"storageAccountName": {
-						"value": "[reference('albfwdeployStorage').outputs.sid.value]"
+						"value": "[variables('appgwfwstor')]"
 					},
 					"storageAccountNewOrExisting": {
 						"value": "new"
