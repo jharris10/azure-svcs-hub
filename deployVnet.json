@@ -15,7 +15,6 @@
 		},
 		"virtualNetworkAddressPrefix": {
 			"type": "string",
-			"defaultValue": "192.168.0.0/16",
 			"metadata": {
 				"description": "CIDR for vnet"
 			}
@@ -29,96 +28,82 @@
 		},
 		"untrustSubnetName": {
 			"type": "string",
-			"defaultValue": "Untrust",
 			"metadata": {
 				"description": "Subnet for Untrust"
 			}
 		},
+		"tcpuntrustSubnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Subnet for Untrusted Network"
+			}
+		},
+		"tcptrustSubnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Subnet for Untrusted Network"
+			}
+		},
 		"trustSubnetName": {
 			"type": "string",
-			"defaultValue": "Trust",
 			"metadata": {
 				"description": "Subnet for Trust"
 			}
 		},
+		"appgwuntrustSubnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Subnet for Appgw Untrust"
+			}
+		},
+		"appgwtrustSubnetName":{
+			"type": "string",
+			"metadata": {
+				"description": "Subnet for Appgw Trust"
+			}
+		},
 		"mgmtSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "192.168.0.0/24",
 			"metadata": {
 				"description": "Mgmt subnet CIDR"
 			}
 		},
 		"untrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "192.168.1.0/24",
 			"metadata": {
 				"description": "Untrust subnet CIDR"
 			}
 		},
 		"trustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "192.168.2.0/24",
 			"metadata": {
 				"description": "Trust subnet CIDR"
 			}
 		},
-		"tcpuntrustSubnetName": {
-			"type": "string",
-			"defaultValue": "tcpUntrust",
-			"metadata": {
-				"description": "Subnet for Untrusted Network"
-			}
-		},
 		"tcpuntrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "192.168.3.0/24",
 			"metadata": {
 				"description": "CIDR for TCPInbound Untrust Network"
-			}
-		},
-		"tcptrustSubnetName": {
-			"type": "string",
-			"defaultValue": "tcptrust",
-			"metadata": {
-				"description": "Subnet for Untrusted Network"
 			}
 		},
 		"tcptrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "192.168.6.0/24",
 			"metadata": {
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
 		},
-		"appgwUntrustSubnetName": {
+		"appgwuntrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "appgwUntrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"appgwTrustSubnetName": {
+		"appgwtrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "appgwTrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"appgwUntrustSubnetPrefix": {
-			"type": "string",
-			"defaultValue": "192.168.9.0/24",
-			"metadata": {
-				"description": "Subnet for Untrusted Network"
-			}
-		},
-		"appgwTrustSubnetPrefix": {
-			"type": "string",
-			"defaultValue": "192.168.10.0/24",
-			"metadata": {
-				"description": "Subnet for Untrusted Network"
-			}
-		},
-		
 	},
 	"variables": {
 		"location": "[resourceGroup().location]",
@@ -171,11 +156,19 @@
 					}
 				}
 			},
-			
 			{
-				"name": "[parameters('appgwUntrustSubnetName')]",
+				"name": "[parameters('appgwuntrustSubnetName')]",
 				"properties": {
-					"addressPrefix": "[parameters('appgwUntrustSubnetPrefix')]",
+					"addressPrefix": "[parameters('appgwuntrustSubnetPrefix')]",
+					"networkSecurityGroup": {
+						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
+					}
+				}
+			},
+			{
+				"name": "[parameters('appgwtrustSubnetName')]",
+				"properties": {
+					"addressPrefix": "[parameters('appgwtrustSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}

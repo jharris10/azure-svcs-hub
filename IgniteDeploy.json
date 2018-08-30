@@ -100,14 +100,14 @@
 				"description": "CIDR for Management Network"
 			}
 		},
-		"untrustedSubnetName": {
+		"untrustSubnetName": {
 			"type": "string",
 			"defaultValue": "Egress-Untrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"untrustedSubnetPrefix": {
+		"untrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.1.0/24",
 			"metadata": {
@@ -139,25 +139,23 @@
 			"type": "string",
 			"defaultValue": "10.0.6.0/24",
 			"metadata": {
-				"description": "CIDR for TCPInbound Untrust Network"
+				"description": "CIDR fvirtualNetworkAddressPrefixor TCPInbound Untrust Network"
 			}
 		},
-		"trustedSubnetName": {
+		"trustSubnetName": {
 			"type": "string",
 			"defaultValue": "Egress-Trust",
 			"metadata": {
 				"description": "Subnet for Trusted Network"
 			}
 		},
-		"trustedSubnetPrefix": {
+		"trustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.2.0/24",
 			"metadata": {
 				"description": "CIDR for Trusted Network"
 			}
 		},
-
-
 		"appGatewaySubnetName": {
 			"type": "string",
 			"defaultValue": "AppGWSubnet",
@@ -172,19 +170,19 @@
 				"description": "CIDR for App Gateway"
 			}
 		},
-		"appgwUntrustSubnetName":{
+		"appgwuntrustSubnetName":{
 			"type": "string",
 			"defaultValue": "appgwuntrust"
 		},
-		"appgwUntrustSubnetPrefix":{
+		"appgwuntrustSubnetPrefix":{
 			"type": "string",
 			"defaultValue": "10.0.9.0/24"
 		},
-		"appgwTrustSubnetName":{
+		"appgwtrustSubnetName":{
 			"type": "string",
 			"defaultValue": "appgtrust"
 		},
-		"appgwTrustSubnetPrefix":{
+		"appgwtrustSubnetPrefix":{
 			"type": "string",
 			"defaultValue": "10.0.10.0/24"
 		},
@@ -520,10 +518,10 @@
 						"value": "[parameters('virtualNetworkAddressPrefix')]"
 					},
 					"mgmtSubnetName": {
-						"value": "[parameters('MgmtSubnetName')]"
+						"value": "[parameters('mgmtSubnetName')]"
 					},
 					"untrustSubnetName": {
-						"value": "[parameters('untrustedSubnetName')]"
+						"value": "[parameters('untrustSubnetName')]"
 					},
 					"tcpuntrustSubnetName": {
 						"value": "[parameters('tcpuntrustSubnetName')]"
@@ -532,23 +530,37 @@
 						"value": "[parameters('tcptrustSubnetName')]"
 					},
 					"trustSubnetName": {
-						"value": "[parameters('trustedSubnetName')]"
+						"value": "[parameters('trustSubnetName')]"
+					},
+					"appgwuntrustSubnetName": {
+						"value": "[parameters('appgwUntrustSubnetName')]"
+					},
+					"appgwtrustSubnetName":{
+						"type": "string",
+						"defaultValue": "appgtrust"
 					},
 					"mgmtSubnetPrefix": {
 						"value": "[parameters('mgmtSubnetPrefix')]"
 					},
 					"untrustSubnetPrefix": {
-						"value": "[parameters('untrustedSubnetPrefix')]"
+						"value": "[parameters('untrustSubnetPrefix')]"
 					},
 					"trustSubnetPrefix": {
-						"value": "[parameters('trustedSubnetPrefix')]"
+						"value": "[parameters('trustSubnetPrefix')]"
 					},
 					"tcpuntrustSubnetPrefix": {
 						"value": "[parameters('tcpuntrustSubnetPrefix')]"
 					},
 					"tcptrustSubnetPrefix": {
 						"value": "[parameters('tcptrustSubnetPrefix')]"
+					},
+					"appgwtrustSubnetPrefix": {
+						"value": "[parameters('appgwtrustSubnetPrefix')]"
+					},
+					"appgwuntrustSubnetPrefix": {
+						"value": "[parameters('appgwtrustSubnetPrefix')]"
 					}
+
 				}
 			}
 		},
@@ -580,7 +592,7 @@
 						"value": "[parameters('virtualNetworkName')]"
 					},
 					"subnetName": {
-						"value": "[parameters('trustedSubnetName')]"
+						"value": "[parameters('trustSubnetName')]"
 					},
 					"loadBalancerName": {
 						"value": "[variables('egressloadBalancerName')]"
@@ -636,10 +648,10 @@
 						"value": "[parameters('mgmtSubnetName')]"
 					},
 					"trustSubnetName": {
-						"value": "[parameters('trustedSubnetName')]"
+						"value": "[parameters('trustSubnetName')]"
 					},
 					"untrustSubnetName": {
-						"value": "[parameters('untrustedSubnetName')]"
+						"value": "[parameters('untrustSubnetName')]"
 					},
 					"loadBalancerName": {
 						"value": "[parameters('loadBalancerName')]"
@@ -732,10 +744,10 @@
 						"value": "[parameters('mgmtSubnetName')]"
 					},
 					"untrustSubnetName": {
-						"value": "[parameters('trustedSubnetName')]"
+						"value": "[parameters('trustSubnetName')]"
 					},
 					"trustSubnetName": {
-						"value": "[parameters('trustedSubnetName')]"
+						"value": "[parameters('trustSubnetName')]"
 					}
 				}
 			}
