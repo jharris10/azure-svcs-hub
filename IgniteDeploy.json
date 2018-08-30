@@ -1,7 +1,6 @@
 {
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
-	"apiVersion": "2015-01-01",
 	"parameters": {
 		"Deployipfw": {
 			"type": "string",
@@ -192,7 +191,7 @@
 		},
 		"appgwtrustSubnetName": {
 			"type": "string",
-			"defaultValue": "appgtrust"
+			"defaultValue": "appgwtrust"
 		},
 		"appgwtrustSubnetPrefix": {
 			"type": "string",
@@ -393,6 +392,7 @@
 			}
 		},
 		{
+			"condition": "[equals(parameters('Deployappgwfw'), 'yes')]",
 			"name": "deployAgwFirewall",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
@@ -570,7 +570,7 @@
 						"value": "[parameters('appgwtrustSubnetPrefix')]"
 					},
 					"appgwuntrustSubnetPrefix": {
-						"value": "[parameters('appgwtrustSubnetPrefix')]"
+						"value": "[parameters('appgwuntrustSubnetPrefix')]"
 					}
 				}
 			}
