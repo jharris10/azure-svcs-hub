@@ -826,7 +826,7 @@
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
 			  "Microsoft.Resources/deployments/deployVnet",
-			  "Microsoft.Resources/deployments/SetupVMSeries"
+			  "Microsoft.Resources/deployments/deployAgwFirewall"
 			],
 			"properties": {
 			  "mode": "Incremental",
