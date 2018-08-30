@@ -820,6 +820,7 @@
 			}
 		},
 		{
+			"condition": "[equals(parameters('Deployappgwfw'), 'yes')]",
 			"name": "SetupwebLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
