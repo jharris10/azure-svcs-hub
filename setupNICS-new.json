@@ -11,10 +11,10 @@
     "mgtSubnetName": {
       "type": "string"
     },
-    "albUntrustName": {
+    "appgwUntrustSubnetName": {
       "type": "string"
     },
-    "albTntrustName": {
+    "appgwTrustSubnetName": {
       "type": "string"
     },
     "virtualNetworkName": {
@@ -33,8 +33,8 @@
   "variables": {
       "vnetID": "[resourceId(parameters('virtualNetworkExistingRGName'),concat('Microsoft.Network','/','virtualNetworks'),parameters('virtualNetworkName'))]",
       "mgtSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('mgtSubnetName'))]",
-      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('albUntrustName'))]",
-      "albTntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('albTntrustName'))]",
+      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appgwUntrustSubnetName'))]",
+      "albTntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appgwTrustSubnetName'))]",
       "mgmtpip": "[concat('mgmtIP-', parameters('MgmtPublicIPAddressName'))]",
       "setupUntrustNICURL": "[concat(parameters('baseUrl'),'/setupNICS-untrust.json')]"
   },
@@ -81,8 +81,8 @@
           "nicName": {
             "value": "[parameters('nicName')]"
           },
-          "albUntrustName": {
-            "value": "[parameters('albUntrustName')]"
+          "appgwUntrustSubnetName": {
+            "value": "[parameters('appgwUntrustSubnetName')]"
           },
           "virtualNetworkName": {
             "value": "[parameters('virtualNetworkName')]"

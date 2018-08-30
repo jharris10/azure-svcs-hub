@@ -70,14 +70,14 @@
         "description": "Subnet for Management"
       }
     },
-    "albUntrustName": {
+    "appgwUntrustSubnetName": {
       "type": "string",
       "defaultValue": "Untrust",
       "metadata": {
         "description": "Subnet for Untrust"
       }
     },
-    "albTntrustName": {
+    "appgwTrustSubnetName": {
       "type": "string",
       "defaultValue": "Trust",
       "metadata": {
@@ -98,7 +98,7 @@
         "description": "Mgmt subnet CIDR"
       }
     },
-    "albUntrustPrefix": {
+    "appgwUntrustSubnetPrefix": {
       "type": "string",
       "defaultValue": "192.168.1.0/24",
       "metadata": {
@@ -299,11 +299,11 @@
           "mgtSubnetName": {
             "value": "[parameters('mgtSubnetName')]"
           },
-          "albUntrustName": {
-            "value": "[parameters('albUntrustName')]"
+          "appgwUntrustSubnetName": {
+            "value": "[parameters('appgwUntrustSubnetName')]"
           },
-          "albTntrustName": {
-            "value": "[parameters('albTntrustName')]"
+          "appgwTrustSubnetName": {
+            "value": "[parameters('appgwTrustSubnetName')]"
           },
           "virtualNetworkName": {
             "value": "[parameters('virtualNetworkName')]"

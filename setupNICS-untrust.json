@@ -8,7 +8,7 @@
     "nicName": {
       "type": "string"
     },
-    "albUntrustName": {
+    "appgwUntrustSubnetName": {
       "type": "string"
     },
     "virtualNetworkName": {
@@ -20,7 +20,7 @@
   },
   "variables": {
       "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('albUntrustName'))]"
+      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appgwUntrustSubnetName'))]"
   },
   "resources": [
     {
