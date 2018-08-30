@@ -549,8 +549,7 @@
 						"value": "[parameters('appgwUntrustSubnetName')]"
 					},
 					"appgwtrustSubnetName":{
-						"type": "string",
-						"defaultValue": "appgtrust"
+						"value": "[parameters('appgwtrustSubnetName')]"
 					},
 					"mgmtSubnetPrefix": {
 						"value": "[parameters('mgmtSubnetPrefix')]"
