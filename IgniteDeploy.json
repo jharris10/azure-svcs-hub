@@ -24,6 +24,17 @@
 			  "description": "Deploy firewall for ip based traffic"
 			}
 		},
+		"Deployappgwfw": {
+			"type": "string",
+			"defaultValue": "no",
+			"allowedValues": [
+			  "no",
+			  "yes"
+			],
+			"metadata": {
+			  "description": "Deploy firewall for ip based traffic"
+			}
+		},
 		"storageName": {
 			"type": "string",
 			"metadata": {
@@ -357,6 +368,7 @@
 			}
 		},
 		{
+			"condition": "[equals(parameters('Deployappgwfw'), 'yes')]",
 			"name": "albfwdeployStorage",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
@@ -380,6 +392,7 @@
 			}
 		},
 		{
+			"condition": "[equals(parameters('Deployappgwfw'), 'yes')]",
 			"name": "deployAgwFirewall",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
