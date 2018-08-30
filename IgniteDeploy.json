@@ -332,7 +332,7 @@
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
 		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]",
 		"LoadBalancerType" : "layer-7",
-		"webLBURL" : "[concat(variables('baseUrl'),'/web-lb-', variables('LoadBalancerType'), '.json')]"
+		"webLBURL" : "[concat(variables('baseUrl'),'/public-lb-', variables('LoadBalancerType'), '.json')]"
 
 	},
 	"resources": [
