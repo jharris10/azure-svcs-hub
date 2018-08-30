@@ -1,38 +1,39 @@
 {
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
+	"apiVersion": "2015-01-01",
 	"parameters": {
 		"Deployipfw": {
 			"type": "string",
 			"defaultValue": "no",
 			"allowedValues": [
-			  "no",
-			  "yes"
+				"no",
+				"yes"
 			],
 			"metadata": {
-			  "description": "Deploy firewall for ip based traffic"
+				"description": "Deploy firewall for ip based traffic"
 			}
 		},
 		"Deployegressfw": {
 			"type": "string",
 			"defaultValue": "no",
 			"allowedValues": [
-			  "no",
-			  "yes"
+				"no",
+				"yes"
 			],
 			"metadata": {
-			  "description": "Deploy firewall for ip based traffic"
+				"description": "Deploy firewall for ip based traffic"
 			}
 		},
 		"Deployappgwfw": {
 			"type": "string",
 			"defaultValue": "no",
 			"allowedValues": [
-			  "no",
-			  "yes"
+				"no",
+				"yes"
 			],
 			"metadata": {
-			  "description": "Deploy firewall for ip based traffic"
+				"description": "Deploy firewall for ip based traffic"
 			}
 		},
 		"storageName": {
@@ -181,19 +182,19 @@
 				"description": "CIDR for App Gateway"
 			}
 		},
-		"appgwuntrustSubnetName":{
+		"appgwuntrustSubnetName": {
 			"type": "string",
 			"defaultValue": "appgwuntrust"
 		},
-		"appgwuntrustSubnetPrefix":{
+		"appgwuntrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.9.0/24"
 		},
-		"appgwtrustSubnetName":{
+		"appgwtrustSubnetName": {
 			"type": "string",
 			"defaultValue": "appgtrust"
 		},
-		"appgwtrustSubnetPrefix":{
+		"appgwtrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.10.0/24"
 		},
@@ -316,7 +317,7 @@
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
-		"appgwfwstor":"[concat(parameters('storageName'),'appgwfw')]"
+		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]"
 	},
 	"resources": [
 		{
@@ -546,7 +547,7 @@
 					"appgwuntrustSubnetName": {
 						"value": "[parameters('appgwUntrustSubnetName')]"
 					},
-					"appgwtrustSubnetName":{
+					"appgwtrustSubnetName": {
 						"value": "[parameters('appgwtrustSubnetName')]"
 					},
 					"mgmtSubnetPrefix": {
@@ -570,7 +571,6 @@
 					"appgwuntrustSubnetPrefix": {
 						"value": "[parameters('appgwtrustSubnetPrefix')]"
 					}
-
 				}
 			}
 		},
