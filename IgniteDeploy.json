@@ -10,7 +10,7 @@
 				"yes"
 			],
 			"metadata": {
-				"description": "Deploy firewall for ip based traffic"
+				"description": "Deploy firewall for ip based traffic "
 			}
 		},
 		"Deployegressfw": {
