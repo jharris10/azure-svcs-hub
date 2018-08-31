@@ -568,6 +568,9 @@
 					"appgwtrustSubnetName": {
 						"value": "[parameters('appgwtrustSubnetName')]"
 					},
+					"AppGWSubnetName":{
+						"value":"[parameters('appGatewaySubnetName')]"
+					},
 					"mgmtSubnetPrefix": {
 						"value": "[parameters('mgmtSubnetPrefix')]"
 					},
@@ -588,7 +591,10 @@
 					},
 					"appgwuntrustSubnetPrefix": {
 						"value": "[parameters('appgwuntrustSubnetPrefix')]"
-					}
+					},
+					"AppGWSubnetPrefix":{
+						"value":"[parameters('appGatewaySubnetName')]"
+					},
 				}
 			}
 		},

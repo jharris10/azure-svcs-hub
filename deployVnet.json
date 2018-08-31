@@ -62,6 +62,12 @@
 				"description": "Subnet for Appgw Trust"
 			}
 		},
+		"AppGWSubnetName":{
+			"type": "string",
+			"metadata": {
+				"description": "Subnet for Appgw "
+			}
+		},
 		"mgmtSubnetPrefix": {
 			"type": "string",
 			"metadata": {
@@ -104,6 +110,12 @@
 				"description": "Subnet for Untrusted Network"
 			}
 		},
+		"AppGWSubnetPrefix": {
+			"type": "string",
+			"metadata": {
+				"description": "Subnet mask of Appgw"
+			}
+		}
 	},
 	"variables": {
 		"location": "[resourceGroup().location]",
@@ -169,6 +181,15 @@
 				"name": "[parameters('appgwtrustSubnetName')]",
 				"properties": {
 					"addressPrefix": "[parameters('appgwtrustSubnetPrefix')]",
+					"networkSecurityGroup": {
+						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
+					}
+				}
+			},
+			{
+				"name": "[parameters('AppGWSubnetName')]",
+				"properties": {
+					"addressPrefix": "[parameters('AppGWSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}
