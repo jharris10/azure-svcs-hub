@@ -188,7 +188,7 @@
 				"description": "Subnet for App Gateway"
 			}
 		},
-		"appGatewaySubnetPrefix": {
+		"AppGWSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.11.0/24",
 			"metadata": {
@@ -466,7 +466,7 @@
 						"value": "[parameters('appgwTrustSubnetPrefix')]"
 					},
 					"subnetLBPrefix": {
-						"value": "[parameters('appGatewaySubnetPrefix')]"
+						"value": "[parameters('AppGWSubnetPrefix')]"
 					},
 					"adminUsername": {
 						"value": "[parameters('username')]"
@@ -593,7 +593,7 @@
 						"value": "[parameters('appgwuntrustSubnetPrefix')]"
 					},
 					"AppGWSubnetPrefix":{
-						"value":"[parameters('appGatewaySubnetPrefix')]"
+						"value":"[parameters('AppGWSubnetPrefix')]"
 					},
 				}
 			}
