@@ -593,7 +593,7 @@
 						"value": "[parameters('appgwuntrustSubnetPrefix')]"
 					},
 					"AppGWSubnetPrefix":{
-						"value":"[parameters('appGatewaySubnetName')]"
+						"value":"[parameters('appGatewaySubnetPrefix')]"
 					},
 				}
 			}
