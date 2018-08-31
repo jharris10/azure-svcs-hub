@@ -183,7 +183,7 @@
 		},
 		"appGatewaySubnetName": {
 			"type": "string",
-			"defaultValue": "AppGWSubnet",
+			"defaultValue": "AppGW-External-Subnet",
 			"metadata": {
 				"description": "Subnet for App Gateway"
 			}
