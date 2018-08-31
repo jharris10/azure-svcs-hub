@@ -838,7 +838,7 @@
 				"lbName": {
 					 "value": "[parameters('appGatewayName')]"
 				},
-				"webIPAddressName": {
+				"publicIPAddressName": {
 					 "value": "[parameters('appGatewayDnsName')]"
 				},
 				"vnetName": {
