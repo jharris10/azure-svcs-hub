@@ -56,13 +56,13 @@
 				"description": "Subnet for Appgw Untrust"
 			}
 		},
-		"appgwtrustSubnetName":{
+		"appgwtrustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Appgw Trust"
 			}
 		},
-		"AppGWSubnetName":{
+		"AppGWSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Appgw "
@@ -98,13 +98,13 @@
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
 		},
-		"appgwuntrustSubnetPrefix": {
+		"appgwtrustSubnetPrefix": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"appgwtrustSubnetPrefix": {
+		"appgwuntrustSubnetPrefix": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"

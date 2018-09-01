@@ -9,48 +9,48 @@
       }
     },
     "vmCount": {
-       "type": "int",
-       "defaultValue": 2,
-       "metadata": {
-           "description": "Number of VM-Series firewall"
-       }
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Number of VM-Series firewall"
+      }
     },
     "vmName": {
-       "type": "string",
-       "metadata": {
-          "description": "Name of VM-Series VM in the Azure portal"
-       },
-       "defaultValue": "VM-Series"
+      "type": "string",
+      "metadata": {
+        "description": "Name of VM-Series VM in the Azure portal"
+      },
+      "defaultValue": "VM-Series"
     },
     "vmSize": {
-       "type": "string",
-       "allowedValues": [
-          "Standard_D3",
-          "Standard_D4",
-          "Standard_D3_v2",
-          "Standard_D4_v2",
-          "Standard_D5_v2",
-          "Standard_D14_v2", 
-          "Standard_A4"
-       ],
-       "metadata": {
-          "description": "Azure VM size for VM-Series"
-       },
-       "defaultValue": "Standard_D3"
+      "type": "string",
+      "allowedValues": [
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D3_v2",
+        "Standard_D4_v2",
+        "Standard_D5_v2",
+        "Standard_D14_v2",
+        "Standard_A4"
+      ],
+      "metadata": {
+        "description": "Azure VM size for VM-Series"
+      },
+      "defaultValue": "Standard_D3"
     },
     "imageSku": {
-       "type": "string",
-       "allowedValues": [
-          "byol",
-          "bundle1",
-          "bundle2"
-       ],
-       "metadata": {
-          "description": "byol = Bring Your Own License; bundle1 = Bundle 1 PAYG (Hourly); bundle2 = Bundle 2 PAYG (Hourly)"
-       },
-       "defaultValue": "byol"
+      "type": "string",
+      "allowedValues": [
+        "byol",
+        "bundle1",
+        "bundle2"
+      ],
+      "metadata": {
+        "description": "byol = Bring Your Own License; bundle1 = Bundle 1 PAYG (Hourly); bundle2 = Bundle 2 PAYG (Hourly)"
+      },
+      "defaultValue": "byol"
     },
-    "virtualNetworkName": { 
+    "virtualNetworkName": {
       "type": "string",
       "metadata": {
         "description": "Name of the Virtual Network (VNET)"
@@ -153,16 +153,16 @@
         "description": "Name prefix of the new storage account created to store the VM's disks"
       }
     },
-    "storageAccountNewOrExisting" : {
-       "type": "string",
-       "defaultValue" : "new",
-       "allowedValues" : [
-          "new",
-          "existing"
-       ],
-       "metadata": {
-          "Description": "Storage Account is new or existing"
-       }
+    "storageAccountNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "Description": "Storage Account is new or existing"
+      }
     },
     "storageAccountType": {
       "type": "string",
@@ -179,7 +179,7 @@
     },
     "Bootstrap": {
       "type": "string",
-      "defaultValue" : "no",
+      "defaultValue": "no",
       "allowedValues": [
         "yes",
         "no"
@@ -190,66 +190,75 @@
     },
     "BootstrapUri": {
       "type": "string",
-      "defaultValue" : "",
+      "defaultValue": "",
       "metadata": {
         "description": "Bootstrap disk storage account URI with container name"
       }
     },
     "BootstrapUriSizeGB": {
       "type": "string",
-      "defaultValue" : "1",
+      "defaultValue": "1",
       "metadata": {
         "description": "Bootstrap disk disk in GB"
       }
     },
     "authenticationType": {
-            "type": "string",
-            "metadata": {
-                "description": "Type of administrator user authentication "
-            },
-            "allowedValues": [
-                "sshPublicKey",
-                "password"
-            ],
-            "defaultValue": "password"
+      "type": "string",
+      "metadata": {
+        "description": "Type of administrator user authentication "
+      },
+      "allowedValues": [
+        "sshPublicKey",
+        "password"
+      ],
+      "defaultValue": "password"
     },
     "sshKey": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "SSH rsa public key file as a string."
-            }
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SSH rsa public key file as a string."
+      }
     }
   },
   "variables": {
     "availabilitySetName": "[concat('firewallAvSet', substring(uniqueString(resourceGroup().id), 0, 4))]",
     "rgname": "[resourceGroup().id]",
     "imagePublisher": "paloaltonetworks",
-    "imageOffer" : "vmseries1",
-    "version" : "latest",
+    "imageOffer": "vmseries1",
+    "version": "latest",
     "nicName": "[parameters('vmName')]",
     "publicIPAddressType": "Dynamic",
-    "nsgSetupURL" : "[concat(parameters('baseUrl'),'/nsg-new.json')]",
+    "nsgSetupURL": "[concat(parameters('baseUrl'),'/nsg-new.json')]",
     "SettingUpPublicIPUrl": "[concat(parameters('baseUrl'),'/publicip-new.json')]",
     "setupNICsURL": "[concat(parameters('baseUrl'),'/setupNICS-new.json')]",
     "vmTemplateUrl": "[concat(parameters('baseUrl'), '/virtual-machine-', parameters('authenticationType'),'-bs-', parameters('Bootstrap'), '.json')]",
     "location": "[resourceGroup().location]"
-
   },
   "resources": [
     {
-      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
-      "location": "[resourceGroup().location]"
+      "apiVersion": "2017-03-30",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "properties": {
+        "platformUpdateDomainCount": 2,
+        "platformFaultDomainCount": 2
+      },
+      "sku": {
+        "name": "Aligned"
+      },
+      "resources": [],
+      "dependsOn": []
     },
     {
       "name": "[concat('SettingUpPublicIPs', copyindex())]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "copy": {
-          "name": "SettingUpPublicIPsLoop",
-          "count": "[parameters('vmCount')]"
+        "name": "SettingUpPublicIPsLoop",
+        "count": "[parameters('vmCount')]"
       },
       "properties": {
         "mode": "Incremental",
@@ -281,8 +290,8 @@
         "SettingUpPublicIPsLoop"
       ],
       "copy": {
-          "name": "NetworkInterfaceLoop",
-          "count": "[parameters('vmCount')]"
+        "name": "NetworkInterfaceLoop",
+        "count": "[parameters('vmCount')]"
       },
       "properties": {
         "mode": "Incremental",
@@ -331,8 +340,8 @@
         "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]"
       ],
       "copy": {
-          "name": "VirtualMachineLoop",
-          "count": "[parameters('vmCount')]"
+        "name": "VirtualMachineLoop",
+        "count": "[parameters('vmCount')]"
       },
       "properties": {
         "mode": "Incremental",
