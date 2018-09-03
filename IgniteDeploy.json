@@ -2,8 +2,6 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-
-		
 		"DeployAppGwFirewall": {
 			"type": "string",
 			"defaultValue": "no",
@@ -29,7 +27,6 @@
 			},
 			"defaultValue": "demowebserver"
 		},
-
 		"DeployAppGwFirewall": {
 			"type": "string",
 			"defaultValue": "no",
@@ -90,7 +87,6 @@
 			},
 			"defaultValue": "lbstor"
 		},
-
 		"virtualNetworkName": {
 			"type": "string",
 			"defaultValue": "hub-vnet",
@@ -204,8 +200,6 @@
 				"description": "CIDR for IP Firewall Trust Network"
 			}
 		},
-
-
 		"mgmtPublicIPName": {
 			"type": "string",
 			"metadata": {
@@ -256,10 +250,10 @@
 		"firewallVmSize": {
 			"type": "string",
 			"allowedValues": [
-                "Standard_DS3_v2",
-                "Standard_DS4_v2",
-		"Standard_DS5_v2"
-            ],
+				"Standard_DS3_v2",
+				"Standard_DS4_v2",
+				"Standard_DS5_v2"
+			],
 			"metadata": {
 				"description": "Azure VM size for VM-Series"
 			},
@@ -367,56 +361,6 @@
 		"webLBURL": "[concat(variables('baseUrl'),'/public-lb-', variables('LoadBalancerType'), '.json')]"
 	},
 	"resources": [
-		{
-			"condition": "[equals(parameters('Deployegressfw'), 'yes')]",
-			"name": "EgressFwDeployStorage",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployStorageURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"storageType": {
-						"value": "[parameters('storageType')]"
-					},
-					"storageName": {
-						"value": "[variables('egressfwstor')]"
-					}
-				}
-			}
-		},
-		{
-			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
-			"name": "IPFwDeployStorage",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployStorageURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"storageType": {
-						"value": "[parameters('storageType')]"
-					},
-					"storageName": {
-						"value": "[variables('ipfwstor')]"
-					}
-				}
-			}
-		},
-		
-
 		{
 			"name": "deployNsg",
 			"type": "Microsoft.Resources/deployments",
@@ -532,7 +476,6 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					
 					"location": {
 						"value": "[variables('location')]"
 					},
@@ -560,7 +503,7 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
-				"Microsoft.Resources/deployments/EgressFwDeployStorage",
+				
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/DeployEgressLoadBalancer"
 			],
@@ -637,7 +580,6 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
-				"Microsoft.Resources/deployments/IPFwDeployStorage",
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"
 			],
