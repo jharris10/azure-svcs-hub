@@ -336,7 +336,7 @@
 		"deployVnetURL": "[concat(variables('baseUrl'),'/deployVnet.json')]",
 		"deployFirewallURL": "[concat(variables('baseUrl'),'/deployFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/deployInboundFirewall.json')]",
-		"deployLoadBalancerURL": "[concat(variables('baseUrl'),'/deployLoadBalancer.json')]",
+		"deployLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancerl.json')]",
 		"location": "[resourceGroup().location]",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
@@ -511,9 +511,7 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"loadBalancerSku": {
-						"value": "[variables('egressLoadBalancerSku')]"
-					},
+					
 					"location": {
 						"value": "[variables('location')]"
 					},
