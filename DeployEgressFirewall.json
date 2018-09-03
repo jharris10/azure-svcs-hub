@@ -335,12 +335,7 @@
 							"privateIPAllocationMethod": "Dynamic",
 							"subnet": {
 								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('trustSubnetName'))]"
-							},
-							"loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters ('loadBalancerName')), '/backendAddressPools/BackendPool')]"
-                                }
-							]
+							}
 						}	
 					}
 				]
