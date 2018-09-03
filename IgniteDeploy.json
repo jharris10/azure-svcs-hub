@@ -4,6 +4,17 @@
 	"parameters": {
 
 		
+		"DeployAppGwFirewall": {
+			"type": "string",
+			"defaultValue": "no",
+			"allowedValues": [
+				"no",
+				"yes"
+			],
+			"metadata": {
+				"description": "Deploy firewalls to secure HTTP traffic"
+			}
+		},
 		"appGatewayName": {
 			"type": "string",
 			"metadata": {
@@ -34,7 +45,7 @@
 			"type": "string",
 			"defaultValue": "AppGW-External-Subnet",
 			"metadata": {
-				"description": "Subnet for App Gateway"
+				"description": "Subnet that the Application Gateway will reside in"
 			}
 		},
 		"AppGWSubnetPrefix": {
@@ -46,19 +57,31 @@
 		},
 		"appgwuntrustSubnetName": {
 			"type": "string",
-			"defaultValue": "appgwuntrust"
+			"defaultValue": "appgwuntrust",
+			"metadata": {
+				"description": "Untrust subnet for Application Gateway Firewalls"
+			}
 		},
 		"appgwuntrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "10.0.9.0/24"
+			"defaultValue": "10.0.9.0/24",
+			"metadata": {
+				"description": "Untrust Subnet Prefix for Application Gateway Firewalls"
+			}
 		},
 		"appgwtrustSubnetName": {
 			"type": "string",
-			"defaultValue": "appgwtrust"
+			"defaultValue": "appgwtrust",
+			"metadata": {
+				"description": "Trust subnet for Application Gateway Firewalls"
+			}
 		},
 		"appgwtrustSubnetPrefix": {
 			"type": "string",
-			"defaultValue": "10.0.10.0/24"
+			"defaultValue": "10.0.10.0/24",
+			"metadata": {
+				"description": "Trust Subnet Prefix for Application Gateway Firewalls"
+			}
 		},
 		"storageName": {
 			"type": "string",
@@ -67,47 +90,7 @@
 			},
 			"defaultValue": "lbstor"
 		},
-		"mgmtPublicIPDns": {
-			"type": "string",
-			"metadata": {
-				"description": "DNS Name prefix of public IP resource for Management interface of VM-Series firewall.  Name must be globally unique."
-			},
-			"defaultValue": "fwpubip"
-		},
-		"networkSecurityGroupName": {
-			"type": "string",
-			"defaultValue": "nsg",
-			"metadata": {
-				"description": "Network Security Group Name"
-			}
-		},
-		"networkSecurityGroupInboundIP": {
-			"type": "string",
-			"metadata": {
-				"description": "Your source public IP address. Added to the inbound NSG on eth0 (MGMT), to restrict access to the deployment."
-			},
-			"defaultValue": "0.0.0.0/0"
-		},
-		"avSetName": {
-			"type": "string",
-			"metadata": {
-				"description": "Firewall Availability set prefix"
-			},
-			"defaultValue": "egress-avset"
-		},
-		"storageType": {
-			"type": "string",
-			"allowedValues": [
-				"Standard_LRS",
-				"Standard_GRS",
-				"Premium_LRS",
-				"Standard_RAGRS"
-			],
-			"metadata": {
-				"description": "Type of the storage account created"
-			},
-			"defaultValue": "Standard_LRS"
-		},
+
 		"virtualNetworkName": {
 			"type": "string",
 			"defaultValue": "hub-vnet",
@@ -151,14 +134,28 @@
 			"type": "string",
 			"defaultValue": "Egress-Untrust",
 			"metadata": {
-				"description": "Subnet for Untrusted Network"
+				"description": "Subnet for Egress firewall Untrust Network"
 			}
 		},
 		"untrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.1.0/24",
 			"metadata": {
-				"description": "CIDR for Untrusted Network"
+				"description": "CIDR for Egress firewall Untrust Network"
+			}
+		},
+		"trustSubnetName": {
+			"type": "string",
+			"defaultValue": "Egress-Trust",
+			"metadata": {
+				"description": "Subnet for Egress firewall Trust Network"
+			}
+		},
+		"trustSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "10.0.2.0/24",
+			"metadata": {
+				"description": "Subnet for Egress firewall Trust Network"
 			}
 		},
 		"Deployipfw": {
@@ -169,13 +166,13 @@
 				"yes"
 			],
 			"metadata": {
-				"description": "Deploy firewall for ip based traffic "
+				"description": "Deploy firewall to secure non HTTP connections"
 			}
 		},
 		"tcpinboundloadBalancerIP": {
 			"type": "string",
 			"metadata": {
-				"description": "IP Address for the non http load balancer"
+				"description": "IP Address for the IP (non HTTP) load balancer"
 			},
 			"defaultValue": "10.0.3.100"
 		},
@@ -183,14 +180,14 @@
 			"type": "string",
 			"defaultValue": "tcpinbound-Untrust",
 			"metadata": {
-				"description": "Subnet for Untrusted Network"
+				"description": "Subnet for IP Firewall Untrust Network"
 			}
 		},
 		"tcpuntrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.3.0/24",
 			"metadata": {
-				"description": "CIDR for TCPInbound Untrust Network"
+				"description": "CIDR for IP Firewall Untrust Network"
 			}
 		},
 		"tcptrustSubnetName": {
@@ -204,23 +201,10 @@
 			"type": "string",
 			"defaultValue": "10.0.6.0/24",
 			"metadata": {
-				"description": "CIDR fvirtualNetworkAddressPrefixor TCPInbound Untrust Network"
+				"description": "CIDR for IP Firewall Trust Network"
 			}
 		},
-		"trustSubnetName": {
-			"type": "string",
-			"defaultValue": "Egress-Trust",
-			"metadata": {
-				"description": "Subnet for Trusted Network"
-			}
-		},
-		"trustSubnetPrefix": {
-			"type": "string",
-			"defaultValue": "10.0.2.0/24",
-			"metadata": {
-				"description": "CIDR for Trusted Network"
-			}
-		},
+
 
 		"mgmtPublicIPName": {
 			"type": "string",
@@ -312,6 +296,47 @@
 			"metadata": {
 				"description": "SSH RSA public key file as a string. Must be specified if Authentication Type is 'sshPublicKey'."
 			}
+		},
+		"mgmtPublicIPDns": {
+			"type": "string",
+			"metadata": {
+				"description": "DNS Name prefix of public IP resource for Management interface of VM-Series firewall.  Name must be globally unique."
+			},
+			"defaultValue": "fwpubip"
+		},
+		"networkSecurityGroupName": {
+			"type": "string",
+			"defaultValue": "nsg",
+			"metadata": {
+				"description": "Network Security Group Name"
+			}
+		},
+		"networkSecurityGroupInboundIP": {
+			"type": "string",
+			"metadata": {
+				"description": "Your source public IP address. Added to the inbound NSG on eth0 (MGMT), to restrict access to the deployment."
+			},
+			"defaultValue": "0.0.0.0/0"
+		},
+		"avSetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Firewall Availability set prefix"
+			},
+			"defaultValue": "egress-avset"
+		},
+		"storageType": {
+			"type": "string",
+			"allowedValues": [
+				"Standard_LRS",
+				"Standard_GRS",
+				"Premium_LRS",
+				"Standard_RAGRS"
+			],
+			"metadata": {
+				"description": "Type of the storage account created"
+			},
+			"defaultValue": "Standard_LRS"
 		}
 	},
 	"variables": {
@@ -612,7 +637,6 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
-				"Microsoft.Resources/deployments/deployOutboundFirewall",
 				"Microsoft.Resources/deployments/IPFwDeployStorage",
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"

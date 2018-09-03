@@ -132,7 +132,7 @@
 			"metadata": {
 				"description": "Prefix for loadbalancer Names"
 			},
-			"defaultValue": "egress-lb"
+			"defaultValue": "DemoLoadBalancer"
 		},
 		"loadBalancerIP": {
 			"type": "string",
@@ -144,7 +144,7 @@
 		"tcpinboundloadBalancerIP": {
 			"type": "string",
 			"metadata": {
-				"description": "IP Address for the outbound load balancer resource in the Trust network."
+				"description": "IP Address for the TCP load balancer resource in the Untrust network."
 			},
 			"defaultValue": "10.0.3.100"
         },
