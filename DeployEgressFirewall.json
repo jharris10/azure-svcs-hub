@@ -5,11 +5,10 @@
 		"loadBalancerSku": {
 			"type": "string",
 			"allowedValues": [
-				"Standard",
-				"Basic"
+				"Standard"
 			],
 			"metadata": {
-				"description": "Standard or Basic"
+				"description": "Only Use standard lb"
 			},
 			"defaultValue": "Standard"
 		},
@@ -227,7 +226,7 @@
 				"count": "[parameters('vmCount')]"
 			},
 			"properties": {
-				"publicIPAllocationMethod": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 'Static', 'Dynamic')]",
+				"publicIPAllocationMethod": "Static",
 				"dnsSettings": {
 					"domainNameLabel":  "[concat(parameters('mgmtPublicIPDns'), copyindex())]"
 				}
@@ -270,7 +269,7 @@
 			"type": "Microsoft.Network/publicIPAddresses",
 			"name": "[concat(parameters('untrustSubnetName'), '-pip-', copyindex())]",
 			"sku": {
-				"name": "[parameters('loadBalancerSku')]"
+				"name": "Standard"
 			},
 			"location": "[parameters('location')]",
 			"copy": {
@@ -278,7 +277,7 @@
 				"count": "[parameters('vmCount')]"
 			},
 			"properties": {
-				"publicIPAllocationMethod": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 'Static', 'Dynamic')]"
+				"publicIPAllocationMethod": "Static"
 			}
 		},
 

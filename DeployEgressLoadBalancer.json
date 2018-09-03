@@ -5,11 +5,10 @@
 		"loadBalancerSku": {
 			"type": "string",
 			"allowedValues": [
-				"Standard",
-				"Basic"
+				"Standard"
 			],
 			"metadata": {
-				"description": "Standard or Basic"
+				"description": "Standard"
 			},
 			"defaultValue": "Standard"
 		},
@@ -40,7 +39,7 @@
 		"loadBalancerName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the inbound load balancer"
+				"description": "Name of the Egress load balancer"
 			}
 		},
 		"loadBalancerIP": {
