@@ -184,7 +184,7 @@
 
 	
 		{
-			"name": "[concat(parameters('virtualMachineName'), copyindex(), 'tcp-nic0')]",
+			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic0')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[parameters('location')]",
 			"apiVersion": "2015-06-15",
@@ -209,7 +209,7 @@
 
 		{
 			
-			"name": "[concat(parameters('virtualMachineName'), copyindex(), 'tcp-nic1')]",
+			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[parameters('location')]",
 			"apiVersion": "2015-06-15",
@@ -240,7 +240,7 @@
 		
 
 		{
-			"name": "[concat(parameters('virtualMachineName'), copyindex(), 'tcp-nic2')]",
+			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic2')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[parameters('location')]",
 			"apiVersion": "2015-06-15",
