@@ -182,13 +182,7 @@
 
 	"resources": [
 
-		{ 
-			"condition": "[equals(parameters('loadBalancerSku'), 'Basic')]", 
-			"apiVersion": "2015-05-01-preview",
-			"type": "Microsoft.Compute/availabilitySets",
-			"name": "[parameters('avSetName')]",
-			"location": "[parameters('location')]"
-		},
+	
 		{
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic0')]",
 			"type": "Microsoft.Network/networkInterfaces",
@@ -214,7 +208,7 @@
 		},
 
 		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
+			
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[parameters('location')]",
@@ -243,31 +237,7 @@
 				]
 			}
 		},
-		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Basic')]", 
-			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1-basic')]",
-			"type": "Microsoft.Network/networkInterfaces",
-			"location": "[parameters('location')]",
-			"apiVersion": "2015-06-15",
-			"copy": {
-				"name": "nicLoop",
-				"count": "[parameters('vmCount')]"
-			},			
-			"properties": {
-				"enableIPForwarding": true,
-				"ipConfigurations": [
-					{
-						"name": "ipconfig-untrust",
-						"properties": {
-							"privateIPAllocationMethod": "Dynamic",
-							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('untrustSubnetName'))]"
-							}
-						}
-					}
-				]
-			}
-		},
+		
 
 		{
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic2')]",
@@ -295,80 +265,10 @@
 		},
 
 
-		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Basic')]", 
-			"name": "[concat(parameters('virtualMachineName'), '-basic-', copyindex())]",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
-			"dependsOn": [
-				"[concat('Microsoft.Compute/availabilitySets/', parameters('avSetName'))]",
-				"[concat('Microsoft.Network/networkInterfaces/', parameters('virtualMachineName'), copyindex(), '-nic0')]",
-				"[concat('Microsoft.Network/networkInterfaces/', parameters('virtualMachineName'), copyindex(), '-nic1-basic')]",
-				"[concat('Microsoft.Network/networkInterfaces/', parameters('virtualMachineName'), copyindex(), '-nic2')]"
-			],
-			"copy": {
-				"name": "vmLoop",
-				"count": "[parameters('vmCount')]"
-			},
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployVmURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"loadBalancerSku": {
-						"value": "[parameters('loadBalancerSku')]",
-						"defaultValue" : "Standard"
-					},
-					"location": {
-						"value": "[parameters('location')]"
-					},
-					"avSetName": {
-						"value": "[parameters('avSetName')]"
-					},
-					"virtualMachineName": {
-						"value": "[concat(parameters('virtualMachineName'), copyindex())]"
-					},
-					"imageSku": {
-						"value": "[parameters('imageSku')]"
-					},
-					"imageOffer": {
-						"value": "[variables('imageOffer')]"
-					},
-					"imagePublisher": {
-						"value": "[variables('imagePublisher')]"
-					},
-					"nicName": {
-						"value": "[concat(parameters('virtualMachineName'), copyindex())]"
-					},
-					"vmSize": {
-						"value": "[parameters('vmSize')]"
-					},
-					"adminUsername": {
-						"value": "[parameters('adminUsername')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('adminPassword')]"
-					},
-					"storageName": {
-						"value": "[parameters('storageName')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshKey')]"
-					},
-					"bootstrapUri": {
-						"value": "[parameters('BootstrapUri')]"
-					},
-					"bootstrapUriSizeGB": {
-						"value": "[parameters('BootstrapUriSizeGB')]"
-					}
-				}
-			}
-		},
+		
 
 		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
+			
 			"name": "[concat(parameters('virtualMachineName'), '-std-', copyindex())]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",

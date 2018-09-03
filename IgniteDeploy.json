@@ -634,10 +634,10 @@
 						"value": "[parameters('mgmtSubnetName')]"
 					},
 					"untrustSubnetName": {
-						"value": "[parameters('untrustSubnetName')]"
+						"value": "[parameters('tcpuntrustSubnetName')]"
 					},
 					"trustSubnetName": {
-						"value": "[parameters('trustSubnetName')]"
+						"value": "[parameters('tcptrustSubnetName')]"
 					},
 					"loadBalancerName": {
 						"value": "[variables('tcpinboundloadBalancerName')]"
