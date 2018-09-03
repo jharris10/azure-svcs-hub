@@ -587,7 +587,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployFirewallURL')]",
+					"uri": "[variables('deployInboundFirewallURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
