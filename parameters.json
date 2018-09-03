@@ -59,7 +59,7 @@
             "value": "byol"
         },
         "firewallVmSize": {
-            "value": "Standard_D3_v2"
+            "value": "Standard_DS3_v2"
         },
         "authenticationType": {
             "value": "password"
