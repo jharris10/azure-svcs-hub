@@ -254,7 +254,7 @@
 		},
 
 		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
+			
 			"apiVersion": "2017-08-01",
 			"type": "Microsoft.Network/publicIPAddresses",
 			"name": "[concat(parameters('untrustSubnetName'), '-pip-', copyindex())]",
@@ -273,7 +273,7 @@
 
 
 		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
+			
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"dependsOn": [
@@ -336,7 +336,7 @@
 
 
 		{
-			"condition": "[equals(parameters('loadBalancerSku'), 'Standard')]", 
+			 
 			"name": "[concat(parameters('virtualMachineName'), '-std-', copyindex())]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",

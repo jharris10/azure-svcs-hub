@@ -333,10 +333,10 @@
 		"vmseriesURL": "[concat(variables('baseUrl'),'/vmseries.json')]",
 		"deployStorageURL": "[concat(variables('baseUrl'),'/deployStorage.json')]",
 		"deployNsgURL": "[concat(variables('baseUrl'),'/deployNsg.json')]",
-		"deployVnetURL": "[concat(variables('baseUrl'),'/deployVnet.json')]",
+		"deployVnetURL": "[concat(variables('baseUrl'),'/DeployVnet.json')]",
 		"deployFirewallURL": "[concat(variables('baseUrl'),'/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/deployInboundFirewall.json')]",
-		"deployLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancerl.json')]",
+		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
 		"location": "[resourceGroup().location]",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
@@ -348,7 +348,7 @@
 	"resources": [
 		{
 			"condition": "[equals(parameters('Deployegressfw'), 'yes')]",
-			"name": "egressfwdeployStorage",
+			"name": "EgressFwDeployStorage",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"properties": {
@@ -372,7 +372,7 @@
 		},
 		{
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
-			"name": "ipfwdeployStorage",
+			"name": "IPFwDeployStorage",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"properties": {
@@ -423,7 +423,7 @@
 			}
 		},
 		{
-			"name": "deployVnet",
+			"name": "DeployVnet",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
@@ -498,7 +498,7 @@
 		},
 		{
 			"condition": "[equals(parameters('Deployegressfw'), 'yes')]",
-			"name": "deployOutboundLoadBalancer",
+			"name": "DeployEgressLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
@@ -507,7 +507,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployLoadBalancerURL')]",
+					"uri": "[variables('deployEgressLoadBalancerURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -539,9 +539,9 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
-				"Microsoft.Resources/deployments/egressfwdeployStorage",
+				"Microsoft.Resources/deployments/EgressFwDeployStorage",
 				"Microsoft.Resources/deployments/deployVNet",
-				"Microsoft.Resources/deployments/deployOutboundLoadBalancer"
+				"Microsoft.Resources/deployments/DeployEgressLoadBalancer"
 			],
 			"properties": {
 				"mode": "Incremental",
@@ -617,7 +617,7 @@
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployOutboundFirewall",
-				"Microsoft.Resources/deployments/ipfwdeployStorage",
+				"Microsoft.Resources/deployments/IPFwDeployStorage",
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/deploytcpinboundLoadBalancer"
 			],
@@ -693,7 +693,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployLoadBalancerURL')]",
+					"uri": "[variables('deployEgressLoadBalancerURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -751,7 +751,7 @@
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
-				"Microsoft.Resources/deployments/deployVnet"
+				"Microsoft.Resources/deployments/DeployVnet"
 			],
 			"properties": {
 				"mode": "Incremental",
@@ -776,7 +776,7 @@
 						"value": "[parameters('firewallVmSize')]"
 					},
 					"virtualNetworkName": {
-						"value": "[reference('deployVnet').outputs.vnetName.value]"
+						"value": "[reference('DeployVnet').outputs.vnetName.value]"
 					},
 					"virtualNetworkExistingRGName": {
 						"value": "[variables('rgname')]"
