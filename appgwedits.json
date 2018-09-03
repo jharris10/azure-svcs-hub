@@ -2,7 +2,17 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-
+		"Deployipfw": {
+			"type": "string",
+			"defaultValue": "no",
+			"allowedValues": [
+				"no",
+				"yes"
+			],
+			"metadata": {
+				"description": "Deploy firewall for ip based traffic "
+			}
+		},
 		
 		"appGatewayName": {
 			"type": "string",
@@ -18,8 +28,7 @@
 			},
 			"defaultValue": "demowebserver"
 		},
-
-		"DeployAppGwFirewall": {
+		"Deployegressfw": {
 			"type": "string",
 			"defaultValue": "no",
 			"allowedValues": [
@@ -30,35 +39,16 @@
 				"description": "Deploy firewall for ip based traffic"
 			}
 		},
-		"appGatewaySubnetName": {
+		"DeployAppGwFirewall": {
 			"type": "string",
-			"defaultValue": "AppGW-External-Subnet",
+			"defaultValue": "no",
+			"allowedValues": [
+				"no",
+				"yes"
+			],
 			"metadata": {
-				"description": "Subnet for App Gateway"
+				"description": "Deploy firewall for ip based traffic"
 			}
-		},
-		"AppGWSubnetPrefix": {
-			"type": "string",
-			"defaultValue": "10.0.11.0/24",
-			"metadata": {
-				"description": "CIDR for App Gateway"
-			}
-		},
-		"appgwuntrustSubnetName": {
-			"type": "string",
-			"defaultValue": "appgwuntrust"
-		},
-		"appgwuntrustSubnetPrefix": {
-			"type": "string",
-			"defaultValue": "10.0.9.0/24"
-		},
-		"appgwtrustSubnetName": {
-			"type": "string",
-			"defaultValue": "appgwtrust"
-		},
-		"appgwtrustSubnetPrefix": {
-			"type": "string",
-			"defaultValue": "10.0.10.0/24"
 		},
 		"storageName": {
 			"type": "string",
@@ -136,17 +126,6 @@
 				"description": "CIDR for Management Network"
 			}
 		},
-		"Deployegressfw": {
-			"type": "string",
-			"defaultValue": "no",
-			"allowedValues": [
-				"no",
-				"yes"
-			],
-			"metadata": {
-				"description": "Deploy firewall for ip based traffic"
-			}
-		},
 		"untrustSubnetName": {
 			"type": "string",
 			"defaultValue": "Egress-Untrust",
@@ -160,24 +139,6 @@
 			"metadata": {
 				"description": "CIDR for Untrusted Network"
 			}
-		},
-		"Deployipfw": {
-			"type": "string",
-			"defaultValue": "no",
-			"allowedValues": [
-				"no",
-				"yes"
-			],
-			"metadata": {
-				"description": "Deploy firewall for ip based traffic "
-			}
-		},
-		"tcpinboundloadBalancerIP": {
-			"type": "string",
-			"metadata": {
-				"description": "IP Address for the non http load balancer"
-			},
-			"defaultValue": "10.0.3.100"
 		},
 		"tcpuntrustSubnetName": {
 			"type": "string",
@@ -221,7 +182,36 @@
 				"description": "CIDR for Trusted Network"
 			}
 		},
-
+		"appGatewaySubnetName": {
+			"type": "string",
+			"defaultValue": "AppGW-External-Subnet",
+			"metadata": {
+				"description": "Subnet for App Gateway"
+			}
+		},
+		"AppGWSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "10.0.11.0/24",
+			"metadata": {
+				"description": "CIDR for App Gateway"
+			}
+		},
+		"appgwuntrustSubnetName": {
+			"type": "string",
+			"defaultValue": "appgwuntrust"
+		},
+		"appgwuntrustSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "10.0.9.0/24"
+		},
+		"appgwtrustSubnetName": {
+			"type": "string",
+			"defaultValue": "appgwtrust"
+		},
+		"appgwtrustSubnetPrefix": {
+			"type": "string",
+			"defaultValue": "10.0.10.0/24"
+		},
 		"mgmtPublicIPName": {
 			"type": "string",
 			"metadata": {
@@ -331,10 +321,10 @@
 		"tcpinboundLoadBalancerSku": "Standard",
 		"baseUrl": "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
 		"vmseriesURL": "[concat(variables('baseUrl'),'/vmseries.json')]",
-		"deployStorageURL": "[concat(variables('baseUrl'),'/DeployStorage.json')]",
-		"deployNsgURL": "[concat(variables('baseUrl'),'/DeployNsg.json')]",
+		"deployStorageURL": "[concat(variables('baseUrl'),'/deployStorage.json')]",
+		"deployNsgURL": "[concat(variables('baseUrl'),'/deployNsg.json')]",
 		"deployVnetURL": "[concat(variables('baseUrl'),'/DeployVnet.json')]",
-		"deployFirewallURL": "[concat(variables('baseUrl'),'/DeployEgressFirewall.json')]",
+		"deployFirewallURL": "[concat(variables('baseUrl'),'/deployFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/deployInboundFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
 		"location": "[resourceGroup().location]",
@@ -394,7 +384,30 @@
 				}
 			}
 		},
-		
+		{
+			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
+			"name": "albfwdeployStorage",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployStorageURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"storageType": {
+						"value": "[parameters('storageType')]"
+					},
+					"storageName": {
+						"value": "[variables('appgwfwstor')]"
+					}
+				}
+			}
+		},
 
 		{
 			"name": "deployNsg",
@@ -511,7 +524,9 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					
+					"loadBalancerSku": {
+						"value": "[variables('egressLoadBalancerSku')]"
+					},
 					"location": {
 						"value": "[variables('location')]"
 					},
@@ -723,24 +738,34 @@
 		},
 		{
 			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
-			"name": "albfwdeployStorage",
+			"name": "deployAppGwLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/DeployVnet",
+				"Microsoft.Resources/deployments/deployAppGwFirewall"
+			],
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployStorageURL')]",
+					"uri": "[variables('webLBURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
+					"lbName": {
+						"value": "[parameters('appGatewayName')]"
 					},
-					"storageType": {
-						"value": "[parameters('storageType')]"
+					"publicIPAddressName": {
+						"value": "[parameters('appGatewayDnsName')]"
 					},
-					"storageName": {
-						"value": "[variables('appgwfwstor')]"
+					"vnetName": {
+						"value": "[reference('DeployVnet').outputs.vnetName.value]"
+					},
+					"subnetName": {
+						"value": "[parameters('appGatewaySubnetName')]"
+					},
+					"backendIPAddresses": {
+						"value": "[reference('deployAppGwFirewall').outputs.UntrustPrivateIPAddresses.value]"
 					}
 				}
 			}
@@ -835,6 +860,7 @@
 				}
 			}
 		}
+
 	],
 	"outputs": {}
 }

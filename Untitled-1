@@ -1,0 +1,11 @@
+{
+  "error": {
+    "code": "InvalidTemplate",
+    "message": "Deployment template validation failed: 'The template parameters 
+    
+    'appgwUntrustSubnetName, appgwTrustSubnetName, appgwUntrustSubnetPrefix, appgwTrustSubnetPrefix' in the parameters file are not valid; they are not present in the original template and can therefore not be provided at deployment time. The only supported parameters for this template are 
+    
+    
+    'lbName, vmCount, vmName, vmSize, imageSku, virtualNetworkName, virtualNetworkExistingRGName, mgtSubnetName, appgwUntrustSubnetName, appgwTrustSubnetName, subnetLBName, mgtSubnetPrefix, appgwUntrustSubnetPrefix, appgwTrustSubnetPrefix, subnetLBPrefix, adminUsername, adminPassword, baseUrl, MgmtPublicIPAddressName, storageAccountName, storageAccountNewOrExisting, storageAccountType, Bootstrap, BootstrapUri, BootstrapUriSizeGB, authenticationType, sshKey'. Please see https://aka.ms/arm-deploy/#parameter-file for usage details.'."
+  }
+}

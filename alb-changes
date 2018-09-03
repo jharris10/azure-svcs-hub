@@ -1,0 +1,35 @@
+,
+		{
+			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
+			"name": "deployAppGwLoadBalancer",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/DeployVnet",
+				"Microsoft.Resources/deployments/deployAppGwFirewall"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('webLBURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"lbName": {
+						"value": "[parameters('appGatewayName')]"
+					},
+					"publicIPAddressName": {
+						"value": "[parameters('appGatewayDnsName')]"
+					},
+					"vnetName": {
+						"value": "[reference('DeployVnet').outputs.vnetName.value]"
+					},
+					"subnetName": {
+						"value": "[parameters('appGatewaySubnetName')]"
+					},
+					"backendIPAddresses": {
+						"value": "[reference('deployAppGwFirewall').outputs.UntrustPrivateIPAddresses.value]"
+					}
+				}
+			}
+		}
