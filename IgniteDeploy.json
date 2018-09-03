@@ -548,7 +548,7 @@
 						"value": "[parameters('untrustSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[parameters('loadBalancerName')]"
+						"value": "[variables('egressloadBalancerName')]"
 					},
 					"mgmtPublicIPName": {
 						"value": "[concat('out', parameters('mgmtPublicIPName'))]"
@@ -655,7 +655,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployEgressLoadBalancerURL')]",
+					"uri": "[variables('deployInboundFirewallURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
