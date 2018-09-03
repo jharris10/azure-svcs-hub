@@ -218,7 +218,7 @@
 			"type": "Microsoft.Network/publicIPAddresses",
 			"name": "[concat(parameters('mgmtPublicIPName'), copyindex())]",
 			"sku": {
-				"name": "[parameters('loadBalancerSku')]"
+				"name": "Standard"
 			},
 			"location": "[parameters('location')]",
 			"copy": {
@@ -338,7 +338,7 @@
 							},
 							"loadBalancerBackendAddressPools": [
                                 {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters ('loadBalancerName')), '/backendAddressPools/Egress-avset')]"
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters ('loadBalancerName')), '/backendAddressPools/BackendPool')]"
                                 }
                             ],
 						}	
@@ -373,7 +373,7 @@
 				},
 				"parameters": {
 					"loadBalancerSku": {
-						"value": "[parameters('loadBalancerSku')]"
+						"value": "Standard"
 					},
 					"location": {
 						"value": "[parameters('location')]"
