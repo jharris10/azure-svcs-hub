@@ -21,7 +21,7 @@
 		},
 		"avSetName": {
 			"type": "string",
-			"defaultValue": "firewall-avset",
+			"defaultValue": "Egress-avset",
 			"metadata": {
 				"description": "Availability Set name"
 			}
@@ -199,7 +199,22 @@
 	},
 
 	"resources": [
-
+		{
+            "type": "Microsoft.Compute/availabilitySets",
+            "name": "Egress-FW-AS",
+            "apiVersion": "2016-04-30-preview",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {
+                "platformUpdateDomainCount": 2,
+                "platformFaultDomainCount": 2
+            },
+		"sku": {
+			"name": "Aligned"
+		},
+            "resources": [],
+            "dependsOn": []
+        },
 
 
 
@@ -362,6 +377,9 @@
 					},
 					"location": {
 						"value": "[parameters('location')]"
+					},
+					"avSetName": {
+						"value": "Egress-FW-AS"
 					},
 					"virtualMachineName": {
 						"value": "[concat(parameters('virtualMachineName'), copyindex())]"
