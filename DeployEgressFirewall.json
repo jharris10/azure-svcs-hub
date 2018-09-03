@@ -186,7 +186,7 @@
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
-		
+		"backendAddressPoolid": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]",
 		"deployVmURL" : "[concat(parameters('baseUrl'),'/DeployVm-Egress-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
@@ -338,7 +338,7 @@
 							},
 							"loadBalancerBackendAddressPools": [
                                 {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters ('loadBalancerName')), '/backendAddressPools/BackendPool')]"
+                                    "id": "[variables('backendAddressPoolid')]"
                                 }
 							]
 						}	
