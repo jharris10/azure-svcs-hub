@@ -352,6 +352,7 @@
 		"deployFirewallURL": "[concat(variables('baseUrl'),'/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/deployInboundFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
+		"deploytcpLoadBalancerlURL":"[concat(variables('baseUrl'),'/deploytcpLoadBalancer.json')]",
 		"location": "[resourceGroup().location]",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
@@ -655,7 +656,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployInboundFirewallURL')]",
+					"uri": "[variables('deploytcpLoadBalancerlURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
