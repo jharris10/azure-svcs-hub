@@ -614,9 +614,6 @@
 					"virtualNetworkRG": {
 						"value": "[variables('rgName')]"
 					},
-					"loadBalancerName": {
-						"value": "[variables('tcpinboundloadBalancerName')]"
-					},
 					"virtualMachineName": {
 						"value": "[concat('tcpfw', parameters('firewallVmName'))]"
 					},
@@ -636,10 +633,13 @@
 						"value": "[parameters('mgmtSubnetName')]"
 					},
 					"untrustSubnetName": {
-						"value": "[parameters('trustSubnetName')]"
+						"value": "[parameters('untrustSubnetName')]"
 					},
 					"trustSubnetName": {
 						"value": "[parameters('trustSubnetName')]"
+					},
+					"loadBalancerName": {
+						"value": "[variables('tcpinboundloadBalancerName')]"
 					}
 				}
 			}
