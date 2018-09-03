@@ -340,7 +340,7 @@
                                 {
                                     "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters ('loadBalancerName')), '/backendAddressPools/BackendPool')]"
                                 }
-                            ],
+							]
 						}	
 					}
 				]
