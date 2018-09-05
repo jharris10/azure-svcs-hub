@@ -22,7 +22,7 @@
 		},
 		"vnetResourceGroup": {
 			"type": "string",
-			"defaultValue": "vnetrg",
+			"defaultValue": "",
 			"metadata": {
 				"description": "Resource Group containing the virtual network or enter new resource group"
 			}
@@ -48,14 +48,14 @@
 		"appGatewayName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the HTTP loadbalancer."
+				"description": "Name of the HTTP Firewall loadbalancer."
 			},
 			"defaultValue": "weblb"
 		},
 		"appGatewayDnsName": {
 			"type": "string",
 			"metadata": {
-				"description": "DNS name of the HTTP loadbalancer."
+				"description": "DNS name of the HTTP Firewall loadbalancer."
 			},
 			"defaultValue": "demowebserver"
 		},
@@ -137,19 +137,19 @@
 			"type": "string",
 			"defaultValue": "",
 			"metadata": {
-				"description": "bootstrap disk storage account URI with container name"
+				"description": "Egress FW Bootstrap disk storage account URI with container name"
 			}
 		},
 		"EgressFWBootstrapUriSizeGB": {
 			"type": "string",
 			"defaultValue": "1",
 			"metadata": {
-				"description": "bootstrap disk disk in GB"
+				"description": "Egress bootstrap disk disk in GB"
 			}
 		},
 		"untrustSubnetName": {
 			"type": "string",
-			"defaultValue": "Egress-Untrust",
+			"defaultValue": "EgressFW-Untrust",
 			"metadata": {
 				"description": "Subnet for Egress firewall Untrust Network"
 			}
@@ -163,7 +163,7 @@
 		},
 		"trustSubnetName": {
 			"type": "string",
-			"defaultValue": "Egress-Trust",
+			"defaultValue": "EgressFW-Trust",
 			"metadata": {
 				"description": "Subnet for Egress firewall Trust Network"
 			}
@@ -210,7 +210,7 @@
 		},
 		"ipFirewalluntrustSubnetName": {
 			"type": "string",
-			"defaultValue": "ipFirewallInbound-Untrust",
+			"defaultValue": "ipFwUntrust",
 			"metadata": {
 				"description": "Subnet for IP Firewall Untrust Network"
 			}
@@ -224,7 +224,7 @@
 		},
 		"ipFirewalltrustSubnetName": {
 			"type": "string",
-			"defaultValue": "ipFirewallinbound-trust",
+			"defaultValue": "ipFwtrust",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
@@ -248,7 +248,7 @@
 			"metadata": {
 				"description": "Prefix for loadbalancer Names"
 			},
-			"defaultValue": "egress-lb"
+			"defaultValue": "panwfwlb"
 		},
 		"loadBalancerIP": {
 			"type": "string",
@@ -281,7 +281,7 @@
 			"metadata": {
 				"description": "Name prefix for firewalls"
 			},
-			"defaultValue": "panw"
+			"defaultValue": "panwfw"
 		},
 		"firewallVmSize": {
 			"type": "string",
@@ -353,7 +353,7 @@
 			"metadata": {
 				"description": "Firewall Availability set prefix"
 			},
-			"defaultValue": "egress-avset"
+			"defaultValue": "fwavset"
 		},
 		"storageType": {
 			"type": "string",
