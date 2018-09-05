@@ -52,7 +52,7 @@
         "description": "Name of the Virtual Network (VNET)"
       }
     },
-    "virtualNetworkExistingRGName": {
+    "virtualNetworkRG": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -66,14 +66,14 @@
         "description": "Subnet for Management"
       }
     },
-    "appgwUntrustSubnetName": {
+    "appGwUntrustSubnetName": {
       "type": "string",
       "defaultValue": "Untrust",
       "metadata": {
         "description": "Subnet for Untrust"
       }
     },
-    "appgwTrustSubnetName": {
+    "appGwTrustSubnetName": {
       "type": "string",
       "defaultValue": "Trust",
       "metadata": {
@@ -94,14 +94,14 @@
         "description": "Mgmt subnet CIDR"
       }
     },
-    "appgwUntrustSubnetPrefix": {
+    "appGwUntrustSubnetPrefix": {
       "type": "string",
       "defaultValue": "192.168.1.0/24",
       "metadata": {
         "description": "Untrust subnet CIDR"
       }
     },
-    "appgwTrustSubnetPrefix": {
+    "appGwTrustSubnetPrefix": {
       "type": "string",
       "defaultValue": "192.168.2.0/24",
       "metadata": {
@@ -234,7 +234,7 @@
     {
       "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('availabilitySetName')]",
+      "name": "AppGw-FW-AS",
       "location": "[resourceGroup().location]",
       "properties": {
         "platformUpdateDomainCount": 2,
@@ -303,17 +303,17 @@
           "mgtSubnetName": {
             "value": "[parameters('mgtSubnetName')]"
           },
-          "appgwUntrustSubnetName": {
-            "value": "[parameters('appgwUntrustSubnetName')]"
+          "appGwUntrustSubnetName": {
+            "value": "[parameters('appGwUntrustSubnetName')]"
           },
-          "appgwTrustSubnetName": {
-            "value": "[parameters('appgwTrustSubnetName')]"
+          "appGwTrustSubnetName": {
+            "value": "[parameters('appGwTrustSubnetName')]"
           },
           "virtualNetworkName": {
             "value": "[parameters('virtualNetworkName')]"
           },
-          "virtualNetworkExistingRGName": {
-            "value": "[parameters('virtualNetworkExistingRGName')]"
+          "virtualNetworkRG": {
+            "value": "[parameters('virtualNetworkRG')]"
           },
           "MgmtPublicIPAddressName": {
             "value": "[concat(parameters('MgmtPublicIPAddressName'), copyindex())]"
@@ -351,7 +351,7 @@
             "value": "[concat(parameters('vmName'), copyindex())]"
           },
           "availabilitySetName": {
-            "value": "[variables('availabilitySetName')]"
+            "value": "AppGw-FW-AS"
           },
           "imageSku": {
             "value": "[parameters('imageSku')]"

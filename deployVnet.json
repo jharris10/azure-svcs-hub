@@ -32,13 +32,13 @@
 				"description": "Subnet for Untrust"
 			}
 		},
-		"tcpuntrustSubnetName": {
+		"ipFirewalluntrustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"tcptrustSubnetName": {
+		"ipFirewalltrustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
@@ -50,13 +50,13 @@
 				"description": "Subnet for Trust"
 			}
 		},
-		"appgwuntrustSubnetName": {
+		"appGwUntrustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Appgw Untrust"
 			}
 		},
-		"appgwtrustSubnetName": {
+		"appGwTrustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Appgw Trust"
@@ -86,25 +86,25 @@
 				"description": "Trust subnet CIDR"
 			}
 		},
-		"tcpuntrustSubnetPrefix": {
+		"ipFirewalluntrustSubnetPrefix": {
 			"type": "string",
 			"metadata": {
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
 		},
-		"tcptrustSubnetPrefix": {
+		"ipFirewalltrustSubnetPrefix": {
 			"type": "string",
 			"metadata": {
 				"description": "CIDR for TCPInbound Untrust Network"
 			}
 		},
-		"appgwtrustSubnetPrefix": {
+		"appGwTrustSubnetPrefix": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
 			}
 		},
-		"appgwuntrustSubnetPrefix": {
+		"appGwUntrustSubnetPrefix": {
 			"type": "string",
 			"metadata": {
 				"description": "Subnet for Untrusted Network"
@@ -120,8 +120,8 @@
 	"variables": {
 		"location": "[resourceGroup().location]",
 		"rgname": "[resourceGroup().id]",
-		"vnetname": "[parameters('virtualNetworkName')]",
-		"vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetname'))]",
+		"virtualNetworkName": "[parameters('virtualNetworkName')]",
+		"vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
 		"mgmtSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('mgmtSubnetName'))]",
 		"untrustSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('untrustSubnetName'))]",
 		"trustSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('trustSubnetName'))]",
@@ -151,36 +151,36 @@
 				}
 			},
 			{
-				"name": "[parameters('tcpuntrustSubnetName')]",
+				"name": "[parameters('ipFirewalluntrustSubnetName')]",
 				"properties": {
-					"addressPrefix": "[parameters('tcpuntrustSubnetPrefix')]",
+					"addressPrefix": "[parameters('ipFirewalluntrustSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}
 				}
 			},
 			{
-				"name": "[parameters('tcptrustSubnetName')]",
+				"name": "[parameters('ipFirewalltrustSubnetName')]",
 				"properties": {
-					"addressPrefix": "[parameters('tcptrustSubnetPrefix')]",
+					"addressPrefix": "[parameters('ipFirewalltrustSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}
 				}
 			},
 			{
-				"name": "[parameters('appgwuntrustSubnetName')]",
+				"name": "[parameters('appGwUntrustSubnetName')]",
 				"properties": {
-					"addressPrefix": "[parameters('appgwuntrustSubnetPrefix')]",
+					"addressPrefix": "[parameters('appGwUntrustSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}
 				}
 			},
 			{
-				"name": "[parameters('appgwtrustSubnetName')]",
+				"name": "[parameters('appGwTrustSubnetName')]",
 				"properties": {
-					"addressPrefix": "[parameters('appgwtrustSubnetPrefix')]",
+					"addressPrefix": "[parameters('appGwTrustSubnetPrefix')]",
 					"networkSecurityGroup": {
 						"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(parameters('nsgName'), '-trust'))]"
 					}
@@ -199,7 +199,7 @@
 	},
 	"resources": [
 		{
-			"name": "[variables('vnetname')]",
+			"name": "[variables('virtualNetworkName')]",
 			"type": "Microsoft.Network/virtualNetworks",
 			"location": "[variables('location')]",
 			"apiVersion": "2015-06-15",
@@ -214,8 +214,8 @@
 		}
 	],
 	"outputs": {
-		"vnetName": {
-			"value": "[variables('vnetname')]",
+		"virtualNetworkName": {
+			"value": "[variables('virtualNetworkName')]",
 			"type": "string"
 		}
 	}

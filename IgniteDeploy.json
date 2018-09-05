@@ -280,7 +280,7 @@
 			"metadata": {
 				"description": "Name prefix for firewalls"
 			},
-			"defaultValue": "panw-fw"
+			"defaultValue": "panw"
 		},
 		"firewallVmSize": {
 			"type": "string",
@@ -347,7 +347,7 @@
 			},
 			"defaultValue": "0.0.0.0/0"
 		},
-		"avSetName": {
+		"availabilitySetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Firewall Availability set prefix"
@@ -370,14 +370,11 @@
 	},
 	"variables": {
 		"vnetID": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-		"egressloadBalancerName": "[concat(parameters('loadBalancerName'),'egress')]",
-		"ipFirewallinboundloadBalancerName": "[concat(parameters('loadBalancerName'),'ipFirewallinbound')]",
-		"appGwMgmtPublicIPAddressName": "[concat(parameters('loadBalancerName'),'appgw')]",
+		"egressloadBalancerName": "[concat(parameters('loadBalancerName'),'EgressFW')]",
+		"ipFirewallinboundloadBalancerName": "[concat(parameters('loadBalancerName'),'IPFW')]",
+		"appGwMgmtPublicIPAddressName": "[concat(parameters('loadBalancerName'),'AppGwFW')]",
 		"appGatewayName": "[concat(parameters('loadBalancerName'),'appgw')]",
-		"egressavSetName": "[concat(parameters('avSetName'),'egress')]",
-		"ipFirewallinboundavSetName": "[concat(parameters('avSetName'),'egress')]",
 		"firewallVmCount": 2,
-		"egressLoadBalancerSku": "Standard",
 		"ipLoadBalancerSku": "Standard",
 		"ipFirewallinboundLoadBalancerSku": "Standard",
 		"baseUrl": "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
@@ -503,7 +500,7 @@
 		},
 		{
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
-			"name": "DeployEgressLoadBalancer",
+			"name": "DeployEgressFWLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
@@ -539,12 +536,12 @@
 		},
 		{
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
-			"name": "deployOutboundFirewall",
+			"name": "deployEgressFirewall",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployVNet",
-				"Microsoft.Resources/deployments/DeployEgressLoadBalancer"
+				"Microsoft.Resources/deployments/DeployEgressFWLoadBalancer"
 			],
 			"properties": {
 				"mode": "Incremental",
@@ -553,12 +550,6 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"loadBalancerSku": {
-						"value": "[variables('egressLoadBalancerSku')]"
-					},
-					"avSetName": {
-						"value": "[variables('egressavSetName')]"
-					},
 					"location": {
 						"value": "[variables('location')]"
 					},
@@ -566,7 +557,7 @@
 						"value": "[variables('baseUrl')]"
 					},
 					"virtualMachineName": {
-						"value": "[concat('out', parameters('firewallVmName'))]"
+						"value": "[concat('EgressFw-', parameters('firewallVmName'))]"
 					},
 					"storageName": {
 						"value": "[variables('egressfwstor')]"
@@ -621,12 +612,12 @@
 		},
 		{
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
-			"name": "deployipFirewallinboundFirewall",
+			"name": "deployIPFirewall",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployVNet",
-				"Microsoft.Resources/deployments/deployipFirewallinboundLoadBalancer"
+				"Microsoft.Resources/deployments/deployIPFWLoadBalancer"
 			],
 			"properties": {
 				"mode": "Incremental",
@@ -640,9 +631,6 @@
 					},
 					"storageName": {
 						"value": "[variables('ipfwstor')]"
-					},
-					"avSetName": {
-						"value": "[variables('ipFirewallinboundavSetName')]"
 					},
 					"location": {
 						"value": "[variables('location')]"
@@ -660,7 +648,7 @@
 						"value": "[variables('virtualNetworkRG')]"
 					},
 					"virtualMachineName": {
-						"value": "[concat('ipFirewallfw', parameters('firewallVmName'))]"
+						"value": "[concat('IPFirewall-', parameters('firewallVmName'))]"
 					},
 					"adminUsername": {
 						"value": "[parameters('username')]"
@@ -697,7 +685,7 @@
 		},
 		{
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
-			"name": "deployipFirewallinboundLoadBalancer",
+			"name": "deployIPFWLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
@@ -779,8 +767,8 @@
 					"vmCount": {
 						"value": "[variables('firewallVmCount')]"
 					},
-					"vmName": {
-						"value": "[parameters('firewallVmName')]"
+					"virtualMachineName": {
+						"value": "[concat('AppGwFirewall-', parameters('firewallVmName'))]"
 					},
 					"imageSku": {
 						"value": "[parameters('firewallModel')]"
@@ -789,7 +777,7 @@
 						"value": "[parameters('firewallVmSize')]"
 					},
 					"virtualNetworkName": {
-						"value": "[reference('DeployVnet').outputs.vnetName.value]"
+						"value": "[parameters('virtualNetworkName')]"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"

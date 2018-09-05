@@ -8,19 +8,19 @@
     "nicName": {
       "type": "string"
     },
-    "appgwUntrustSubnetName": {
+    "appGwUntrustSubnetName": {
       "type": "string"
     },
     "virtualNetworkName": {
       "type": "string"
     },
-    "virtualNetworkExistingRGName": {
+    "virtualNetworkRG": {
       "type": "string"
     }
   },
   "variables": {
       "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appgwUntrustSubnetName'))]"
+      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appGwUntrustSubnetName'))]"
   },
   "resources": [
     {

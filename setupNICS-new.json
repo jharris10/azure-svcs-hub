@@ -11,16 +11,16 @@
     "mgtSubnetName": {
       "type": "string"
     },
-    "appgwUntrustSubnetName": {
+    "appGwUntrustSubnetName": {
       "type": "string"
     },
-    "appgwTrustSubnetName": {
+    "appGwTrustSubnetName": {
       "type": "string"
     },
     "virtualNetworkName": {
       "type": "string"
     },
-    "virtualNetworkExistingRGName": {
+    "virtualNetworkRG": {
       "type": "string"
     },
     "MgmtPublicIPAddressName": {
@@ -31,10 +31,10 @@
     }
   },
   "variables": {
-      "vnetID": "[resourceId(parameters('virtualNetworkExistingRGName'),concat('Microsoft.Network','/','virtualNetworks'),parameters('virtualNetworkName'))]",
+      "vnetID": "[resourceId(parameters('virtualNetworkRG'),concat('Microsoft.Network','/','virtualNetworks'),parameters('virtualNetworkName'))]",
       "mgtSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('mgtSubnetName'))]",
-      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appgwUntrustSubnetName'))]",
-      "albTntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appgwTrustSubnetName'))]",
+      "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appGwUntrustSubnetName'))]",
+      "albTntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appGwTrustSubnetName'))]",
       "mgmtpip": "[concat('mgmtIP-', parameters('MgmtPublicIPAddressName'))]",
       "setupUntrustNICURL": "[concat(parameters('baseUrl'),'/setupNICS-untrust.json')]"
   },
@@ -81,14 +81,14 @@
           "nicName": {
             "value": "[parameters('nicName')]"
           },
-          "appgwUntrustSubnetName": {
-            "value": "[parameters('appgwUntrustSubnetName')]"
+          "appGwUntrustSubnetName": {
+            "value": "[parameters('appGwUntrustSubnetName')]"
           },
           "virtualNetworkName": {
             "value": "[parameters('virtualNetworkName')]"
           },
-          "virtualNetworkExistingRGName": {
-            "value": "[parameters('virtualNetworkExistingRGName')]"
+          "virtualNetworkRG": {
+            "value": "[parameters('virtualNetworkRG')]"
           },
         }
       }

@@ -19,13 +19,6 @@
 				"description": "Name prefix of the new storage account created to store the VM's disks"
 			}
 		},
-		"avSetName": {
-			"type": "string",
-			"defaultValue": "firewall-avset",
-			"metadata": {
-				"description": "Availability Set name"
-			}
-		},
 		"location": {
 			"type": "string",
 			"metadata": {

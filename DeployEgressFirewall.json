@@ -2,29 +2,14 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"loadBalancerSku": {
-			"type": "string",
-			"allowedValues": [
-				"Standard"
-			],
-			"metadata": {
-				"description": "Only Use standard lb"
-			},
-			"defaultValue": "Standard"
-		},
+
 		"storageName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name prefix of the new storage account created to store the VM's disks"
 			}
 		},
-		"avSetName": {
-			"type": "string",
-			"defaultValue": "Egress-avset",
-			"metadata": {
-				"description": "Availability Set name"
-			}
-		},
+
 		"location": {
 			"type": "string",
 			"metadata": {
@@ -48,8 +33,7 @@
 			"type": "string",
 			"metadata": {
 				"description": "Name of VM-Series VM in the Azure portal"
-			},
-			"defaultValue": "vmSeries"
+			}
 		},
 		"vmSize": {
 			"type": "string",
@@ -187,16 +171,17 @@
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
 		"backendAddressPoolid": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]",
-		"deployVmURL" : "[concat(parameters('baseUrl'),'/DeployVm-Egress-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
+		"deployVmURL" : "[concat(parameters('baseUrl'),'/DeployVm-Egress-password-bs-no.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
-		"version": "latest"
+		"version": "latest",
+		"availabilitySetName": "Egress-FW-AS"
 	},
 
 	"resources": [
 		{
             "type": "Microsoft.Compute/availabilitySets",
-            "name": "Egress-FW-AS",
+            "name": "[variables('availabilitySetName')]",
             "apiVersion": "2017-03-30",
             "location": "[resourceGroup().location]",
             "tags": {},
@@ -372,14 +357,12 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"loadBalancerSku": {
-						"value": "Standard"
-					},
+					
 					"location": {
 						"value": "[parameters('location')]"
 					},
-					"avSetName": {
-						"value": "Egress-FW-AS"
+					"availabilitySetName": {
+						"value": "[variables('availabilitySetName')]"
 					},
 					"virtualMachineName": {
 						"value": "[concat(parameters('virtualMachineName'), copyindex())]"
