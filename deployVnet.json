@@ -230,7 +230,7 @@
 						"properties": {
 							"addressPrefix": "0.0.0.0/0",
 							"nextHopType": "VirtualAppliance",
-							"nextHopIpAddress": "[parameters('egressFwIP')]"
+							"nextHopIpAddress": "[parameters('loadBalancerIP')]"
 						}
 					}
 				]
