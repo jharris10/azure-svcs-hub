@@ -398,20 +398,7 @@
 		"webLBURL": "[concat(variables('baseUrl'),'/public-lb-', variables('LoadBalancerType'), '.json')]"
 	},
 	"resources": [
-		{
-			"type": "Microsoft.Resources/resourceGroups",
-			"apiVersion": "2018-05-01",
-			"location": "[variables('location')]",
-			"name": "[variables('virtualNetworkRG')]",
-			"properties": {}
-		},
-		{
-			"type": "Microsoft.Resources/resourceGroups",
-			"apiVersion": "2018-05-01",
-			"location": "[variables('location')]",
-			"name": "[variables('egressfwrg')]",
-			"properties": {}
-		},
+
 		{
 			"name": "deployNsg",
 			"type": "Microsoft.Resources/deployments",
@@ -558,8 +545,9 @@
 		{
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
 			"name": "deployEgressFirewall",
+			"resourceGroup": "egressfwrg",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"apiVersion": "2017-05-10",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/DeployEgressFWLoadBalancer"
@@ -635,7 +623,7 @@
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
 			"name": "deployIPFirewall",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"apiVersion": "2017-05-10",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployVNet",
 				"Microsoft.Resources/deployments/deployIPFWLoadBalancer"
@@ -708,7 +696,7 @@
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
 			"name": "deployIPFWLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"apiVersion": "2017-05-10",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployVNet"
 			],
@@ -747,7 +735,7 @@
 			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
 			"name": "albfwdeployStorage",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"apiVersion": "2017-05-10",
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -771,7 +759,7 @@
 			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
 			"name": "deployAppGwFirewall",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"apiVersion": "2017-05-10",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/DeployVnet"
 			],
