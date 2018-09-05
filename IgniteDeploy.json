@@ -22,7 +22,7 @@
 		},
 		"vnetResourceGroup": {
 			"type": "string",
-			"defaultValue": "",
+			"defaultValue": "vnetrg",
 			"metadata": {
 				"description": "Resource Group containing the virtual network or enter new resource group"
 			}
@@ -175,6 +175,7 @@
 				"description": "Subnet for Egress firewall Trust Network"
 			}
 		},
+
 		"Deployipfw": {
 			"type": "string",
 			"defaultValue": "no",
@@ -256,7 +257,7 @@
 			},
 			"defaultValue": "10.0.2.100"
 		},
-		"ipFirewallinboundloadBalancerIP": {
+		"ipFirewallloadBalancerIP": {
 			"type": "string",
 			"metadata": {
 				"description": "IP Address for the non http load balancer"
@@ -387,7 +388,8 @@
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
 		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/deployipFirewallLoadBalancer.json')]",
 		"location": "[resourceGroup().location]",
-		"virtualNetworkRG": "[parameters('vnetResourceGroup')]",
+		"virtualNetworkRG": "vnetrg",
+		"egressfwrg": "egressfwrg",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
@@ -397,9 +399,24 @@
 	},
 	"resources": [
 		{
+			"type": "Microsoft.Resources/resourceGroups",
+			"apiVersion": "2018-05-01",
+			"location": "[variables('location')]",
+			"name": "[variables('virtualNetworkRG')]",
+			"properties": {}
+		},
+		{
+			"type": "Microsoft.Resources/resourceGroups",
+			"apiVersion": "2018-05-01",
+			"location": "[variables('location')]",
+			"name": "[variables('egressfwrg')]",
+			"properties": {}
+		},
+		{
 			"name": "deployNsg",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"resourceGroup": "vnetrg",
+			"apiVersion": "2017-05-10",
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -424,10 +441,10 @@
 		},
 		{
 			"condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
+			"apiVersion": "2017-05-10",
 			"name": "DeployVnet",
 			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "[parameters('vnetResourceGroup')]",
-			"apiVersion": "2015-01-01",
+			"resourceGroup": "vnetrg",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployNsg"
 			],
@@ -461,6 +478,9 @@
 					},
 					"trustSubnetName": {
 						"value": "[parameters('trustSubnetName')]"
+					},
+					"loadBalancerIP": {
+						"value": "[parameters('loadBalancerIP')]"
 					},
 					"appGwUntrustSubnetName": {
 						"value": "[parameters('appGwUntrustSubnetName')]"
@@ -502,7 +522,8 @@
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
 			"name": "DeployEgressFWLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"resourceGroup": "egressfwrg",
+			"apiVersion": "2017-05-10",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployVNet"
 			],
