@@ -388,7 +388,7 @@
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
 		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/deploytcpLoadBalancer.json')]",
 		"location": "[resourceGroup().location]",
-		"virtualNetworkRG": "vnetrg",
+		"virtualNetworkRG": "svcshubrg1",
 		"egressfwrg": "egressfwrg",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
@@ -402,7 +402,7 @@
 		{
 			"name": "deployNsg",
 			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "vnetrg",
+			"resourceGroup": "svcshubrg1",
 			"apiVersion": "2017-05-10",
 			"properties": {
 				"mode": "Incremental",
@@ -431,7 +431,7 @@
 			"apiVersion": "2017-05-10",
 			"name": "DeployVnet",
 			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "vnetrg",
+			"resourceGroup": "svcshubrg1",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployNsg"
 			],
