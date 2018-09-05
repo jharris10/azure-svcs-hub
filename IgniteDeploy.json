@@ -386,7 +386,7 @@
 		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/DeployIPFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
-		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/deployipFirewallLoadBalancer.json')]",
+		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/deploytcpLoadBalancer.json')]",
 		"location": "[resourceGroup().location]",
 		"virtualNetworkRG": "vnetrg",
 		"egressfwrg": "egressfwrg",
@@ -622,6 +622,7 @@
 		{
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
 			"name": "deployIPFirewall",
+			"resourceGroup": "ipfwrg",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"dependsOn": [
@@ -695,6 +696,7 @@
 		{
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
 			"name": "deployIPFWLoadBalancer",
+			"resourceGroup": "ipfwrg",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"dependsOn": [

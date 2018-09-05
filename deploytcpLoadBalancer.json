@@ -59,6 +59,22 @@
 	},
 
 	"resources": [
+		{
+            "comments": "Public IP address",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('loadBalancerName')]",
+            "apiVersion": "2017-09-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
 		{ 
 			"apiVersion": "2017-08-01",
 			"type": "Microsoft.Network/loadBalancers",
@@ -70,17 +86,16 @@
             },
 			"properties": {
 				"frontendIPConfigurations": [
-					{
+                    {
 						"name": "Frontend",
-						"properties": {
-							"subnet": {
-								"id": "[concat(variables('vnetId'),'/subnets/',parameters ('subnetName'))]"
-							},
-							"privateIPAllocationMethod": "Static",
-							"privateIPAddress": "[parameters('loadBalancerIP')]" 
-						}
-					}
-				],
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('loadBalancerName'))]"
+                            }
+                        }
+                    }
+                ],
 				"backendAddressPools": [
 					{
 						"name": "BackendPool"
@@ -98,12 +113,12 @@
 							"probe": {
 								"id": "[concat(variables('lbId'), '/probes/lbprobe')]"
 							},
-							"protocol": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 'All', 'Tcp')]",
-							"frontendPort": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 0, 80)]",
-							"backendPort": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 0, 80)]",
+							"protocol": "Tcp",
+							"frontendPort": 80,
+							"backendPort": 80,
 							"enableFloatingIP": false,
 							"idleTimeoutInMinutes": 4,
-							"loadDistribution": "SourceIPProtocol"
+							"loadDistribution": "Default"
 						},
 						"Name": "lbrule"
 					}
