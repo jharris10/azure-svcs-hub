@@ -49,21 +49,19 @@
 			}
 		}
 	},
-
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]"
 	},
-
 	"resources": [
-		{ 
+		{
 			"apiVersion": "2017-08-01",
 			"type": "Microsoft.Network/loadBalancers",
 			"name": "[parameters('loadBalancerName')]",
 			"location": "[parameters('location')]",
-            "sku": {
-                "name": "[parameters('loadBalancerSku')]"
-            },
+			"sku": {
+				"name": "Standard"
+			},
 			"properties": {
 				"frontendIPConfigurations": [
 					{
@@ -73,7 +71,7 @@
 								"id": "[concat(variables('vnetId'),'/subnets/',parameters ('subnetName'))]"
 							},
 							"privateIPAllocationMethod": "Static",
-							"privateIPAddress": "[parameters('loadBalancerIP')]" 
+							"privateIPAddress": "[parameters('loadBalancerIP')]"
 						}
 					}
 				],
@@ -82,46 +80,46 @@
 						"name": "BackendPool"
 					}
 				],
-				"loadBalancingRules": [
-					{
-						"properties": {
-							"frontendIPConfiguration": {
-								"id": "[concat(variables('lbId'), '/frontendIpConfigurations/Frontend')]"
+				"properties": {
+					"frontendIPConfiguration": {
+						"id": "[concat(variables('lbId'), '/frontendIpConfigurations/Frontend')]"
+					},
+					"backendAddressPool": {
+						"id": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]"
+					},
+					"probe": {
+						"id": "[concat(variables('lbId'), '/probes/lbprobe')]"
+					},
+					"probes": [
+						{
+							"properties": {
+								"protocol": "Tcp",
+								"port": 22,
+								"intervalInSeconds": 15,
+								"numberOfProbes": 2
 							},
-							"backendAddressPool": {
-								"id": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]"
-							},
-							"probe": {
-								"id": "[concat(variables('lbId'), '/probes/lbprobe')]"
-							},
-							"protocol": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 'All', 'Tcp')]",
-							"frontendPort": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 0, 80)]",
-							"backendPort": "[if(equals(parameters('loadBalancerSku'), 'Standard'), 0, 80)]",
-							"enableFloatingIP": false,
-							"idleTimeoutInMinutes": 4,
-							"loadDistribution": "SourceIPProtocol"
-						},
-						"Name": "lbrule"
-					}
-				],
-				"probes": [
-					{
-						"properties": {
-							"protocol": "Tcp",
-							"port": 22,
-							"intervalInSeconds": 15,
-							"numberOfProbes": 2
-						},
-						"name": "lbprobe"
-					}
-				]
+							"name": "lbprobe"
+						}
+					],
+					"loadBalancingRules": [
+						{
+							"properties": {
+								"Name": "lbrule",
+								"protocol": "All",
+								"frontendPort": 0,
+								"backendPort": 0,
+								"enableFloatingIP": false
+							}
+						}
+					]
+				}
 			}
 		}
 	],
-	"outputs" : {
+	"outputs": {
 		"LoadBalancerFrontEndIp": {
 			"value": "[reference(concat('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))).frontendIPConfigurations[0].properties.privateIPAddress ]",
-			"type" : "string"
+			"type": "string"
 		}
 	}
 }
