@@ -45,14 +45,14 @@
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]"
 	},
 	"resources": [
-		{
+		{ 
 			"apiVersion": "2017-08-01",
 			"type": "Microsoft.Network/loadBalancers",
 			"name": "[parameters('loadBalancerName')]",
 			"location": "[parameters('location')]",
-			"sku": {
-				"name": "Standard"
-			},
+            "sku": {
+                "name": "Standard"
+            },
 			"properties": {
 				"frontendIPConfigurations": [
 					{
@@ -62,7 +62,7 @@
 								"id": "[concat(variables('vnetId'),'/subnets/',parameters ('subnetName'))]"
 							},
 							"privateIPAllocationMethod": "Static",
-							"privateIPAddress": "[parameters('loadBalancerIP')]"
+							"privateIPAddress": "[parameters('loadBalancerIP')]" 
 						}
 					}
 				],
@@ -71,39 +71,39 @@
 						"name": "BackendPool"
 					}
 				],
-				"properties": {
-					"frontendIPConfiguration": {
-						"id": "[concat(variables('lbId'), '/frontendIpConfigurations/Frontend')]"
-					},
-					"backendAddressPool": {
-						"id": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]"
-					},
-					"probe": {
-						"id": "[concat(variables('lbId'), '/probes/lbprobe')]"
-					},
-					"probes": [
-						{
-							"properties": {
-								"protocol": "Tcp",
-								"port": 22,
-								"intervalInSeconds": 15,
-								"numberOfProbes": 2
+				"loadBalancingRules": [
+					{
+						"properties": {
+							"frontendIPConfiguration": {
+								"id": "[concat(variables('lbId'), '/frontendIpConfigurations/Frontend')]"
 							},
-							"name": "lbprobe"
-						}
-					],
-					"loadBalancingRules": [
-						{
-							"properties": {
-								"Name": "lbrule",
-								"protocol": "All",
-								"frontendPort": 0,
-								"backendPort": 0,
-								"enableFloatingIP": false
-							}
-						}
-					]
-				}
+							"backendAddressPool": {
+								"id": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]"
+							},
+							"probe": {
+								"id": "[concat(variables('lbId'), '/probes/lbprobe')]"
+							},
+							"protocol": "All",
+							"frontendPort": 0,
+							"backendPort": 0,
+							"enableFloatingIP": false,
+							"idleTimeoutInMinutes": 4,
+							"loadDistribution": "SourceIPProtocol"
+						},
+						"Name": "lbrule"
+					}
+				],
+				"probes": [
+					{
+						"properties": {
+							"protocol": "Tcp",
+							"port": 22,
+							"intervalInSeconds": 15,
+							"numberOfProbes": 2
+						},
+						"name": "lbprobe"
+					}
+				]
 			}
 		}
 	],
