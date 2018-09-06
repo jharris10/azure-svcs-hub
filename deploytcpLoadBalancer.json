@@ -62,7 +62,7 @@
 		{
             "comments": "Public IP address",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[parameters('loadBalancerName')]",
+            "name": "IPLoadbalancerPublicIP",
             "apiVersion": "2017-09-01",
             "location": "[resourceGroup().location]",
             "sku": {
@@ -139,7 +139,7 @@
 	],
 	"outputs" : {
 		"LoadBalancerFrontEndIp": {
-			"value" : "[reference(parameters('loadBalancerName')).properties.ipAddress]",
+			"value" : "[reference('IPLoadbalancerPublicIP').properties.ipAddress]",
 			"type" : "string"
 		}
 	}
