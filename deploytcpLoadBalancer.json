@@ -140,10 +140,6 @@
 		}
 	],
 	"outputs" : {
-		"LoadBalancerFrontEndIp": {
-			
-			"value" : "[reference(variables('pipName')).properties.ipAddress]",
-			"type" : "string"
-		}
+		
 	}
 }
