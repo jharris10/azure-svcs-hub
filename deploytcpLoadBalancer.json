@@ -55,14 +55,15 @@
 
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
-		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]"
+		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
+		"pipName":"[concat(parameters('loadBalancerName'), '-pubIP']"
 	},
 
 	"resources": [
 		{
             "comments": "Public IP address",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "IPLoadbalancerPublicIP",
+            "name": "[variables('pipName')]",
             "apiVersion": "2017-09-01",
             "location": "[resourceGroup().location]",
             "sku": {
@@ -74,7 +75,8 @@
             },
             "resources": [],
             "dependsOn": []
-        },
+		},
+
 		{ 
 			"apiVersion": "2017-08-01",
 			"type": "Microsoft.Network/loadBalancers",
@@ -91,7 +93,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IPLoadbalancerPublicIP'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
                             }
                         }
                     }
@@ -139,7 +141,8 @@
 	],
 	"outputs" : {
 		"LoadBalancerFrontEndIp": {
-			"value" : "[reference('IPLoadbalancerPublicIP').properties.ipAddress]",
+			
+			"value" : "[reference(variables('pipName')).properties.ipAddress]",
 			"type" : "string"
 		}
 	}
