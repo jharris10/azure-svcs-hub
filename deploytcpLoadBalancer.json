@@ -139,7 +139,7 @@
 	],
 	"outputs" : {
 		"LoadBalancerFrontEndIp": {
-			"value": "[reference(concat('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))).frontendIPConfigurations[0].properties.privateIPAddress ]",
+			"value": "[reference(concat('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))).frontendIPConfigurations[0].properties.publicIPAddresses ]",
 			"type" : "string"
 		}
 	}
