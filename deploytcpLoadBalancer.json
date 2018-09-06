@@ -85,7 +85,10 @@
             "sku":
             {
                 "name": "[parameters('loadBalancerSku')]"
-            },
+			},
+			"dependsOn": [
+				"[parameters('pipName')]"
+			],
 			"properties": {
 				"frontendIPConfigurations": [
                     {
