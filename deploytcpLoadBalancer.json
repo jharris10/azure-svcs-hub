@@ -91,7 +91,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('loadBalancerName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IPLoadbalancerPublicIP'))]"
                             }
                         }
                     }
