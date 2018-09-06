@@ -87,7 +87,7 @@
                 "name": "[parameters('loadBalancerSku')]"
 			},
 			"dependsOn": [
-				"[parameters('pipName')]"
+				"[variables('pipName')]"
 			],
 			"properties": {
 				"frontendIPConfigurations": [

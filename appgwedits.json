@@ -196,19 +196,19 @@
 				"description": "CIDR for App Gateway"
 			}
 		},
-		"appgwuntrustSubnetName": {
+		"appGwUntrustSubnetName": {
 			"type": "string",
 			"defaultValue": "appgwuntrust"
 		},
-		"appgwuntrustSubnetPrefix": {
+		"appGwUntrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.9.0/24"
 		},
-		"appgwtrustSubnetName": {
+		"appGwTrustSubnetName": {
 			"type": "string",
 			"defaultValue": "appgwtrust"
 		},
-		"appgwtrustSubnetPrefix": {
+		"appGwTrustSubnetPrefix": {
 			"type": "string",
 			"defaultValue": "10.0.10.0/24"
 		},
@@ -469,11 +469,11 @@
 					"trustSubnetName": {
 						"value": "[parameters('trustSubnetName')]"
 					},
-					"appgwuntrustSubnetName": {
-						"value": "[parameters('appgwUntrustSubnetName')]"
+					"appGwUntrustSubnetName": {
+						"value": "[parameters('appGwUntrustSubnetName')]"
 					},
-					"appgwtrustSubnetName": {
-						"value": "[parameters('appgwtrustSubnetName')]"
+					"appGwTrustSubnetName": {
+						"value": "[parameters('appGwTrustSubnetName')]"
 					},
 					"AppGWSubnetName": {
 						"value": "[parameters('appGatewaySubnetName')]"
@@ -493,11 +493,11 @@
 					"tcptrustSubnetPrefix": {
 						"value": "[parameters('tcptrustSubnetPrefix')]"
 					},
-					"appgwtrustSubnetPrefix": {
-						"value": "[parameters('appgwtrustSubnetPrefix')]"
+					"appGwTrustSubnetPrefix": {
+						"value": "[parameters('appGwTrustSubnetPrefix')]"
 					},
-					"appgwuntrustSubnetPrefix": {
-						"value": "[parameters('appgwuntrustSubnetPrefix')]"
+					"appGwUntrustSubnetPrefix": {
+						"value": "[parameters('appGwUntrustSubnetPrefix')]"
 					},
 					"AppGWSubnetPrefix": {
 						"value": "[parameters('AppGWSubnetPrefix')]"
@@ -799,17 +799,17 @@
 					"virtualNetworkName": {
 						"value": "[reference('DeployVnet').outputs.vnetName.value]"
 					},
-					"virtualNetworkExistingRGName": {
+					"virtualNetworkRG": {
 						"value": "[variables('rgname')]"
 					},
 					"mgtSubnetName": {
 						"value": "[parameters('MgmtSubnetName')]"
 					},
-					"appgwUntrustSubnetName": {
-						"value": "[parameters('appgwUntrustSubnetName')]"
+					"appGwUntrustSubnetName": {
+						"value": "[parameters('appGwUntrustSubnetName')]"
 					},
-					"appgwTrustSubnetName": {
-						"value": "[parameters('appgwTrustSubnetName')]"
+					"appGwTrustSubnetName": {
+						"value": "[parameters('appGwTrustSubnetName')]"
 					},
 					"subnetLBName": {
 						"value": "[parameters('appGatewaySubnetName')]"
@@ -817,11 +817,11 @@
 					"mgtSubnetPrefix": {
 						"value": "[parameters('mgmtSubnetPrefix')]"
 					},
-					"appgwUntrustSubnetPrefix": {
-						"value": "[parameters('appgwUntrustSubnetPrefix')]"
+					"appGwUntrustSubnetPrefix": {
+						"value": "[parameters('appGwUntrustSubnetPrefix')]"
 					},
-					"appgwTrustSubnetPrefix": {
-						"value": "[parameters('appgwTrustSubnetPrefix')]"
+					"appGwTrustSubnetPrefix": {
+						"value": "[parameters('appGwTrustSubnetPrefix')]"
 					},
 					"subnetLBPrefix": {
 						"value": "[parameters('AppGWSubnetPrefix')]"

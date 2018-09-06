@@ -390,6 +390,9 @@
 		"location": "[resourceGroup().location]",
 		"virtualNetworkRG": "svcshubrg1",
 		"egressfwrg": "egressfwrg",
+		"ipfwrg":"ipfwrg",
+		"vnetrg":"vnetrg",
+		"appgwfwrg":"appgwfwrg",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
@@ -401,9 +404,9 @@
 
 		{
 			"name": "deployNsg",
-			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "svcshubrg1",
 			"apiVersion": "2017-05-10",
+			"type": "Microsoft.Resources/deployments",
+			"resourceGroup": "[variables('vnetrg')]",
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -431,7 +434,7 @@
 			"apiVersion": "2017-05-10",
 			"name": "DeployVnet",
 			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "svcshubrg1",
+			"resourceGroup": "[variables('vnetrg')]",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployNsg"
 			],
@@ -509,7 +512,7 @@
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
 			"name": "DeployEgressFWLoadBalancer",
 			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "egressfwrg",
+			"resourceGroup": "[variables('egressfwrg')]",
 			"apiVersion": "2017-05-10",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/deployVNet"
@@ -545,7 +548,7 @@
 		{
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
 			"name": "deployEgressFirewall",
-			"resourceGroup": "egressfwrg",
+			"resourceGroup": "[variables('egressfwrg')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"dependsOn": [
@@ -622,7 +625,7 @@
 		{
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
 			"name": "deployIPFirewall",
-			"resourceGroup": "ipfwrg",
+			"resourceGroup": "[variables('ipfwrg')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"dependsOn": [
@@ -696,7 +699,7 @@
 		{
 			"condition": "[equals(parameters('Deployipfw'), 'yes')]",
 			"name": "deployIPFWLoadBalancer",
-			"resourceGroup": "ipfwrg",
+			"resourceGroup": "[variables('ipfwrg')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"dependsOn": [
