@@ -56,7 +56,7 @@
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
-		"pipName":"[concat(parameters('loadBalancerName'), '-pubIP']"
+		"pipName":"[concat(parameters('loadBalancerName'), '-pubIP')]"
 	},
 
 	"resources": [
