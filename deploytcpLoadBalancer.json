@@ -93,7 +93,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]"
                             }
                         }
                     }
