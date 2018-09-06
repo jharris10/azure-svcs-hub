@@ -342,9 +342,6 @@
           "storageAccountName": {
             "value": "[parameters('storageAccountName')]"
           },
-          "sshKey": {
-            "value": "[parameters('sshKey')]"
-          },
           "BootstrapUri": {
             "value": "[parameters('BootstrapUri')]"
           },
