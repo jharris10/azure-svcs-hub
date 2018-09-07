@@ -64,10 +64,10 @@
       }
     },
     "virtualNetworkRG": {
-      "type": "string",
+      "type": "string"
     },
     "virtualNetworkName": {
-      "type": "string",
+      "type": "string"
     }
   },
   "variables": {
@@ -75,7 +75,7 @@
     "vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
-    "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways',variables('applicationGatewayName'))]",
+    "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways',variables('applicationGatewayName'))]"
     
   },
   "resources": [
