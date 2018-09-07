@@ -64,7 +64,7 @@
             "comments": "Public IP address",
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[variables('pipName')]",
-            "apiVersion": "2017-09-01",
+            "apiVersion": "2017-10-01",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard"
@@ -78,7 +78,7 @@
 		},
 
 		{ 
-			"apiVersion": "2017-08-01",
+			"apiVersion": "2017-10-01",
 			"type": "Microsoft.Network/loadBalancers",
 			"name": "[parameters('loadBalancerName')]",
 			"location": "[parameters('location')]",
