@@ -303,6 +303,9 @@
 					"location": {
 						"value": "[parameters('location')]"
 					},
+					"availabilitySetName": {
+						"value": "[variables('availabilitySetName')]"
+					},
 					"virtualMachineName": {
 						"value": "[concat(parameters('virtualMachineName'), copyindex())]"
 					},
