@@ -160,7 +160,7 @@
 			"metadata": {
 				"description": "Name of the inbound load balancer"
 			}
-		},
+		}
 		
 	},
 	"variables": {
@@ -324,7 +324,7 @@
 					},
 					"availabilitySetName": {
 						"value": "[variables('availabilitySetName')]"
-					},
+					}
 				}
 			}
 		}

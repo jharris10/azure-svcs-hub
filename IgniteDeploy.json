@@ -832,36 +832,11 @@
 					"backendIPAddresses": {
 						"value": "[reference('DeployAppGwFirewall').outputs.UntrustPrivateIPAddresses.value]"
 					},
-					"virtualNetworkRG":{
+					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
 					},
-					"virtualNetworkName":{
+					"virtualNetworkName": {
 						"value": "[parameters('virtualNetworkName')]"
-					}
-				}
-			}
-		},
-		{
-			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
-			"name": "albfwdeployStorage",
-			"resourceGroup": "[variables('appgwfwrg')]",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2017-05-10",
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployStorageURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"storageType": {
-						"value": "[parameters('storageType')]"
-					},
-					"storageName": {
-						"value": "[variables('appgwfwstor')]"
 					}
 				}
 			}
