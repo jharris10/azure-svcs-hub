@@ -1,6 +1,0 @@
-deployfw nic2
-							"loadBalancerBackendAddressPools": [
-								{
-									"id": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]"
-								}
-							]
