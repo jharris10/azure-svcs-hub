@@ -347,13 +347,6 @@
 			},
 			"defaultValue": "0.0.0.0/0"
 		},
-		"availabilitySetName": {
-			"type": "string",
-			"metadata": {
-				"description": "Firewall Availability set prefix"
-			},
-			"defaultValue": "fwavset"
-		},
 		"storageType": {
 			"type": "string",
 			"allowedValues": [
@@ -810,8 +803,9 @@
 		{
 			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
 			"name": "SetupPublicLoadBalancer",
+			"resourceGroup": "[variables('appgwfwrg')]",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2015-01-01",
+			"apiVersion": "2017-05-10",
 			"dependsOn": [
 				"Microsoft.Resources/deployments/DeployVnet",
 				"Microsoft.Resources/deployments/DeployAppGwFirewall"
