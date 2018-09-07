@@ -837,6 +837,12 @@
 					},
 					"backendIPAddresses": {
 						"value": "[reference('DeployAppGwFirewall').outputs.UntrustPrivateIPAddresses.value]"
+					},
+					"virtualNetworkRG":{
+						"value": "[variables('virtualNetworkRG')]"
+					},
+					"virtualNetworkName":{
+						"value": "[parameters('virtualNetworkName')]"
 					}
 				}
 			}

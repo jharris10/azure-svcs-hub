@@ -62,11 +62,17 @@
       "metadata": {
         "description": "App Gateway subnet Name"
       }
-    }
+    },
+    "virtualNetworkRG":{
+        "type":"string",
+    },
+    "virtualNetworkName":{
+      "type":"string",
+  }
   },
   "variables": {
     "applicationGatewayName": "[parameters('lbName')]",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName'))]",
+    "vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
     "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways',variables('applicationGatewayName'))]",
