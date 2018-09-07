@@ -160,7 +160,8 @@
 			"metadata": {
 				"description": "Name of the inbound load balancer"
 			}
-		}
+		},
+		
 	},
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
@@ -168,9 +169,26 @@
 		"deployVmURL": "[concat(parameters('baseUrl'),'/deployVm-inbound-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
-		"version": "latest"
+		"version": "latest",
+		"availabilitySetName":"App-FW-AS"
 	},
 	"resources": [
+		{
+			"type": "Microsoft.Compute/availabilitySets",
+			"name": "[variables('availabilitySetName')]",
+			"apiVersion": "2017-03-30",
+			"location": "[resourceGroup().location]",
+			"tags": {},
+			"properties": {
+			  "platformUpdateDomainCount": 2,
+			  "platformFaultDomainCount": 2
+			},
+			"sku": {
+			  "name": "Aligned"
+			},
+			"resources": [],
+			"dependsOn": []
+		  },
 		{
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic0')]",
 			"type": "Microsoft.Network/networkInterfaces",
@@ -303,7 +321,10 @@
 					},
 					"bootstrapUriSizeGB": {
 						"value": "[parameters('BootstrapUriSizeGB')]"
-					}
+					},
+					"availabilitySetName": {
+						"value": "[variables('availabilitySetName')]"
+					},
 				}
 			}
 		}

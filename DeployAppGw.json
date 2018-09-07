@@ -7,15 +7,15 @@
       "defaultValue": "myPublicLB",
       "metadata": {
         "description": "Public Load Balancer name"
-      } 
+      }
     },
     "publicIPAddressName": {
       "type": "string",
       "defaultValue": "myPublicLBName",
       "metadata": {
         "description": "Public Load Balancer IP Name"
-      } 
-    },  
+      }
+    },
     "vnetName": {
       "type": "string",
       "defaultValue": "myVNET",
@@ -63,12 +63,12 @@
         "description": "App Gateway subnet Name"
       }
     },
-    "virtualNetworkRG":{
-        "type":"string",
+    "virtualNetworkRG": {
+      "type": "string",
     },
-    "virtualNetworkName":{
-      "type":"string",
-  }
+    "virtualNetworkName": {
+      "type": "string",
+    }
   },
   "variables": {
     "applicationGatewayName": "[parameters('lbName')]",
@@ -76,11 +76,12 @@
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
     "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways',variables('applicationGatewayName'))]",
-    "apiVersion": "2015-05-01-preview"
+    
   },
   "resources": [
+    
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
@@ -89,7 +90,7 @@
       }
     },
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2017-06-01",
       "name": "[variables('applicationGatewayName')]",
       "type": "Microsoft.Network/applicationGateways",
       "location": "[resourceGroup().location]",
@@ -113,7 +114,7 @@
           }
         ],
         "frontendIPConfigurations": [
-        {
+          {
             "name": "appGatewayFrontendIP",
             "properties": {
               "PublicIPAddress": {
@@ -134,7 +135,7 @@
           {
             "name": "appGatewayBackendPool",
             "properties": {
-               "BackendAddresses": "[parameters('backendIPAddresses')]"
+              "BackendAddresses": "[parameters('backendIPAddresses')]"
             }
           }
         ],
