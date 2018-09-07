@@ -48,10 +48,10 @@
 		"vmSize": {
 			"type": "string",
 			"allowedValues": [
-                "Standard_DS3_v2",
-                "Standard_DS4_v2",
-		"Standard_DS5_v2"
-            ],
+				"Standard_DS3_v2",
+				"Standard_DS4_v2",
+				"Standard_DS5_v2"
+			],
 			"metadata": {
 				"description": "Azure VM size for VM-Series"
 			},
@@ -71,7 +71,7 @@
 		},
 		"bootstrap": {
 			"type": "string",
-			"defaultValue" : "no",
+			"defaultValue": "no",
 			"allowedValues": [
 				"yes",
 				"no"
@@ -162,20 +162,15 @@
 			}
 		}
 	},
-
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
-		
-		"deployVmURL" : "[concat(parameters('baseUrl'),'/deployVm-inbound-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
+		"deployVmURL": "[concat(parameters('baseUrl'),'/deployVm-inbound-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
 		"version": "latest"
 	},
-
 	"resources": [
-
-	
 		{
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic0')]",
 			"type": "Microsoft.Network/networkInterfaces",
@@ -184,7 +179,7 @@
 			"copy": {
 				"name": "nicLoop",
 				"count": "[parameters('vmCount')]"
-			},			
+			},
 			"properties": {
 				"ipConfigurations": [
 					{
@@ -199,9 +194,7 @@
 				]
 			}
 		},
-
 		{
-			
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic1')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[parameters('location')]",
@@ -209,7 +202,7 @@
 			"copy": {
 				"name": "nicLoop",
 				"count": "[parameters('vmCount')]"
-			},			
+			},
 			"properties": {
 				"enableIPForwarding": true,
 				"ipConfigurations": [
@@ -220,15 +213,11 @@
 							"subnet": {
 								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('untrustSubnetName'))]"
 							}
-							
-						
 						}
 					}
 				]
 			}
 		},
-		
-
 		{
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic2')]",
 			"type": "Microsoft.Network/networkInterfaces",
@@ -237,7 +226,7 @@
 			"copy": {
 				"name": "nicLoop",
 				"count": "[parameters('vmCount')]"
-			},			
+			},
 			"properties": {
 				"enableIPForwarding": true,
 				"ipConfigurations": [
@@ -253,13 +242,8 @@
 				]
 			}
 		},
-
-
-		
-
 		{
-			
-			"name": "[concat(parameters('virtualMachineName'), '-std-', copyindex())]",
+			"name": "[concat(parameters('virtualMachineName'),copyindex())]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
 			"dependsOn": [
@@ -323,5 +307,26 @@
 				}
 			}
 		}
-	]
+	],
+	"outputs": {
+		"UntrustPrivateIPAddress1": {
+			"value": "[reference(concat(parameters('virtualMachineName'),'0','-nic1')).ipConfigurations[0].properties.privateIPAddress]",
+			"type": "string"
+		},
+		"UntrustPrivateIPAddress2": {
+			"value": "[reference(concat(parameters('virtualMachineName'),'1','-nic1')).ipConfigurations[0].properties.privateIPAddress]",
+			"type": "string"
+		},
+		"UntrustPrivateIPAddresses": {
+			"value": [
+				{
+					"IpAddress": "[reference('SetupNetworkInterfaces0').outputs.UntrustPrivateIPAddress.value]"
+				},
+				{
+					"IpAddress": "[reference('SetupNetworkInterfaces1').outputs.UntrustPrivateIPAddress.value]"
+				}
+			],
+			"type": "array"
+		}
+	}
 }

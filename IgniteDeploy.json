@@ -175,7 +175,6 @@
 				"description": "Subnet for Egress firewall Trust Network"
 			}
 		},
-
 		"Deployipfw": {
 			"type": "string",
 			"defaultValue": "no",
@@ -379,29 +378,28 @@
 		"ipLoadBalancerSku": "Standard",
 		"ipFirewallinboundLoadBalancerSku": "Standard",
 		"baseUrl": "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
-		"DeployAppGwFirewallURL": "[concat(variables('baseUrl'),'/DeployAppGwFirewall.json')]",
-		"deployStorageURL": "[concat(variables('baseUrl'),'/deployStorage.json')]",
-		"deployNsgURL": "[concat(variables('baseUrl'),'/deployNsg.json')]",
-		"deployVnetURL": "[concat(variables('baseUrl'),'/deployVnet.json')]",
+		"DeployAppGwFirewallURL": "[concat(variables('baseUrl'),'/DeployAppFirewall.json')]",
 		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/DeployIPFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
 		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/deploytcpLoadBalancer.json')]",
+		"DeployAppGwlbURL": "[concat(variables('baseUrl'),'/DeployAppGw.json')]",
+		"deployStorageURL": "[concat(variables('baseUrl'),'/deployStorage.json')]",
+		"deployNsgURL": "[concat(variables('baseUrl'),'/deployNsg.json')]",
+		"deployVnetURL": "[concat(variables('baseUrl'),'/deployVnet.json')]",
 		"location": "[resourceGroup().location]",
-		"virtualNetworkRG": "svcshubrg1",
-		"egressfwrg": "egressfwrg",
-		"ipfwrg":"ipfwrg",
-		"vnetrg":"vnetrg",
-		"appgwfwrg":"appgwfwrg",
+		"virtualNetworkRG": "vnetrg1",
+		"egressfwrg": "egressfwrg1",
+		"ipfwrg": "ipfwrg1",
+		"vnetrg": "vnetrg1",
+		"appgwfwrg": "appgwfwrg1",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
 		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]",
-		"LoadBalancerType": "layer-7",
-		"webLBURL": "[concat(variables('baseUrl'),'/public-lb-', variables('LoadBalancerType'), '.json')]"
+		"LoadBalancerType": "layer-7"
 	},
 	"resources": [
-
 		{
 			"name": "deployNsg",
 			"apiVersion": "2017-05-10",
@@ -738,7 +736,115 @@
 		},
 		{
 			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
+			"name": "DeployAppGwFirewall",
+			"resourceGroup": "[variables('appgwfwrg')]",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/deployVNet"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('DeployAppGwFirewallURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"loadBalancerSku": {
+						"value": "[variables('ipFirewallinboundLoadBalancerSku')]"
+					},
+					"storageName": {
+						"value": "[variables('appgwfwstor')]"
+					},
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"baseUrl": {
+						"value": "[variables('baseUrl')]"
+					},
+					"vmSize": {
+						"value": "[parameters('firewallVmSize')]"
+					},
+					"imageSku": {
+						"value": "[parameters('firewallModel')]"
+					},
+					"virtualNetworkRG": {
+						"value": "[variables('virtualNetworkRG')]"
+					},
+					"virtualMachineName": {
+						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
+					},
+					"adminUsername": {
+						"value": "[parameters('username')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('password')]"
+					},
+					"sshKey": {
+						"value": "[parameters('sshPublicKey')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"mgmtSubnetName": {
+						"value": "[parameters('mgmtSubnetName')]"
+					},
+					"untrustSubnetName": {
+						"value": "[parameters('appGwUntrustSubnetName')]"
+					},
+					"trustSubnetName": {
+						"value": "[parameters('appGwTrustSubnetName')]"
+					},
+					"loadBalancerName": {
+						"value": "[variables('appGatewayName')]"
+					},
+					"bootstrapUri": {
+						"value": "[parameters('IPFWBootstrapUri')]"
+					},
+					"bootstrapUriSizeGB": {
+						"value": "[parameters('IPFWBootstrapUriSizeGB')]"
+					}
+				}
+			}
+		},
+		{
+			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
+			"name": "SetupPublicLoadBalancer",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/DeployVnet",
+				"Microsoft.Resources/deployments/DeployAppGwFirewall"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('DeployAppGwlbURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"lbName": {
+						"value": "[parameters('appGatewayName')]"
+					},
+					"publicIPAddressName": {
+						"value": "[parameters('appGatewayDnsName')]"
+					},
+					"vnetName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"subnetName": {
+						"value": "[parameters('appGatewaySubnetName')]"
+					},
+					"backendIPAddresses": {
+						"value": "[reference('DeployAppGwFirewall').outputs.UntrustPrivateIPAddresses.value]"
+					}
+				}
+			}
+		},
+		{
+			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
 			"name": "albfwdeployStorage",
+			"resourceGroup": "[variables('appgwfwrg')]",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"properties": {
@@ -756,96 +862,6 @@
 					},
 					"storageName": {
 						"value": "[variables('appgwfwstor')]"
-					}
-				}
-			}
-		},
-		{
-			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
-			"name": "deployAppGwFirewall",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2017-05-10",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/DeployVnet"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('DeployAppGwFirewallURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"lbName": {
-						"value": "[variables('appGatewayName')]"
-					},
-					"vmCount": {
-						"value": "[variables('firewallVmCount')]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('AppGwFirewall-', parameters('firewallVmName'))]"
-					},
-					"imageSku": {
-						"value": "[parameters('firewallModel')]"
-					},
-					"vmSize": {
-						"value": "[parameters('firewallVmSize')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"virtualNetworkRG": {
-						"value": "[variables('virtualNetworkRG')]"
-					},
-					"mgtSubnetName": {
-						"value": "[parameters('MgmtSubnetName')]"
-					},
-					"appGwUntrustSubnetName": {
-						"value": "[parameters('appGwUntrustSubnetName')]"
-					},
-					"appGwTrustSubnetName": {
-						"value": "[parameters('appGwTrustSubnetName')]"
-					},
-					"subnetLBName": {
-						"value": "[parameters('appGatewaySubnetName')]"
-					},
-					"mgtSubnetPrefix": {
-						"value": "[parameters('mgmtSubnetPrefix')]"
-					},
-					"appGwUntrustSubnetPrefix": {
-						"value": "[parameters('appGwUntrustSubnetPrefix')]"
-					},
-					"appGwTrustSubnetPrefix": {
-						"value": "[parameters('appGwTrustSubnetPrefix')]"
-					},
-					"subnetLBPrefix": {
-						"value": "[parameters('AppGWSubnetPrefix')]"
-					},
-					"adminUsername": {
-						"value": "[parameters('username')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('password')]"
-					},
-					"baseUrl": {
-						"value": "[variables('baseUrl')]"
-					},
-					"MgmtPublicIPAddressName": {
-						"value": "[variables('appGwMgmtPublicIPAddressName')]"
-					},
-					"storageAccountName": {
-						"value": "[variables('appgwfwstor')]"
-					},
-					"storageAccountNewOrExisting": {
-						"value": "new"
-					},
-					"storageAccountType": {
-						"value": "[parameters('storageType')]"
-					},
-					"authenticationType": {
-						"value": "[parameters('authenticationType')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshPublicKey')]"
 					}
 				}
 			}
