@@ -165,7 +165,7 @@
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
-		"deployVmURL": "[concat(parameters('baseUrl'),'/deployVm-inbound-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
+		"deployVmURL": "[concat(parameters('baseUrl'),'/nested/deployVm-inbound-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
 		"version": "latest",
@@ -332,11 +332,17 @@
 		"UntrustPrivateIPAddresses": {
 			"value": [
 				{
+<<<<<<< HEAD
 					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '0', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
 				},
 				{
 					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '1', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
 				}
+=======
+					"IpAddress":"[reference(concat(parameters('virtualMachineName'), '0', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"				},
+				{
+					"IpAddress":"[reference(concat(parameters('virtualMachineName'), '1', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"			}
+>>>>>>> 66d4b54... fixed output
 			],
 			"type": "array"
 		}
