@@ -830,7 +830,7 @@
 						"value": "[parameters('appGatewaySubnetName')]"
 					},
 					"backendIPAddresses": {
-						"value": "[reference('DeployAppGwFirewall', "2015-01-01", 'Full').outputs.UntrustPrivateIPAddresses.value]"
+						"value": "[reference('DeployAppGwFirewall').outputs.UntrustPrivateIPAddresses.value]"
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
