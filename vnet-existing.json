@@ -205,20 +205,6 @@
 	},
 	"resources": [
 		{
-			"name": "[variables('virtualNetworkName')]",
-			"type": "Microsoft.Network/virtualNetworks",
-			"location": "[variables('location')]",
-			"apiVersion": "2015-06-15",
-			"properties": {
-				"addressSpace": {
-					"addressPrefixes": [
-						"[parameters('virtualNetworkAddressPrefix')]"
-					]
-				},
-				"subnets": "[variables('subnets')]"
-			}
-		},
-		{
 			"type": "Microsoft.Network/routeTables",
 			"name": "RT-Outbound",
 			"apiVersion": "2016-03-30",

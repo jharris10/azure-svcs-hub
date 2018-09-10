@@ -161,7 +161,6 @@
 				"description": "Name of the inbound load balancer"
 			}
 		}
-		
 	},
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
@@ -170,7 +169,7 @@
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
 		"version": "latest",
-		"availabilitySetName":"App-FW-AS"
+		"availabilitySetName": "App-FW-AS"
 	},
 	"resources": [
 		{
@@ -180,15 +179,15 @@
 			"location": "[resourceGroup().location]",
 			"tags": {},
 			"properties": {
-			  "platformUpdateDomainCount": 2,
-			  "platformFaultDomainCount": 2
+				"platformUpdateDomainCount": 2,
+				"platformFaultDomainCount": 2
 			},
 			"sku": {
-			  "name": "Aligned"
+				"name": "Aligned"
 			},
 			"resources": [],
 			"dependsOn": []
-		  },
+		},
 		{
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic0')]",
 			"type": "Microsoft.Network/networkInterfaces",
@@ -331,19 +330,21 @@
 	],
 	"outputs": {
 		"UntrustPrivateIPAddress1": {
-			"value":"[reference(concat(parameters('virtualMachineName'),'0','-nic1')).ipConfigurations[0].properties.privateIPAddress]",
+			"value": "[reference(concat(parameters('virtualMachineName'),'0','-nic1')).ipConfigurations[0].properties.privateIPAddress]",
 			"type": "string"
 		},
 		"UntrustPrivateIPAddress2": {
-			"value":"[reference(concat(parameters('virtualMachineName'),'1','-nic1')).ipConfigurations[0].properties.privateIPAddress]",
+			"value": "[reference(concat(parameters('virtualMachineName'),'1','-nic1')).ipConfigurations[0].properties.privateIPAddress]",
 			"type": "string"
 		},
 		"UntrustPrivateIPAddresses": {
 			"value": [
 				{
-					"IpAddress":"[reference(concat(parameters('virtualMachineName'), '0', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"				},
+					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '0', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
+				},
 				{
-					"IpAddress":"[reference(concat(parameters('virtualMachineName'), '1', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"			}
+					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '1', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
+				}
 			],
 			"type": "array"
 		}

@@ -2,6 +2,17 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
+		"DeployPanorama": {
+			"type": "string",
+			"defaultValue": "no",
+			"allowedValues": [
+				"no",
+				"yes"
+			],
+			"metadata": {
+				"description": "Deploy firewalls and an Application Gateway to secure HTTP traffic"
+			}
+		},
 		"vnetNewOrExisting": {
 			"type": "string",
 			"allowedValues": [
@@ -24,7 +35,7 @@
 			"type": "string",
 			"defaultValue": "",
 			"metadata": {
-				"description": "Resource Group containing the virtual network or enter new resource group"
+				"description": "Resource Group containing the VNET "
 			}
 		},
 		"virtualNetworkAddressPrefix": {
@@ -42,20 +53,20 @@
 				"yes"
 			],
 			"metadata": {
-				"description": "Deploy firewalls to secure HTTP traffic"
+				"description": "Deploy firewalls and an Application Gateway to secure HTTP traffic"
 			}
 		},
 		"appGatewayName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the HTTP Firewall loadbalancer."
+				"description": "Name of the Application Gateway."
 			},
 			"defaultValue": "weblb"
 		},
 		"appGatewayDnsName": {
 			"type": "string",
 			"metadata": {
-				"description": "DNS name of the HTTP Firewall loadbalancer."
+				"description": "Application Gateway Public IP DNS nane."
 			},
 			"defaultValue": "demowebserver"
 		},
@@ -183,15 +194,8 @@
 				"yes"
 			],
 			"metadata": {
-				"description": "Deploy firewall to secure non HTTP connections"
+				"description": "Deploy firewalls to secure non HTTP connections from the internet"
 			}
-		},
-		"ipFirewallinboundloadBalancerIP": {
-			"type": "string",
-			"metadata": {
-				"description": "IP Address for the IP (non HTTP) load balancer"
-			},
-			"defaultValue": "10.0.3.100"
 		},
 		"IPFWBootstrapUri": {
 			"type": "string",
@@ -206,6 +210,13 @@
 			"metadata": {
 				"description": "bootstrap disk disk in GB"
 			}
+		},
+		"ipFwLoadBalancerIP": {
+			"type": "string",
+			"metadata": {
+				"description": "IP Address for the IP (non HTTP) load balancer"
+			},
+			"defaultValue": "10.0.3.100"
 		},
 		"ipFirewalluntrustSubnetName": {
 			"type": "string",
@@ -255,13 +266,6 @@
 				"description": "IP Address for the egress load balancer"
 			},
 			"defaultValue": "10.0.2.100"
-		},
-		"ipFirewallloadBalancerIP": {
-			"type": "string",
-			"metadata": {
-				"description": "IP Address for the non http load balancer"
-			},
-			"defaultValue": "10.0.3.100"
 		},
 		"firewallModel": {
 			"type": "string",
@@ -364,14 +368,13 @@
 	"variables": {
 		"vnetID": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
 		"egressloadBalancerName": "[concat(parameters('loadBalancerName'),'EgressFW')]",
-		"ipFirewallinboundloadBalancerName": "[concat(parameters('loadBalancerName'),'IPFW')]",
-		"appGwMgmtPublicIPAddressName": "[concat(parameters('loadBalancerName'),'AppGwFW')]",
+		"ipFwLoadBalancerName": "[concat(parameters('loadBalancerName'),'IPFW')]",
 		"appGatewayName": "[concat(parameters('loadBalancerName'),'appgw')]",
-		"firewallVmCount": 2,
 		"ipLoadBalancerSku": "Standard",
 		"ipFirewallinboundLoadBalancerSku": "Standard",
 		"baseUrl": "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
-		"DeployAppGwFirewallURL": "[concat(variables('baseUrl'),'/DeployAppFirewall.json')]",
+		"deployAppGwFirewallURL": "[concat(variables('baseUrl'),'/DeployAppFirewall.json')]",
+		"deployPanoramaURL": "[concat(variables('baseUrl'),'/DeployPanorama.json')]",
 		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/DeployIPFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
@@ -379,18 +382,19 @@
 		"DeployAppGwlbURL": "[concat(variables('baseUrl'),'/DeployAppGw.json')]",
 		"deployStorageURL": "[concat(variables('baseUrl'),'/deployStorage.json')]",
 		"deployNsgURL": "[concat(variables('baseUrl'),'/deployNsg.json')]",
+		"vnetURL": "[concat(variables('baseUrl'),'vnet-',parameters('vnetNewOrExisting'),'.json')]",
 		"deployVnetURL": "[concat(variables('baseUrl'),'/deployVnet.json')]",
 		"location": "[resourceGroup().location]",
 		"virtualNetworkRG": "vnetrg",
 		"egressfwrg": "egressfwrg",
+		"panoramarg": "panoramarg",
 		"ipfwrg": "ipfwrg",
 		"vnetrg": "vnetrg",
 		"appgwfwrg": "appgwfwrg",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
-		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]",
-		"LoadBalancerType": "layer-7"
+		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]"
 	},
 	"resources": [
 		{
@@ -421,7 +425,6 @@
 			}
 		},
 		{
-			"condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
 			"apiVersion": "2017-05-10",
 			"name": "DeployVnet",
 			"type": "Microsoft.Resources/deployments",
@@ -432,7 +435,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployVnetURL')]",
+					"uri": "[variables('vnetURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -495,6 +498,61 @@
 					},
 					"AppGWSubnetPrefix": {
 						"value": "[parameters('AppGWSubnetPrefix')]"
+					}
+				}
+			}
+		},
+		{
+			"condition": "[equals(parameters('DeployPanorama'), 'yes')]",
+			"apiVersion": "2017-05-10",
+			"name": "DeployPanorama",
+			"type": "Microsoft.Resources/deployments",
+			"resourceGroup": "[variables('panoramarg')]",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/deployNsg"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deploypanoramaURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"location": {
+						"value": "[variables('location')]"
+					},
+					"virtualMachineName": {
+						"value": "panorama"
+					},
+					"virtualMachineSize": {
+						"value": "Standard_DS4_v2"
+					},
+					"adminUsername": {
+						"value": "[parameters('username')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"networkInterfaceName": {
+						"value": "PanoramaMgt-Nic0"
+					},
+					"adminPassword": {
+						"value": "[parameters('password')]"
+					},
+					"subnetName": {
+						"value": "[parameters('mgmtSubnetName')]"
+					},
+					"publicIpAddressName": {
+						"value": "panorama"
+					},
+					"publicIpAddressType": {
+						"value": "Dynamic"
+					},
+					"publicIpAddressSku": {
+						"value": "Basic"
+					},
+					"vnetResourceGroup":{
+						"type": "[parameters('vnetResourceGroup')]"
 					}
 				}
 			}
@@ -676,7 +734,7 @@
 						"value": "[parameters('ipFirewalltrustSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[variables('ipFirewallinboundloadBalancerName')]"
+						"value": "[variables('ipFwLoadBalancerName')]"
 					},
 					"bootstrapUri": {
 						"value": "[parameters('IPFWBootstrapUri')]"
@@ -719,16 +777,16 @@
 						"value": "[parameters('ipFirewalluntrustSubnetName')]"
 					},
 					"loadBalancerName": {
-						"value": "[variables('ipFirewallinboundloadBalancerName')]"
+						"value": "[variables('ipFwLoadBalancerName')]"
 					},
 					"loadBalancerIP": {
-						"value": "[parameters('ipFirewallinboundloadBalancerIP')]"
+						"value": "[parameters('ipFwLoadBalancerIP')]"
 					}
 				}
 			}
 		},
 		{
-			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
+			"condition": "[equals(parameters('deployAppGwFirewall'), 'yes')]",
 			"name": "DeployAppGwFirewall",
 			"resourceGroup": "[variables('appgwfwrg')]",
 			"type": "Microsoft.Resources/deployments",
