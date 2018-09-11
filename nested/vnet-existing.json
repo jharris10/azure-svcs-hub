@@ -215,15 +215,70 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('mgmtSubnetPrefix')]",
+			  "addressPrefix": "[parameters('mgmtSubnetPrefix')]"
 			}
 		  },
 		  {
 			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('untrustSubnetName'))]",
+			"location": "[resourceGroup().location]",
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('untrustSubnetPrefix')]",
+			  "addressPrefix": "[parameters('untrustSubnetPrefix')]"
+			}
+		},
+		{
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('trustSubnetName'))]",
+			"location": "[resourceGroup().location]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"apiVersion": "2017-10-01",
+			"properties": {
+			  "addressPrefix": "[parameters('trustSubnetPrefix')]"
+			}
+		},
+		{
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('ipFirewalltrustSubnetName'))]",
+			"location": "[resourceGroup().location]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"apiVersion": "2017-10-01",
+			"properties": {
+			  "addressPrefix": "[parameters('ipFirewalltrustSubnetPrefix')]"
+			}
+		},
+		{
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('ipFirewalluntrustSubnetName'))]",
+			"location": "[resourceGroup().location]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"apiVersion": "2017-10-01",
+			"properties": {
+			  "addressPrefix": "[parameters('ipFirewalluntrustSubnetPrefix')]"
+			}
+		},
+		{
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('appGwUntrustSubnetName'))]",
+			"location": "[resourceGroup().location]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"apiVersion": "2017-10-01",
+			"properties": {
+			  "addressPrefix": "[parameters('appGwUntrustSubnetPrefix')]"
+			}
+		},
+		{
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('appGwTrustSubnetName'))]",
+			"location": "[resourceGroup().location]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"apiVersion": "2017-10-01",
+			"properties": {
+			  "addressPrefix": "[parameters('appGwTrustSubnetPrefix')]"
+			}
+		},
+		{
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('appGwSubnetName'))]",
+			"location": "[resourceGroup().location]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"apiVersion": "2017-10-01",
+			"properties": {
+			  "addressPrefix": "[parameters('appGwSubnetPrefix')]"
 			}
 		},
 		
