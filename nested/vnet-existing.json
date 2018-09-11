@@ -210,16 +210,17 @@
 		]
 	},
 	"resources": [
+	
 		{
 			"apiVersion": "2018-04-01" ,
 			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"name": "[variables('subnets')[copyIndex('loop')].name]",
 			"location": "[resourceGroup().location]",
 			"properties": {
 			  "copy": [{
 				"name": "loop",
 				"count": "[length(variables('subnets'))]",
 				"input": {
-				  "name": "[variables('subnets')[copyIndex('loop')].name]",
 				  "properties": {
 					"addressPrefix": "[variables('subnets')[copyIndex('loop')].properties.addressPrefix]"
 				  }
