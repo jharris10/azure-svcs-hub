@@ -210,24 +210,24 @@
 		]
 	},
 	"resources": [
-	
 		{
-			"apiVersion": "2018-04-01" ,
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('mgmtSubnetName'))]",
 			"type": "Microsoft.Network/virtualNetworks/subnets",
-			"name": "[variables('subnets')[copyIndex('loop')].name]",
-			"location": "[resourceGroup().location]",
+			"apiVersion": "2017-10-01",
 			"properties": {
-			  "copy": [{
-				"name": "loop",
-				"count": "[length(variables('subnets'))]",
-				"input": {
-				  "properties": {
-					"addressPrefix": "[variables('subnets')[copyIndex('loop')].properties.addressPrefix]"
-				  }
-				}
-			  }]
+			  "addressPrefix": "[parameters('mgmtSubnetPrefix')]",
 			}
 		  },
+		  {
+			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('untrustSubnetName'))]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+			"apiVersion": "2017-10-01",
+			"properties": {
+			  "addressPrefix": "[parameters('untrustSubnetPrefix')]",
+			}
+		},
+		
+		
 		{
 			"type": "Microsoft.Network/routeTables",
 			"name": "RT-Outbound",
