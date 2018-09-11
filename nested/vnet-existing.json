@@ -216,12 +216,12 @@
 			"location": "[resourceGroup().location]",
 			"properties": {
 			  "copy": [{
-				"name": "subnets",
+				"name": "loop",
 				"count": "[length(variables('subnets'))]",
 				"input": {
-				  "name": "[variables('subnets')[copyIndex('subnets')].name]",
+				  "name": "[variables('subnets')[copyIndex('loop')].name]",
 				  "properties": {
-					"addressPrefix": "[variables('subnets')[copyIndex('subnets')].addressPrefix]"
+					"addressPrefix": "[variables('subnets')[copyIndex('loop')].properties.addressPrefix]"
 				  }
 				}
 			  }]
