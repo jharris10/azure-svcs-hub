@@ -430,7 +430,10 @@
 			"name": "DeployJumpBox",
 			"apiVersion": "2017-05-10",
 			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "[variables('egressfwrg')]",
+			"resourceGroup": "[variables('vnetrg')]",
+			"dependsOn": [
+				"Microsoft.Resources/deployments/deployVNet"
+			],
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -878,13 +881,16 @@
 						"value": "[parameters('appGatewaySubnetName')]"
 					},
 					"backendIPAddresses": {
-						"value": "[reference('DeployAppGwFirewall').outputs.UntrustPrivateIPAddresses.value]"
+						"value": ""
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
 					},
 					"virtualNetworkName": {
 						"value": "[parameters('virtualNetworkName')]"
+					},
+					"virtualMachineName": {
+						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
 					}
 				}
 			}

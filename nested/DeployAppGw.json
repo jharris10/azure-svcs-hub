@@ -16,12 +16,12 @@
         "description": "Public Load Balancer IP Name"
       }
     },
-    "vnetName": {
+    "virtualMachineName": {
       "type": "string",
-      "defaultValue": "myVNET",
       "metadata": {
-        "description": "VNET name"
-      }
+        "description": "Name of VM-Series VM in the Azure portal"
+      },
+      "defaultValue": "vmSeries"
     },
     "skuName": {
       "type": "string",
@@ -76,10 +76,8 @@
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
     "applicationGatewayID": "[resourceId('Microsoft.Network/applicationGateways',variables('applicationGatewayName'))]"
-    
   },
   "resources": [
-    
     {
       "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
@@ -135,8 +133,14 @@
           {
             "name": "appGatewayBackendPool",
             "properties": {
-              "BackendAddresses": "[parameters('backendIPAddresses')]"
-            }
+              "backendIPConfigurations": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/networkInterfaces', reference(concat(parameters('virtualMachineName'), '0', '-nic1'))), '/ipConfigurations/ipconfig-untrust')]"
+                }
+              ],
+              "backendAddresses": []
+            },
+            "type": "Microsoft.Network/applicationGateways/backendAddressPools"
           }
         ],
         "backendHttpSettingsCollection": [
