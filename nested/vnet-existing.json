@@ -250,6 +250,10 @@
 		"virtualNetworkName": {
 			"value": "[variables('virtualNetworkName')]",
 			"type": "string"
+		},
+		"subnets": {
+			"value":"[variables('subnets')]",
+			"type": "array"
 		}
 	}
 }
