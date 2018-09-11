@@ -210,14 +210,13 @@
 		]
 	},
 	"resources": [
-
-		  {
+		{
 			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('untrustSubnetName'))]",
 			"location": "[resourceGroup().location]",
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('untrustSubnetPrefix')]"
+				"addressPrefix": "[parameters('untrustSubnetPrefix')]"
 			}
 		},
 		{
@@ -226,7 +225,7 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('trustSubnetPrefix')]"
+				"addressPrefix": "[parameters('trustSubnetPrefix')]"
 			}
 		},
 		{
@@ -235,7 +234,7 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('ipFirewalltrustSubnetPrefix')]"
+				"addressPrefix": "[parameters('ipFirewalltrustSubnetPrefix')]"
 			}
 		},
 		{
@@ -244,7 +243,7 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('ipFirewalluntrustSubnetPrefix')]"
+				"addressPrefix": "[parameters('ipFirewalluntrustSubnetPrefix')]"
 			}
 		},
 		{
@@ -253,7 +252,7 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('appGwUntrustSubnetPrefix')]"
+				"addressPrefix": "[parameters('appGwUntrustSubnetPrefix')]"
 			}
 		},
 		{
@@ -262,7 +261,7 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('appGwTrustSubnetPrefix')]"
+				"addressPrefix": "[parameters('appGwTrustSubnetPrefix')]"
 			}
 		},
 		{
@@ -271,7 +270,7 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('appGwSubnetPrefix')]"
+				"addressPrefix": "[parameters('appGwSubnetPrefix')]"
 			}
 		},
 		{
@@ -280,16 +279,17 @@
 			"type": "Microsoft.Network/virtualNetworks/subnets",
 			"apiVersion": "2017-10-01",
 			"properties": {
-			  "addressPrefix": "[parameters('mgmtSubnetPrefix')]"
+				"addressPrefix": "[parameters('mgmtSubnetPrefix')]"
 			}
-		  },
-		
-		
+		},
 		{
 			"type": "Microsoft.Network/routeTables",
 			"name": "RT-Outbound",
 			"apiVersion": "2016-03-30",
 			"location": "[resourceGroup().location]",
+			"dependsOn": [
+				"[concat(parameters('virtualNetworkName'), '/', parameters('mgmtSubnetName'))]"
+			  ],
 			"properties": {
 				"routes": [
 					{
@@ -308,10 +308,6 @@
 		"virtualNetworkName": {
 			"value": "[variables('virtualNetworkName')]",
 			"type": "string"
-		},
-		"subnets": {
-			"value":"[variables('subnets')]",
-			"type": "array"
 		}
 	}
 }
