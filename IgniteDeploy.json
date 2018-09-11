@@ -2,15 +2,15 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"DeployPanorama": {
+		"DeployJumpBox": {
 			"type": "string",
-			"defaultValue": "no",
 			"allowedValues": [
-				"no",
-				"yes"
+				"yes",
+				"no"
 			],
+			"defaultValue": "no",
 			"metadata": {
-				"description": "Deploy firewalls and an Application Gateway to secure HTTP traffic"
+				"description": "Deploy a Windows Jumpbox in management subnet"
 			}
 		},
 		"vnetNewOrExisting": {
@@ -404,6 +404,7 @@
 			"apiVersion": "2017-05-10",
 			"type": "Microsoft.Resources/deployments",
 			"resourceGroup": "[variables('vnetrg')]",
+			
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -427,6 +428,7 @@
 			}
 		},
 		{
+			"condition": "[equals(parameters('DeployJumpBox'), 'yes')]",
 			"name": "DeployJumpBox",
 			"apiVersion": "2017-05-10",
 			"type": "Microsoft.Resources/deployments",
