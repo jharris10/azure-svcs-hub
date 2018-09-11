@@ -36,7 +36,7 @@
       "albUntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appGwUntrustSubnetName'))]",
       "albTntrustRef": "[concat(variables('vnetID'),'/subnets/',parameters('appGwTrustSubnetName'))]",
       "mgmtpip": "[concat('mgmtIP-', parameters('MgmtPublicIPAddressName'))]",
-      "setupUntrustNICURL": "[concat(parameters('baseUrl'),'/setupNICS-untrust.json')]"
+      "setupUntrustNICURL": "[concat(parameters('baseUrl'),'/nested/setupNICS-untrust.json')]"
   },
   "resources": [
     {
