@@ -204,23 +204,7 @@
 		]
 	},
 	"resources": [
-		  {
-			"apiVersion": "2018-04-01" ,
-			"type": "Microsoft.Network/virtualNetworks/subnets",
-			"location": "[resourceGroup().location]",
-			"properties": {
-			  "copy": [{
-				"name": "subnets",
-				"count": "[length(variables('subnets'))]",
-				"input": {
-				  "name": "[variables('subnets')[copyIndex('subnets')].name]",
-				  "properties": {
-					"addressPrefix": "[variables('subnets')[copyIndex('subnets')].addressPrefix]"
-				  }
-				}
-			  }]
-			}
-		  },
+
 		{
 			"type": "Microsoft.Network/routeTables",
 			"name": "RT-Outbound",
