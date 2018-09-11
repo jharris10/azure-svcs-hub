@@ -384,7 +384,7 @@
 		"deployNsgURL": "[concat(variables('baseUrl'),'/nested/deployNsg.json')]",
 		"vnetURL": "[concat(variables('baseUrl'),'/nested/vnet-',parameters('vnetNewOrExisting'),'.json')]",
 		"deployVnetURL": "[concat(variables('baseUrl'),'/nested/deployVnet.json')]",
-		"deployJumpBoxURL":"[concat(variables('baseUrl'),'/nested/DeployJumpbBox.json')]",
+		"deployJumpBoxURL":"[concat(variables('baseUrl'),'/nested/DeployJumpBox.json')]",
 		"location": "[resourceGroup().location]",
 		"virtualNetworkRG": "vnetrg",
 		"egressfwrg": "egressfwrg",
@@ -430,7 +430,7 @@
 			"name": "DeployJumpBox",
 			"apiVersion": "2017-05-10",
 			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "[variables('mgtrg')]",
+			"resourceGroup": "[variables('egressfwrg')]",
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -546,61 +546,7 @@
 				}
 			}
 		},
-		{
-			"condition": "[equals(parameters('DeployPanorama'), 'yes')]",
-			"apiVersion": "2017-05-10",
-			"name": "DeployPanorama",
-			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "[variables('panoramarg')]",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/deployNsg"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deploypanoramaURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"virtualMachineName": {
-						"value": "panorama"
-					},
-					"virtualMachineSize": {
-						"value": "Standard_DS4_v2"
-					},
-					"adminUsername": {
-						"value": "[parameters('username')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"networkInterfaceName": {
-						"value": "PanoramaMgt-Nic0"
-					},
-					"adminPassword": {
-						"value": "[parameters('password')]"
-					},
-					"subnetName": {
-						"value": "[parameters('mgmtSubnetName')]"
-					},
-					"publicIpAddressName": {
-						"value": "panorama"
-					},
-					"publicIpAddressType": {
-						"value": "Dynamic"
-					},
-					"publicIpAddressSku": {
-						"value": "Basic"
-					},
-					"vnetResourceGroup": {
-						"type": "[parameters('vnetResourceGroup')]"
-					}
-				}
-			}
-		},
+
 		{
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
 			"name": "DeployEgressFWLoadBalancer",

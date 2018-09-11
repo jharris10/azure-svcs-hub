@@ -332,17 +332,11 @@
 		"UntrustPrivateIPAddresses": {
 			"value": [
 				{
-<<<<<<< HEAD
 					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '0', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
 				},
 				{
 					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '1', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
 				}
-=======
-					"IpAddress":"[reference(concat(parameters('virtualMachineName'), '0', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"				},
-				{
-					"IpAddress":"[reference(concat(parameters('virtualMachineName'), '1', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"			}
->>>>>>> 66d4b54... fixed output
 			],
 			"type": "array"
 		}
