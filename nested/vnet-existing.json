@@ -13,6 +13,13 @@
 				"description": "VNET name"
 			}
 		},
+		"virtualNetworkRG": {
+			"type": "string",
+			"defaultValue": "vnetrg",
+			"metadata": {
+				"description": "VNET name"
+			}
+		},
 		"virtualNetworkAddressPrefix": {
 			"type": "string",
 			"metadata": {
@@ -125,15 +132,14 @@
 	},
 	"variables": {
 		"location": "[resourceGroup().location]",
-		"rgname": "[resourceGroup().id]",
 		"virtualNetworkName": "[parameters('virtualNetworkName')]",
-		"vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+		"vnetID": "[resourceId(parameters('virtualNetworkRG'),concat('Microsoft.Network','/','virtualNetworks'),parameters('virtualNetworkName'))]",
 		"mgmtSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('mgmtSubnetName'))]",
 		"untrustSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('untrustSubnetName'))]",
 		"trustSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('trustSubnetName'))]",
 		"subnets": [
 			{
-				"name": "[parameters('mgmtSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('mgmtSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('mgmtSubnetPrefix')]",
 					"networkSecurityGroup": {
@@ -142,13 +148,13 @@
 				}
 			},
 			{
-				"name": "[parameters('untrustSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('untrustSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('untrustSubnetPrefix')]"
 				}
 			},
 			{
-				"name": "[parameters('trustSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('trustSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('trustSubnetPrefix')]",
 					"networkSecurityGroup": {
@@ -157,7 +163,7 @@
 				}
 			},
 			{
-				"name": "[parameters('ipFirewalluntrustSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('ipFirewalluntrustSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('ipFirewalluntrustSubnetPrefix')]",
 					"networkSecurityGroup": {
@@ -166,7 +172,7 @@
 				}
 			},
 			{
-				"name": "[parameters('ipFirewalltrustSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('ipFirewalltrustSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('ipFirewalltrustSubnetPrefix')]",
 					"networkSecurityGroup": {
@@ -175,7 +181,7 @@
 				}
 			},
 			{
-				"name": "[parameters('appGwUntrustSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('appGwUntrustSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('appGwUntrustSubnetPrefix')]",
 					"networkSecurityGroup": {
@@ -184,7 +190,7 @@
 				}
 			},
 			{
-				"name": "[parameters('appGwTrustSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('appGwTrustSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('appGwTrustSubnetPrefix')]",
 					"networkSecurityGroup": {
@@ -193,7 +199,7 @@
 				}
 			},
 			{
-				"name": "[parameters('AppGWSubnetName')]",
+				"name": "[concat(parameters('virtualNetworkName'), '/', parameters('AppGWSubnetName'))]",
 				"properties": {
 					"addressPrefix": "[parameters('appGwSubnetPrefix')]",
 					"networkSecurityGroup": {

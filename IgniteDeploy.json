@@ -373,17 +373,18 @@
 		"ipLoadBalancerSku": "Standard",
 		"ipFirewallinboundLoadBalancerSku": "Standard",
 		"baseUrl": "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
-		"deployAppGwFirewallURL": "[concat(variables('baseUrl'),'/DeployAppFirewall.json')]",
-		"deployPanoramaURL": "[concat(variables('baseUrl'),'/DeployPanorama.json')]",
-		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/DeployEgressFirewall.json')]",
-		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/DeployIPFirewall.json')]",
-		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/DeployEgressLoadBalancer.json')]",
-		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/deploytcpLoadBalancer.json')]",
-		"DeployAppGwlbURL": "[concat(variables('baseUrl'),'/DeployAppGw.json')]",
-		"deployStorageURL": "[concat(variables('baseUrl'),'/deployStorage.json')]",
-		"deployNsgURL": "[concat(variables('baseUrl'),'/deployNsg.json')]",
-		"vnetURL": "[concat(variables('baseUrl'),'vnet-',parameters('vnetNewOrExisting'),'.json')]",
-		"deployVnetURL": "[concat(variables('baseUrl'),'/deployVnet.json')]",
+		"deployAppGwFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployAppFirewall.json')]",
+		"deployPanoramaURL": "[concat(variables('baseUrl'),'/nested/DeployPanorama.json')]",
+		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployEgressFirewall.json')]",
+		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployIPFirewall.json')]",
+		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/nested/DeployEgressLoadBalancer.json')]",
+		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/nested/deploytcpLoadBalancer.json')]",
+		"DeployAppGwlbURL": "[concat(variables('baseUrl'),'/nested/DeployAppGw.json')]",
+		"deployStorageURL": "[concat(variables('baseUrl'),'/nested/deployStorage.json')]",
+		"deployNsgURL": "[concat(variables('baseUrl'),'/nested/deployNsg.json')]",
+		"vnetURL": "[concat(variables('baseUrl'),'/nested/vnet-',parameters('vnetNewOrExisting'),'.json')]",
+		"deployVnetURL": "[concat(variables('baseUrl'),'/nested/deployVnet.json')]",
+		"deployJumpBoxURL":"[concat(variables('baseUrl'),'/nested/DeployJumpbBox.json')]",
 		"location": "[resourceGroup().location]",
 		"virtualNetworkRG": "vnetrg",
 		"egressfwrg": "egressfwrg",
@@ -391,6 +392,7 @@
 		"ipfwrg": "ipfwrg",
 		"vnetrg": "vnetrg",
 		"appgwfwrg": "appgwfwrg",
+		"mgtrg":"mgtrg",
 		"rgname": "[resourceGroup().name]",
 		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
 		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
@@ -420,6 +422,48 @@
 					},
 					"virtualNetworkAddressPrefix": {
 						"value": "[parameters('virtualNetworkAddressPrefix')]"
+					}
+				}
+			}
+		},
+		{
+			"name": "DeployJumpBox",
+			"apiVersion": "2017-05-10",
+			"type": "Microsoft.Resources/deployments",
+			"resourceGroup": "[variables('mgtrg')]",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('deployJumpBoxURL')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"addressPrefix": {
+						"value": "[parameters('virtualNetworkAddressPrefix')]"
+					},
+					"subnetPrefix": {
+						"value": "[parameters('mgmtSubnetPrefix')]"
+					},
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
+					},
+					"subnetName": {
+						"value": "[parameters('mgmtSubnetName')]"
+					},
+					"vmSku": {
+						"value": "Standard_A1"
+					},
+					"windowsOSVersion": {
+						"value": "2016-Datacenter"
+					},
+					"vmssName": {
+						"value": "newvmss"
+					},
+					"adminUsername": {
+						"value": "[parameters('username')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('password')]"
 					}
 				}
 			}
@@ -551,7 +595,7 @@
 					"publicIpAddressSku": {
 						"value": "Basic"
 					},
-					"vnetResourceGroup":{
+					"vnetResourceGroup": {
 						"type": "[parameters('vnetResourceGroup')]"
 					}
 				}
