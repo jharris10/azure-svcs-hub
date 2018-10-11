@@ -349,9 +349,9 @@
 		}
 	},
 	"variables": {
-		"EgressFwCustomDataField": "[base64(concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('EgressFWFileShareDirectory')))]",
-		"IpFwCustomDataField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('IpFWFileShareDirectory'))]",
-		"AppFwCustomDataField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('AppFWFileShareDirectory'))]",
+		"EgressFwcustomDataFieldField": "[base64(concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('EgressFWFileShareDirectory')))]",
+		"IpFwcustomDataFieldField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('IpFWFileShareDirectory'))]",
+		"AppFwcustomDataFieldField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('AppFWFileShareDirectory'))]",
 		"egressloadBalancerName": "[concat(parameters('loadBalancerName'),'EgressFW')]",
 		"ipFwLoadBalancerName": "[concat(parameters('loadBalancerName'),'IPFW')]",
 		"appGatewayName": "[concat(parameters('loadBalancerName'),'appgw')]",
@@ -627,8 +627,8 @@
 					"adminPassword": {
 						"value": "[parameters('password')]"
 					},
-					"CustomDataField": {
-						"value": "[variables('EgressFwCustomDataField')]"
+					"customDataFieldField": {
+						"value": "[variables('EgressFwcustomDataFieldField')]"
 					}
 				}
 			}
@@ -694,8 +694,8 @@
 				"loadBalancerName": {
 					"value": "[variables('ipFwLoadBalancerName')]"
 				},
-				"CustomDataField": {
-					"value": "[variables('IpFwCustomDataField')]"
+				"customDataFieldField": {
+					"value": "[variables('IpFwcustomDataFieldField')]"
 				}
 			}
 		},
@@ -798,7 +798,7 @@
 						"value": "[variables('appGatewayName')]"
 					},
 					"customDataField": {
-						"value": "[variables('AppFwCustomDataField')]"
+						"value": "[variables('AppFwcustomDataFieldField')]"
 					}
 				}
 			}
