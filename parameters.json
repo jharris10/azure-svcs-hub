@@ -1,91 +1,141 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "hubLoadBalancerSku": {
-            "value": "Standard"
-        },
-        "storageName": {
-            "value": "rrhubstorage1"
-        },
-        "mgmtPublicIPDns": {
-            "value": "rrhubmgmt1"
-        },
-        "networkSecurityGroupInboundIP": {
-            "value": "199.167.52.5/32"
-        },
-        "imageVersion": {
-            "value": "latest"
-        },
-        "storageType": {
-            "value": "Standard_LRS"
-        },
-
-        "virtualNetworkName": {
-            "value": "hubvnet"
-        },
-        "virtualNetworkAddressPrefix": {
-            "value": "10.0.0.0/16"
-        },
-        "mgmtSubnetName": {
-            "value": "hubMgmt"
-        },
-        "mgmtSubnetPrefix": {
-            "value": "10.0.0.0/24"
-        },
-        "untrustedSubnetName": {
-            "value": "Untrust"
-        },
-        "untrustedSubnetPrefix": {
-            "value": "10.0.1.0/24"
-        },
-        "trustedSubnetName": {
-            "value": "Trust"
-        },
-        "trustedSubnetPrefix": {
-            "value": "10.0.2.0/24"
-        },
-        "mgmtPublicIPName": {
-            "value": "mgmt-pip"
-        },
-        
-        "loadBalancerName": {
-            "value": "outbound-lb"
-        },
-        "loadBalancerIP": {
-            "value": "10.0.2.4"
-        },
-        "firewallModel": {
-            "value": "byol"
-        },
-        "firewallVmSize": {
-            "value": "Standard_DS3_v2"
-        },
-        "authenticationType": {
-            "value": "password"
-        },
-        "username": {
-            "value": "pandemo"
-        },
-        "password": {
-            "value": "Dem0pa$$w0rd"
-        },
-        "sshPublicKey": {
-            "value": ""
-        },
-        "subscriptionId": {
-        },
-        "appID": {
-        },
-        "appSecret": {
-        },
-        "TenantId":{
-        },
-        "panoramaIP": {
-        },
-        "panoramaApiKey": {
-        },
-        "licenseDeactivationKey": {
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "DeployJumpBox": {
+      "value": "no"
+    },
+    "vnetNewOrExisting": {
+      "value": "new"
+    },
+    "virtualNetworkName": {
+      "value": "hub-vnet"
+    },
+    "vnetResourceGroup": {
+      "value": "vnet-rg"
+    },
+    "virtualNetworkAddressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "DeployAppGwFirewall": {
+      "value": "no"
+    },
+    "appGatewayName": {
+      "value": "weblb"
+    },
+    "appGatewayDnsName": {
+      "value": "demowebserver"
+    },
+    "appGatewaySubnetName": {
+      "value": "AppGW-External-Subnet"
+    },
+    "AppGWSubnetPrefix": {
+      "value": "10.0.11.0/24"
+    },
+    "appGwUntrustSubnetName": {
+      "value": "appgwuntrust"
+    },
+    "appGwUntrustSubnetPrefix": {
+      "value": "10.0.9.0/24"
+    },
+    "appGwTrustSubnetName": {
+      "value": "appgwtrust"
+    },
+    "appGwTrustSubnetPrefix": {
+      "value": "10.0.10.0/24"
+    },
+    "BootstrapStorageAccount": {
+      "value": "fwbooteastus"
+    },
+    "StorageAccountAccessKey": {
+      "value": "fwbooteastus"
+    },
+    "StorageAccountFileShare": {
+      "value": "Ignite"
+    },
+    "EgressFWFileShareDirectory": {
+      "value": "egress"
+    },
+    "IpFWFileShareDirectory": {
+      "value": "ingress"
+    },
+    "AppFWFileShareDirectory": {
+      "value": "app"
+    },
+    "storageName": {
+      "value": "lbstor"
+    },
+    "mgmtSubnetName": {
+      "value": "Mgmt"
+    },
+    "mgmtSubnetPrefix": {
+      "value": "10.0.0.0/24"
+    },
+    "deployEgressFirewall": {
+      "value": "yes"
+    },
+    "untrustSubnetName": {
+      "value": "EgressFW-Untrust"
+    },
+    "untrustSubnetPrefix": {
+      "value": "10.0.1.0/24"
+    },
+    "trustSubnetName": {
+      "value": "EgressFW-Trust"
+    },
+    "trustSubnetPrefix": {
+      "value": "10.0.2.0/24"
+    },
+    "Deployipfw": {
+      "value": "no"
+    },
+    "ipFwLoadBalancerIP": {
+      "value": "10.0.3.100"
+    },
+    "ipFirewalluntrustSubnetName": {
+      "value": "ipFwUntrust"
+    },
+    "ipFirewalluntrustSubnetPrefix": {
+      "value": "10.0.3.0/24"
+    },
+    "ipFirewalltrustSubnetName": {
+      "value": "ipFwtrust"
+    },
+    "ipFirewalltrustSubnetPrefix": {
+      "value": "10.0.6.0/24"
+    },
+    "mgmtPublicIPName": {
+      "value": "mgmt-pip"
+    },
+    "loadBalancerName": {
+      "value": "panwfwlb"
+    },
+    "loadBalancerIP": {
+      "value": "10.0.2.100"
+    },
+    "firewallModel": {
+      "value": "bundle1"
+    },
+    "firewallVmName": {
+      "value": "panwfw"
+    },
+    "firewallVmSize": {
+      "value": "Standard_DS3_v2"
+    },
+    "username": {
+      "value": "pandemo"
+    },
+    "password": {
+      "value": "Dem0pa$$w0rd"
+    },
+    "mgmtPublicIPDns": {
+      "value": "fwpubip"
+    },
+    "networkSecurityGroupName": {
+      "value": "nsg"
+    },
+    "networkSecurityGroupInboundIP": {
+      "value": "0.0.0.0/0"
     }
+  }
 }
