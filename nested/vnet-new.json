@@ -222,7 +222,21 @@
 					}
 				]
 			}
-		}
+		},
+		{
+			"name": "[variables('virtualNetworkName')]",
+			"type": "Microsoft.Network/virtualNetworks",
+			"location": "[variables('location')]",
+			"apiVersion": "2015-06-15",
+			"properties": {
+			  "addressSpace": {
+				"addressPrefixes": [
+				  "[parameters('virtualNetworkAddressPrefix')]"
+				]
+			  },
+			  "subnets": "[variables('subnets')]"
+			}
+		  }
 	],
 	"outputs": {
 		"virtualNetworkName": {
