@@ -117,10 +117,7 @@
 			}
 		},
 		"customDataField": {
-            "type": "string",
-            "metadata": {
-                "description": "Credentials required by the firewall VM bootstrap code to access the storage"
-            }
+            "type": "string"
         }
 
 	},
