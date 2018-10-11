@@ -346,7 +346,7 @@
 					"adminPassword": {
 						"value": "[parameters('adminPassword')]"
 					},
-					"customData": {
+					"customDataField": {
 						"value":"[parameters('customDataField')]"
 					}
 				}
