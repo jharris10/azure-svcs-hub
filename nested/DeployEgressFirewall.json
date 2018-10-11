@@ -153,25 +153,7 @@
 
 
 
-		{ 
-			"apiVersion": "2017-08-01",
-			"type": "Microsoft.Network/publicIPAddresses",
-			"name": "[concat(parameters('mgmtPublicIPName'), copyindex())]",
-			"sku": {
-				"name": "Standard"
-			},
-			"location": "[parameters('location')]",
-			"copy": {
-				"name": "pipLoop",
-				"count": "[parameters('vmCount')]"
-			},
-			"properties": {
-				"publicIPAllocationMethod": "Static",
-				"dnsSettings": {
-					"domainNameLabel":  "[concat(parameters('mgmtPublicIPDns'), copyindex())]"
-				}
-			}
-		},
+
 
 		{
 			"name": "[concat(parameters('virtualMachineName'), copyindex(), '-nic0')]",
@@ -179,7 +161,6 @@
 			"location": "[parameters('location')]",
 			"apiVersion": "2015-06-15",
 			"dependsOn": [
-				"[concat('Microsoft.Network/publicIPAddresses/', parameters('mgmtPublicIPName'), copyindex())]"
 			],
 			"copy": {
 				"name": "nicLoop",
@@ -191,9 +172,6 @@
 						"name": "ipconfig-mgmt",
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
-							"publicIPAddress": {
-								"id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('mgmtPublicIPName'), copyindex()))]"
-							},
 							"subnet": {
 								"id": "[concat(variables('vnetId'),'/subnets/', parameters ('mgmtSubnetName'))]"
 							}
