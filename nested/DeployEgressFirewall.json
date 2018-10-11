@@ -2,14 +2,6 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-
-		"storageName": {
-			"type": "string",
-			"metadata": {
-				"description": "Name prefix of the new storage account created to store the VM's disks"
-			}
-		},
-
 		"location": {
 			"type": "string",
 			"metadata": {
@@ -19,7 +11,7 @@
 		"baseUrl": {
 			"type": "string",
 			"metadata": {
-				"description": "Deployment location"
+				"description": "File repository"
 			}
 		},
 		"vmCount": {
@@ -35,86 +27,7 @@
 				"description": "Name of VM-Series VM in the Azure portal"
 			}
 		},
-		"vmSize": {
-			"type": "string",
-			"allowedValues": [
-                "Standard_DS3_v2",
-                "Standard_DS4_v2",
-				"Standard_DS5_v2"
-            ],
-			"metadata": {
-				"description": "Azure VM size for VM-Series"
-			},
-			"defaultValue": "Standard_DS3_v2"
-		},
-		"imageSku": {
-			"type": "string",
-			"allowedValues": [
-				"byol",
-				"bundle1",
-				"bundle2"
-			],
-			"metadata": {
-				"description": "byol = Bring Your Own License; bundle1 = Bundle 1 PAYG (Hourly); bundle2 = Bundle 2 PAYG (Hourly)"
-			},
-			"defaultValue": "byol"
-		},
-		"bootstrap": {
-			"type": "string",
-			"defaultValue" : "no",
-			"allowedValues": [
-				"yes",
-				"no"
-			],
-			"metadata": {
-				"description": "Bootstrap disk yes or no"
-			}
-		},
-		"bootstrapUri": {
-			"type": "string",
-			"defaultValue": "",
-			"metadata": {
-				"description": "bootstrap disk storage account URI with container name"
-			}
-		},
-		"bootstrapUriSizeGB": {
-			"type": "string",
-			"defaultValue": "1",
-			"metadata": {
-				"description": "bootstrap disk disk in GB"
-			}
-		},
-		"authenticationType": {
-			"type": "string",
-			"metadata": {
-				"description": "Type of administrator user authentication "
-			},
-			"allowedValues": [
-				"sshPublicKey",
-				"password"
-			],
-			"defaultValue": "password"
-		},
-		"adminUsername": {
-			"type": "string",
-			"metadata": {
-				"description": "Username of the administrator account of VM-Series"
-			}
-		},
-		"adminPassword": {
-			"type": "securestring",
-			"defaultValue": "",
-			"metadata": {
-				"description": "Password for the administrator account of VM-Series"
-			}
-		},
-		"sshKey": {
-			"type": "string",
-			"defaultValue": "",
-			"metadata": {
-				"description": "SSH rsa public key file as a string."
-			}
-		},
+
 		"virtualNetworkRG": {
 			"type": "string",
 			"metadata": {
@@ -133,29 +46,22 @@
 				"description": "Name of the Management subnet"
 			}
 		},
-		"untrustSubnetName": {
-			"type": "string",
-			"metadata": {
-				"description": "Name of the Untrust subnet"
-			}
-		},
 		"trustSubnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the Trust subnet"
 			}
 		},
+		"untrustSubnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Untrust subnet"
+			}
+		},
 		"loadBalancerName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the inbound load balancer"
-			}
-		},	
-		"mgmtPublicIPDns": {
-			"type": "string",
-			"defaultValue": "panmgmt",
-			"metadata": {
-				"description": "DNS Name for mgmt interface"
 			}
 		},
 		"mgmtPublicIPName": {
@@ -164,7 +70,59 @@
 			"metadata": {
 				"description": "Name of public IP resource for mgmt interface"
 			}
-		}
+		},
+		"mgmtPublicIPDns": {
+			"type": "string",
+			"defaultValue": "panmgmt",
+			"metadata": {
+				"description": "DNS Name for mgmt interface"
+			}
+		},
+		"vmSize": {
+			"type": "string",
+			"allowedValues": [
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+				"Standard_DS5_v2"
+            ],
+			"metadata": {
+				"description": "Azure VM size for VM-Series"
+			},
+			"defaultValue": "Standard_DS3_v2"
+		},
+
+		"imageSku": {
+			"type": "string",
+			"allowedValues": [
+				"byol",
+				"bundle1",
+				"bundle2"
+			],
+			"metadata": {
+				"description": "byol = Bring Your Own License; bundle1 = Bundle 1 PAYG (Hourly); bundle2 = Bundle 2 PAYG (Hourly)"
+			},
+			"defaultValue": "byol"
+		},
+		"adminUsername": {
+			"type": "string",
+			"metadata": {
+				"description": "Username of the administrator account of VM-Series"
+			}
+		},
+		"adminPassword": {
+			"type": "securestring",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Password for the administrator account of VM-Series"
+			}
+		},
+		"customDataField": {
+            "type": "string",
+            "metadata": {
+                "description": "Credentials required by the firewall VM bootstrap code to access the storage"
+            }
+        }
+
 	},
 
 	"variables": {
@@ -388,17 +346,8 @@
 					"adminPassword": {
 						"value": "[parameters('adminPassword')]"
 					},
-					"storageName": {
-						"value": "[parameters('storageName')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshKey')]"
-					},
-					"bootstrapUri": {
-						"value": "[parameters('BootstrapUri')]"
-					},
-					"bootstrapUriSizeGB": {
-						"value": "[parameters('BootstrapUriSizeGB')]"
+					"customData": {
+						"value":"[parameters('customDataField')]"
 					}
 				}
 			}

@@ -13,12 +13,7 @@
 			},
 			"defaultValue": "Standard"
 		},
-		"storageName": {
-			"type": "string",
-			"metadata": {
-				"description": "Name prefix of the new storage account created to store the VM's disks"
-			}
-		},
+
 		"location": {
 			"type": "string",
 			"metadata": {
@@ -37,13 +32,6 @@
 			"metadata": {
 				"description": "Number of VM-Series firewall"
 			}
-		},
-		"virtualMachineName": {
-			"type": "string",
-			"metadata": {
-				"description": "Name of VM-Series VM in the Azure portal"
-			},
-			"defaultValue": "vmSeries"
 		},
 		"vmSize": {
 			"type": "string",
@@ -69,41 +57,19 @@
 			},
 			"defaultValue": "byol"
 		},
-		"bootstrap": {
+
+		"virtualNetworkRG": {
 			"type": "string",
-			"defaultValue" : "no",
-			"allowedValues": [
-				"yes",
-				"no"
-			],
 			"metadata": {
-				"description": "Bootstrap disk yes or no"
+				"description": "Name of the Virtual Network Resource Group"
 			}
 		},
-		"bootstrapUri": {
-			"type": "string",
-			"defaultValue": "",
-			"metadata": {
-				"description": "bootstrap disk storage account URI with container name"
-			}
-		},
-		"bootstrapUriSizeGB": {
-			"type": "string",
-			"defaultValue": "1",
-			"metadata": {
-				"description": "bootstrap disk disk in GB"
-			}
-		},
-		"authenticationType": {
+		"virtualMachineName": {
 			"type": "string",
 			"metadata": {
-				"description": "Type of administrator user authentication "
+				"description": "Name of VM-Series VM in the Azure portal"
 			},
-			"allowedValues": [
-				"sshPublicKey",
-				"password"
-			],
-			"defaultValue": "password"
+			"defaultValue": "vmSeries"
 		},
 		"adminUsername": {
 			"type": "string",
@@ -116,19 +82,6 @@
 			"defaultValue": "",
 			"metadata": {
 				"description": "Password for the administrator account of VM-Series"
-			}
-		},
-		"sshKey": {
-			"type": "string",
-			"defaultValue": "",
-			"metadata": {
-				"description": "SSH rsa public key file as a string."
-			}
-		},
-		"virtualNetworkRG": {
-			"type": "string",
-			"metadata": {
-				"description": "Name of the Virtual Network Resource Group"
 			}
 		},
 		"virtualNetworkName": {
@@ -160,14 +113,21 @@
 			"metadata": {
 				"description": "Name of the inbound load balancer"
 			}
+		},
+		"customDataField": {
+			"type": "string",
+			"metadata": {
+				"description": "Credentials required by the firewall VM bootstrap code to access the storage"
+			}
 		}
+
 	},
 
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
 		
-		"deployVmURL" : "[concat(parameters('baseUrl'),'/nested/deployVm-inbound-', parameters('authenticationType'), '-bs-', parameters('bootstrap'),'.json')]",
+		"deployVmURL" : "[concat(parameters('baseUrl'),'/nested/deployVm-inbound-bs-no.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
 		"version": "latest",
@@ -330,17 +290,8 @@
 					"adminPassword": {
 						"value": "[parameters('adminPassword')]"
 					},
-					"storageName": {
-						"value": "[parameters('storageName')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshKey')]"
-					},
-					"bootstrapUri": {
-						"value": "[parameters('BootstrapUri')]"
-					},
-					"bootstrapUriSizeGB": {
-						"value": "[parameters('BootstrapUriSizeGB')]"
+					"customDataField": {
+						"value":"[parameters('customDataField')]"
 					}
 				}
 			}

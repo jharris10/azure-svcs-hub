@@ -112,6 +112,48 @@
 				"description": "Trust Subnet Prefix for Application Gateway Firewalls"
 			}
 		},
+		"BootstrapStorageAccount": {
+			"defaultValue": "",
+			"type": "string",
+			"metadata": {
+				"description": "Storage account hosting the bootstrap files"
+			}
+		},
+		"StorageAccountAccessKey": {
+			"defaultValue": "",
+			"type": "string",
+			"metadata": {
+				"description": "Authentication key to access the storage account"
+			}
+		},
+		"StorageAccountFileShare": {
+			"defaultValue": "",
+			"type": "string",
+			"metadata": {
+				"description": "The file share in the storage account where the bootstrap files are located"
+			}
+		},
+		"EgressFWFileShareDirectory": {
+			"defaultValue": "",
+			"type": "string",
+			"metadata": {
+				"description": "The subdirectory hosting the bootstrap files. Only required if hosting multiple bootstrap directories on the same share"
+			}
+		},
+		"IpFWFileShareDirectory": {
+			"defaultValue": "",
+			"type": "string",
+			"metadata": {
+				"description": "The subdirectory hosting the bootstrap files. Only required if hosting multiple bootstrap directories on the same share"
+			}
+		},
+		"AppFWFileShareDirectory": {
+			"defaultValue": "",
+			"type": "string",
+			"metadata": {
+				"description": "The subdirectory hosting the bootstrap files. Only required if hosting multiple bootstrap directories on the same share"
+			}
+		},
 		"storageName": {
 			"type": "string",
 			"metadata": {
@@ -142,20 +184,6 @@
 			],
 			"metadata": {
 				"description": "Deploy firewall for ip based traffic"
-			}
-		},
-		"EgressFWBootstrapUri": {
-			"type": "string",
-			"defaultValue": "",
-			"metadata": {
-				"description": "Egress FW Bootstrap disk storage account URI with container name"
-			}
-		},
-		"EgressFWBootstrapUriSizeGB": {
-			"type": "string",
-			"defaultValue": "1",
-			"metadata": {
-				"description": "Egress bootstrap disk disk in GB"
 			}
 		},
 		"untrustSubnetName": {
@@ -195,20 +223,6 @@
 			],
 			"metadata": {
 				"description": "Deploy firewalls to secure non HTTP connections from the internet"
-			}
-		},
-		"IPFWBootstrapUri": {
-			"type": "string",
-			"defaultValue": "",
-			"metadata": {
-				"description": "bootstrap disk storage account URI with container name"
-			}
-		},
-		"IPFWBootstrapUriSizeGB": {
-			"type": "string",
-			"defaultValue": "1",
-			"metadata": {
-				"description": "bootstrap disk disk in GB"
 			}
 		},
 		"ipFwLoadBalancerIP": {
@@ -298,17 +312,6 @@
 			},
 			"defaultValue": "Standard_DS3_v2"
 		},
-		"authenticationType": {
-			"type": "string",
-			"metadata": {
-				"description": "Type of administrator user authentication "
-			},
-			"allowedValues": [
-				"sshPublicKey",
-				"password"
-			],
-			"defaultValue": "password"
-		},
 		"username": {
 			"type": "string",
 			"defaultValue": "pandemo",
@@ -321,13 +324,6 @@
 			"defaultValue": "Dem0pa$$w0rd",
 			"metadata": {
 				"description": "Password for the administrator account of all VM instances. Must be specified if Authentication Type is 'password'."
-			}
-		},
-		"sshPublicKey": {
-			"type": "string",
-			"defaultValue": "",
-			"metadata": {
-				"description": "SSH RSA public key file as a string. Must be specified if Authentication Type is 'sshPublicKey'."
 			}
 		},
 		"mgmtPublicIPDns": {
@@ -350,23 +346,12 @@
 				"description": "Your source public IP address. Added to the inbound NSG on eth0 (MGMT), to restrict access to the deployment."
 			},
 			"defaultValue": "0.0.0.0/0"
-		},
-		"storageType": {
-			"type": "string",
-			"allowedValues": [
-				"Standard_LRS",
-				"Standard_GRS",
-				"Premium_LRS",
-				"Standard_RAGRS"
-			],
-			"metadata": {
-				"description": "Type of the storage account created"
-			},
-			"defaultValue": "Standard_LRS"
 		}
 	},
 	"variables": {
-		"vnetID": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+		"EgressFwCustomDataField": "[base64(concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('EgressFWFileShareDirectory')))]",
+		"IpFwCustomDataField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('IpFWFileShareDirectory'))]",
+		"AppFwCustomDataField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('AppFWFileShareDirectory'))]",
 		"egressloadBalancerName": "[concat(parameters('loadBalancerName'),'EgressFW')]",
 		"ipFwLoadBalancerName": "[concat(parameters('loadBalancerName'),'IPFW')]",
 		"appGatewayName": "[concat(parameters('loadBalancerName'),'appgw')]",
@@ -374,29 +359,21 @@
 		"ipFirewallinboundLoadBalancerSku": "Standard",
 		"baseUrl": "https://raw.githubusercontent.com/jharris10/azure-svcs-hub/master",
 		"deployAppGwFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployAppFirewall.json')]",
-		"deployPanoramaURL": "[concat(variables('baseUrl'),'/nested/DeployPanorama.json')]",
 		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployIPFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/nested/DeployEgressLoadBalancer.json')]",
 		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/nested/deploytcpLoadBalancer.json')]",
 		"DeployAppGwlbURL": "[concat(variables('baseUrl'),'/nested/DeployAppGw.json')]",
-		"deployStorageURL": "[concat(variables('baseUrl'),'/nested/deployStorage.json')]",
 		"deployNsgURL": "[concat(variables('baseUrl'),'/nested/deployNsg.json')]",
 		"vnetURL": "[concat(variables('baseUrl'),'/nested/vnet-',parameters('vnetNewOrExisting'),'.json')]",
-		"deployVnetURL": "[concat(variables('baseUrl'),'/nested/deployVnet.json')]",
-		"deployJumpBoxURL":"[concat(variables('baseUrl'),'/nested/DeployJumpBox.json')]",
+		"deployJumpBoxURL": "[concat(variables('baseUrl'),'/nested/DeployJumpBox.json')]",
 		"location": "[resourceGroup().location]",
 		"virtualNetworkRG": "vnetrg",
 		"egressfwrg": "egressfwrg",
-		"panoramarg": "panoramarg",
 		"ipfwrg": "ipfwrg",
 		"vnetrg": "vnetrg",
 		"appgwfwrg": "appgwfwrg",
-		"mgtrg":"mgtrg",
-		"rgname": "[resourceGroup().name]",
-		"egressfwstor": "[concat(parameters('storageName'),'egress')]",
-		"ipfwstor": "[concat(parameters('storageName'),'ipfw')]",
-		"appgwfwstor": "[concat(parameters('storageName'),'appgwfw')]"
+		"vmCount": 2
 	},
 	"resources": [
 		{
@@ -404,7 +381,6 @@
 			"apiVersion": "2017-05-10",
 			"type": "Microsoft.Resources/deployments",
 			"resourceGroup": "[variables('vnetrg')]",
-			
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -551,7 +527,6 @@
 				}
 			}
 		},
-
 		{
 			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
 			"name": "DeployEgressFWLoadBalancer",
@@ -615,9 +590,7 @@
 					"virtualMachineName": {
 						"value": "[concat('EgressFw-', parameters('firewallVmName'))]"
 					},
-					"storageName": {
-						"value": "[variables('egressfwstor')]"
-					},
+
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
 					},
@@ -654,14 +627,8 @@
 					"adminPassword": {
 						"value": "[parameters('password')]"
 					},
-					"sshKey": {
-						"value": "[parameters('sshPublicKey')]"
-					},
-					"bootstrapUri": {
-						"value": "[parameters('EgressFWBootstrapUri')]"
-					},
-					"bootstrapUriSizeGB": {
-						"value": "[parameters('EgressFWBootstrapUriSizeGB')]"
+					"CustomDataField": {
+						"value": "[variables('EgressFwCustomDataField')]"
 					}
 				}
 			}
@@ -686,57 +653,49 @@
 					"loadBalancerSku": {
 						"value": "[variables('ipFirewallinboundLoadBalancerSku')]"
 					},
-					"storageName": {
-						"value": "[variables('ipfwstor')]"
-					},
 					"location": {
 						"value": "[variables('location')]"
 					},
 					"baseUrl": {
 						"value": "[variables('baseUrl')]"
 					},
-					"vmSize": {
-						"value": "[parameters('firewallVmSize')]"
-					},
-					"imageSku": {
-						"value": "[parameters('firewallModel')]"
-					},
-					"virtualNetworkRG": {
-						"value": "[variables('virtualNetworkRG')]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('IPFirewall-', parameters('firewallVmName'))]"
-					},
-					"adminUsername": {
-						"value": "[parameters('username')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('password')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshPublicKey')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"mgmtSubnetName": {
-						"value": "[parameters('mgmtSubnetName')]"
-					},
-					"untrustSubnetName": {
-						"value": "[parameters('ipFirewalluntrustSubnetName')]"
-					},
-					"trustSubnetName": {
-						"value": "[parameters('ipFirewalltrustSubnetName')]"
-					},
-					"loadBalancerName": {
-						"value": "[variables('ipFwLoadBalancerName')]"
-					},
-					"bootstrapUri": {
-						"value": "[parameters('IPFWBootstrapUri')]"
-					},
-					"bootstrapUriSizeGB": {
-						"value": "[parameters('IPFWBootstrapUriSizeGB')]"
-					}
+					"vmCount": "[variables('vmCount')]"
+				},
+				"vmSize": {
+					"value": "[parameters('firewallVmSize')]"
+				},
+				"imageSku": {
+					"value": "[parameters('firewallModel')]"
+				},
+				"virtualNetworkRG": {
+					"value": "[variables('virtualNetworkRG')]"
+				},
+				"virtualMachineName": {
+					"value": "[concat('IPFirewall-', parameters('firewallVmName'))]"
+				},
+				"adminUsername": {
+					"value": "[parameters('username')]"
+				},
+				"adminPassword": {
+					"value": "[parameters('password')]"
+				},
+				"virtualNetworkName": {
+					"value": "[parameters('virtualNetworkName')]"
+				},
+				"mgmtSubnetName": {
+					"value": "[parameters('mgmtSubnetName')]"
+				},
+				"untrustSubnetName": {
+					"value": "[parameters('ipFirewalluntrustSubnetName')]"
+				},
+				"trustSubnetName": {
+					"value": "[parameters('ipFirewalltrustSubnetName')]"
+				},
+				"loadBalancerName": {
+					"value": "[variables('ipFwLoadBalancerName')]"
+				},
+				"CustomDataField": {
+					"value": "[variables('IpFwCustomDataField')]"
 				}
 			}
 		},
@@ -796,17 +755,17 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"loadBalancerSku": {
-						"value": "[variables('ipFirewallinboundLoadBalancerSku')]"
-					},
-					"storageName": {
-						"value": "[variables('appgwfwstor')]"
-					},
 					"location": {
 						"value": "[variables('location')]"
 					},
 					"baseUrl": {
 						"value": "[variables('baseUrl')]"
+					},
+					"vmCount": {
+						"value": "[variables('vmCount')]"
+					},
+					"virtualMachineName": {
+						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
 					},
 					"vmSize": {
 						"value": "[parameters('firewallVmSize')]"
@@ -817,20 +776,14 @@
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
 					},
-					"virtualMachineName": {
-						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
+					"virtualNetworkName": {
+						"value": "[parameters('virtualNetworkName')]"
 					},
 					"adminUsername": {
 						"value": "[parameters('username')]"
 					},
 					"adminPassword": {
 						"value": "[parameters('password')]"
-					},
-					"sshKey": {
-						"value": "[parameters('sshPublicKey')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
 					},
 					"mgmtSubnetName": {
 						"value": "[parameters('mgmtSubnetName')]"
@@ -844,11 +797,8 @@
 					"loadBalancerName": {
 						"value": "[variables('appGatewayName')]"
 					},
-					"bootstrapUri": {
-						"value": "[parameters('IPFWBootstrapUri')]"
-					},
-					"bootstrapUriSizeGB": {
-						"value": "[parameters('IPFWBootstrapUriSizeGB')]"
+					"customDataField": {
+						"value": "[variables('AppFwCustomDataField')]"
 					}
 				}
 			}
