@@ -27,7 +27,6 @@
 				"description": "Name of VM-Series VM in the Azure portal"
 			}
 		},
-
 		"virtualNetworkRG": {
 			"type": "string",
 			"metadata": {
@@ -90,7 +89,6 @@
 			},
 			"defaultValue": "Standard_DS3_v2"
 		},
-
 		"imageSku": {
 			"type": "string",
 			"allowedValues": [
@@ -126,7 +124,7 @@
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
 		"backendAddressPoolid": "[concat(variables('lbId'), '/backendAddressPools/BackendPool')]",
-		"deployVmURL" : "[concat(parameters('baseUrl'),'/nested/DeployVm-Egress-password-bs-no.json')]",
+		"deployVmURL" : "[concat(parameters('baseUrl'),'/nested/DeployVm-Egress.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
 		"version": "latest",

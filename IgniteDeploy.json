@@ -362,7 +362,7 @@
 		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployIPFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/nested/DeployEgressLoadBalancer.json')]",
-		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/nested/deploytcpLoadBalancer.json')]",
+		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/nested/DeployIPLoadBalancer.json')]",
 		"DeployAppGwlbURL": "[concat(variables('baseUrl'),'/nested/DeployAppGw.json')]",
 		"deployNsgURL": "[concat(variables('baseUrl'),'/nested/deployNsg.json')]",
 		"vnetURL": "[concat(variables('baseUrl'),'/nested/vnet-',parameters('vnetNewOrExisting'),'.json')]",
@@ -587,10 +587,12 @@
 					"baseUrl": {
 						"value": "[variables('baseUrl')]"
 					},
+					"vmCount": {
+						"value": "[variables('vmCount')]"
+					},
 					"virtualMachineName": {
 						"value": "[concat('EgressFw-', parameters('firewallVmName'))]"
 					},
-
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
 					},
