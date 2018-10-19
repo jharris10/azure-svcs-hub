@@ -403,52 +403,7 @@
 				}
 			}
 		},
-		{
-			"condition": "[equals(parameters('DeployJumpBox'), 'yes')]",
-			"name": "DeployJumpBox",
-			"apiVersion": "2017-05-10",
-			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "[variables('vnetrg')]",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/deployVNet"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployJumpBoxURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"addressPrefix": {
-						"value": "[parameters('virtualNetworkAddressPrefix')]"
-					},
-					"subnetPrefix": {
-						"value": "[parameters('mgmtSubnetPrefix')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"subnetName": {
-						"value": "[parameters('mgmtSubnetName')]"
-					},
-					"vmSku": {
-						"value": "Standard_A1"
-					},
-					"windowsOSVersion": {
-						"value": "2016-Datacenter"
-					},
-					"vmssName": {
-						"value": "newvmss"
-					},
-					"adminUsername": {
-						"value": "[parameters('username')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('password')]"
-					}
-				}
-			}
-		},
+		,
 		{
 			"apiVersion": "2017-05-10",
 			"name": "DeployVnet",
@@ -527,112 +482,8 @@
 				}
 			}
 		},
-		{
-			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
-			"name": "DeployEgressFWLoadBalancer",
-			"type": "Microsoft.Resources/deployments",
-			"resourceGroup": "[variables('egressfwrg')]",
-			"apiVersion": "2017-05-10",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/deployVNet"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployEgressLoadBalancerURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"virtualNetworkRG": {
-						"value": "[variables('virtualNetworkRG')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"subnetName": {
-						"value": "[parameters('trustSubnetName')]"
-					},
-					"loadBalancerName": {
-						"value": "[variables('egressloadBalancerName')]"
-					},
-					"loadBalancerIP": {
-						"value": "[parameters('loadBalancerIP')]"
-					}
-				}
-			}
-		},
-		{
-			"condition": "[equals(parameters('deployEgressFirewall'), 'yes')]",
-			"name": "deployEgressFirewall",
-			"resourceGroup": "[variables('egressfwrg')]",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2017-05-10",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/deployVNet",
-				"Microsoft.Resources/deployments/DeployEgressFWLoadBalancer"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('deployEgressFirewallURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"baseUrl": {
-						"value": "[variables('baseUrl')]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('EgressFw-', parameters('firewallVmName'))]"
-					},
-
-					"virtualNetworkRG": {
-						"value": "[variables('virtualNetworkRG')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"mgmtSubnetName": {
-						"value": "[parameters('mgmtSubnetName')]"
-					},
-					"trustSubnetName": {
-						"value": "[parameters('trustSubnetName')]"
-					},
-					"untrustSubnetName": {
-						"value": "[parameters('untrustSubnetName')]"
-					},
-					"loadBalancerName": {
-						"value": "[variables('egressloadBalancerName')]"
-					},
-					"mgmtPublicIPName": {
-						"value": "[concat('out', parameters('mgmtPublicIPName'))]"
-					},
-					"mgmtPublicIPDns": {
-						"value": "[concat('out', parameters('mgmtPublicIPDns'))]"
-					},
-					"vmSize": {
-						"value": "[parameters('firewallVmSize')]"
-					},
-					"imageSku": {
-						"value": "[parameters('firewallModel')]"
-					},
-					"adminUsername": {
-						"value": "[parameters('username')]"
-					},
-					"adminPassword": {
-						"value": "[parameters('password')]"
-					},
-					"customDataField": {
-						"value": "[variables('EgressFwcustomDataField')]"
-					}
-				}
-			}
-		}
+		,
+		
 		
 	],
 	"outputs": {}
