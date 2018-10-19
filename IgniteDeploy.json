@@ -362,7 +362,7 @@
 		"deployEgressFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployEgressFirewall.json')]",
 		"deployInboundFirewallURL": "[concat(variables('baseUrl'),'/nested/DeployIPFirewall.json')]",
 		"deployEgressLoadBalancerURL": "[concat(variables('baseUrl'),'/nested/DeployEgressLoadBalancer.json')]",
-		"deployipFirewallLoadBalancerlURL": "[concat(variables('baseUrl'),'/nested/DeployIPLoadBalancer.json')]",
+		"DeployIPLoadBalancerURL": "[concat(variables('baseUrl'),'/nested/DeployIPLoadBalancer.json')]",
 		"DeployAppGwlbURL": "[concat(variables('baseUrl'),'/nested/DeployAppGw.json')]",
 		"deployNsgURL": "[concat(variables('baseUrl'),'/nested/deployNsg.json')]",
 		"vnetURL": "[concat(variables('baseUrl'),'/nested/vnet-',parameters('vnetNewOrExisting'),'.json')]",
@@ -713,7 +713,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('deployipFirewallLoadBalancerlURL')]",
+					"uri": "[variables('DeployIPLoadBalancerURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
