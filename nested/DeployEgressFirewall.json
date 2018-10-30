@@ -14,13 +14,7 @@
 				"description": "File repository"
 			}
 		},
-		"vmCount": {
-			"type": "int",
-			"defaultValue": 2,
-			"metadata": {
-				"description": "Number of VM-Series firewall"
-			}
-		},
+
 		"virtualMachineName": {
 			"type": "string",
 			"metadata": {
@@ -63,20 +57,7 @@
 				"description": "Name of the inbound load balancer"
 			}
 		},
-		"mgmtPublicIPName": {
-			"type": "string",
-			"defaultValue": "mgmt-pip",
-			"metadata": {
-				"description": "Name of public IP resource for mgmt interface"
-			}
-		},
-		"mgmtPublicIPDns": {
-			"type": "string",
-			"defaultValue": "panmgmt",
-			"metadata": {
-				"description": "DNS Name for mgmt interface"
-			}
-		},
+
 		"vmSize": {
 			"type": "string",
 			"allowedValues": [
@@ -127,8 +108,9 @@
 		"deployVmURL" : "[concat(parameters('baseUrl'),'/nested/DeployVm-Egress.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
-		"version": "latest",
-		"availabilitySetName": "Egress-FW-AS"
+		"availabilitySetName": "Egress-FW-AS",
+		"vmCount": 2
+
 	},
 
 	"resources": [
