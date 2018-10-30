@@ -770,45 +770,6 @@
 					}
 				}
 			}
-		},
-		{
-			"condition": "[equals(parameters('DeployAppGwFirewall'), 'yes')]",
-			"name": "SetupPublicLoadBalancer",
-			"resourceGroup": "[variables('appgwfwrg')]",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2017-05-10",
-			"dependsOn": [
-				"Microsoft.Resources/deployments/DeployVnet",
-				"Microsoft.Resources/deployments/DeployAppGwFirewall"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('DeployAppGwlbURL')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"lbName": {
-						"value": "[parameters('appGatewayName')]"
-					},
-					"publicIPAddressName": {
-						"value": "[parameters('appGatewayDnsName')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
-					},
-					"subnetName": {
-						"value": "[parameters('appGatewaySubnetName')]"
-					},
-
-					"virtualNetworkRG": {
-						"value": "[variables('virtualNetworkRG')]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
-					}
-				}
-			}
 		}
 	],
 	"outputs": {}
