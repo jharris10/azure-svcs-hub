@@ -25,12 +25,7 @@
 				"description": "Deployment location"
 			}
 		},
-		"vmCount": {
-			"defaultValue": 2,
-			"metadata": {
-				"description": "Number of VM-Series firewall"
-			}
-		},
+
 		"vmSize": {
 			"type": "string",
 			"allowedValues": [
