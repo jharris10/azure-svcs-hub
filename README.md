@@ -4,9 +4,6 @@
 
 ![alt text](https://raw.githubusercontent.com/jharris10/azure-svcs-hub/blob/master/documentation/template-structure.png)
 
-![alt text](https://raw.githubusercontent.com/jharris10/azure-fw-east-west/master/Architecture-Diagram.png)
-
-[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjharris10%2Fshared-fw-ref-architecture%2Fmaster%2FazureDeploy.json)
 
 This template automates deployment of firewall LB sandwich environment for Egress Security.
 It includes following components:
