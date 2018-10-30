@@ -103,7 +103,7 @@
 	"variables": {
 		"vnetId": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
 		"lbId": "[resourceId('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]",
-		"deployVmURL": "[concat(parameters('baseUrl'),'/nested/deployVm-inbound-','-bs-no.json')]",
+		"deployVmURL": "[concat(parameters('baseUrl'),'/nested/deployVm-inbound-bs-no.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
 		"version": "latest",
