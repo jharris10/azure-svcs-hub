@@ -257,16 +257,6 @@
 		}
 	],
 	"outputs": {
-		"UntrustPrivateIPAddresses": {
-			"value": [
-				{
-					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '0', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
-				},
-				{
-					"IpAddress": "[reference(concat(parameters('virtualMachineName'), '1', '-nic1')).ipConfigurations[0].properties.privateIPAddress]"
-				}
-			],
-			"type": "array"
-		}
+		
 	}
 }
