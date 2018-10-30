@@ -42,20 +42,7 @@
         "description": "Number of instances"
       }
     },
-    "backendIPAddresses": {
-      "type": "array",
-      "defaultValue": [
-        {
-          "IpAddress": "10.0.0.4"
-        },
-        {
-          "IpAddress": "10.0.0.5"
-        }
-      ],
-      "metadata": {
-        "description": "back end pool ip addresses"
-      }
-    },
+
     "subnetName": {
       "type": "string",
       "defaultValue": "UntrustLB",
@@ -133,11 +120,6 @@
           {
             "name": "appGatewayBackendPool",
             "properties": {
-              "backendIPConfigurations": [
-                {
-                  "id": "[concat(resourceId('Microsoft.Network/networkInterfaces', reference(concat(parameters('virtualMachineName'), '0', '-nic1'))), '/ipConfigurations/ipconfig-untrust')]"
-                }
-              ],
               "backendAddresses": []
             },
             "type": "Microsoft.Network/applicationGateways/backendAddressPools"
