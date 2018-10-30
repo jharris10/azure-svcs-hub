@@ -1,6 +1,12 @@
-# azure-svcs-hub
+# Azure Services Hub
+This template is intended to allow customers to evaluate alternative deployment options for Paloaltonetworks firewalls in a hub and spoke architecture. 
 
-[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjharris10%2Fazure-svcs-hub%2Fmaster%2FIgniteDeploy.json?token=AZoiWUdo2qPkcTjMXpY8_KOkrP2aBqp_ks5ahJwcwA%3D%3D)
+The diagram below indicates the deployment options.  
+
+
+
+
+[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjharris10%2Fazure-svcs-hub%2Fmaster%2FazureDeploy.json?token=AZoiWUdo2qPkcTjMXpY8_KOkrP2aBqp_ks5ahJwcwA%3D%3D)
 
 ![alt text](https://github.com/jharris10/azure-svcs-hub/blob/master/documentation/template-structure.png)
 
