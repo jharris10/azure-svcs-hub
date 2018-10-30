@@ -732,9 +732,6 @@
 					"baseUrl": {
 						"value": "[variables('baseUrl')]"
 					},
-					"vmCount": {
-						"value": "[variables('vmCount')]"
-					},
 					"virtualMachineName": {
 						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
 					},
@@ -797,7 +794,7 @@
 					"publicIPAddressName": {
 						"value": "[parameters('appGatewayDnsName')]"
 					},
-					"vnetName": {
+					"virtualNetworkName": {
 						"value": "[parameters('virtualNetworkName')]"
 					},
 					"subnetName": {
@@ -808,9 +805,6 @@
 					},
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
-					},
-					"virtualNetworkName": {
-						"value": "[parameters('virtualNetworkName')]"
 					},
 					"virtualMachineName": {
 						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
