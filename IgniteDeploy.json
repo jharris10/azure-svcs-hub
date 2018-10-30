@@ -800,9 +800,7 @@
 					"subnetName": {
 						"value": "[parameters('appGatewaySubnetName')]"
 					},
-					"backendIPAddresses": {
-						"value": ""
-					},
+
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
 					},
