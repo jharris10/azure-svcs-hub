@@ -803,9 +803,6 @@
 
 					"virtualNetworkRG": {
 						"value": "[variables('virtualNetworkRG')]"
-					},
-					"virtualMachineName": {
-						"value": "[concat('AppGwFw-', parameters('firewallVmName'))]"
 					}
 				}
 			}

@@ -16,13 +16,6 @@
         "description": "Public Load Balancer IP Name"
       }
     },
-    "virtualMachineName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of VM-Series VM in the Azure portal"
-      },
-      "defaultValue": "vmSeries"
-    },
     "skuName": {
       "type": "string",
       "allowedValues": [
