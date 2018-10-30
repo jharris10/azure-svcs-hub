@@ -162,7 +162,7 @@
 			],
 			"copy": {
 				"name": "nicLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},			
 			"properties": {
 				"ipConfigurations": [
@@ -190,7 +190,7 @@
 			"location": "[parameters('location')]",
 			"copy": {
 				"name": "pipLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},
 			"properties": {
 				"publicIPAllocationMethod": "Static"
@@ -209,7 +209,7 @@
 			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "nicLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},			
 			"properties": {
 				"enableIPForwarding": true,
@@ -240,7 +240,7 @@
 			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "nicLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},			
 			"properties": {
 				"enableIPForwarding": true,
@@ -278,7 +278,7 @@
 			],
 			"copy": {
 				"name": "vmLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},
 			"properties": {
 				"mode": "Incremental",
