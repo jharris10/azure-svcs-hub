@@ -14,19 +14,11 @@
 				"description": "Deployment location"
 			}
 		},
-		"vmCount": {
-			"type": "int",
-			"defaultValue": 2,
-			"metadata": {
-				"description": "Number of VM-Series firewall"
-			}
-		},
 		"virtualMachineName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of VM-Series VM in the Azure portal"
-			},
-			"defaultValue": "vmSeries"
+			}
 		},
 		"vmSize": {
 			"type": "string",
@@ -115,7 +107,8 @@
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
 		"version": "latest",
-		"availabilitySetName": "App-FW-AS"
+		"availabilitySetName": "App-FW-AS",
+		"vmCount": 2
 	},
 	"resources": [
 		{
@@ -141,7 +134,7 @@
 			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "nicLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},
 			"properties": {
 				"ipConfigurations": [
@@ -164,7 +157,7 @@
 			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "nicLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},
 			"properties": {
 				"enableIPForwarding": true,
@@ -188,7 +181,7 @@
 			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "nicLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},
 			"properties": {
 				"enableIPForwarding": true,
@@ -216,7 +209,7 @@
 			],
 			"copy": {
 				"name": "vmLoop",
-				"count": "[parameters('vmCount')]"
+				"count": "[variables('vmCount')]"
 			},
 			"properties": {
 				"mode": "Incremental",
