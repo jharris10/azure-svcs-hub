@@ -127,7 +127,8 @@
 		"deployVmURL" : "[concat(parameters('baseUrl'),'/nested/DeployVmIngress.json')]",
 		"imagePublisher": "paloaltonetworks",
 		"imageOffer": "vmseries1",
-		"availabilitySetName": "IP-FW-AS"
+		"availabilitySetName": "IP-FW-AS",
+		"vmCount":2
 	},
 
 	"resources": [
