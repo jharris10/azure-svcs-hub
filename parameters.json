@@ -138,13 +138,13 @@
       "value": "0.0.0.0/0"
     },
     "IPFwResourceGroup": {			
-			"value": "ipfwrg",
+			"value": "ipfwrg"
 		},
 		"AppGwFwResourceGroup": {
-      "value": "appfwrg",
+      "value": "appfwrg"
 		},
 		"EgressFwResourceGroup": {
-      "value": "egressfwrg",
-		},
+      "value": "egressfwrg"
+		}
   }
 }
