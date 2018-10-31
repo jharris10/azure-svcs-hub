@@ -39,12 +39,12 @@ It includes following components:
  
  If bootstraping with default configuration file is used default credentials are:
  - Username: paloalto
- - Password: PaloAlt0!123!!
+ - Password: PaloAlt0123!
 
 #  Deployment Instructions 
 
 Create the resourece groups required. 
-The current version of the template requires four resource groups.  The resource groups are stored in variables in the deployAzure.json template
+The current version of the template requires four resource groups.  The resource groups are stored in the parameters file parameters.json template
 
 1. Egress firewall resource group - Default 'egressfwrg'
 - `az group create --name egressfwrg
