@@ -54,7 +54,7 @@ The current version of the template requires four resource groups.  The resource
 - `az group create --name ipfwrg
     --location {azure region}`
 
-3. Application gateway firewall resource group - Default 'agggwfwrg'
+3. Application gateway firewall resource group - Default 'appgwfwrg'
 - `az group create --name ipfwrg
     --location {azure region}`
 
