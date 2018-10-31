@@ -136,6 +136,15 @@
     },
     "networkSecurityGroupInboundIP": {
       "value": "0.0.0.0/0"
-    }
+    },
+    "IPFwResourceGroup": {			
+			"value": "ipfwrg",
+		},
+		"AppGwFwResourceGroup": {
+      "value": "appfwrg",
+		},
+		"EgressFwResourceGroup": {
+      "value": "egressfwrg",
+		},
   }
 }

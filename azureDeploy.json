@@ -31,11 +31,25 @@
 				"description": "Virtual Network Name"
 			}
 		},
-		"vnetResourceGroup": {
+		"IPFwResourceGroup": {
 			"type": "string",
 			"defaultValue": "",
 			"metadata": {
-				"description": "Resource Group containing the VNET "
+				"description": "Resource Group for the IP Firewalls "
+			}
+		},
+		"AppGwFwResourceGroup": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Resource Group for the IP Firewalls "
+			}
+		},
+		"EgressFwResourceGroup": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Resource Group for the IP Firewalls "
 			}
 		},
 		"virtualNetworkAddressPrefix": {
@@ -348,11 +362,11 @@
 		"deployJumpBoxURL": "[concat(variables('baseUrl'),'/nested/DeployJumpBox.json')]",
 		"location": "[resourceGroup().location]",
 		"virtualNetworkRG": "vnetrg",
-		"egressfwrg": "egressfwrg",
-		"ipfwrg": "ipfwrg",
+		"egressfwrg": "[parameters('EgressFwResourceGroup')]",
+		"ipfwrg": "[parameters('IpFwResourceGroup')]",
 		"vnetrg": "vnetrg",
-		"appgwfwrg": "appgwfwrg",
-		"vmCount": 2
+		"appgwfwrg": "[parameters('AppGwFwResourceGroup')]",
+		
 	},
 	"resources": [
 		{
