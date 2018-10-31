@@ -11,9 +11,6 @@
     "virtualNetworkName": {
       "value": "hub-vnet"
     },
-    "vnetResourceGroup": {
-      "value": "vnet-rg"
-    },
     "virtualNetworkAddressPrefix": {
       "value": "10.0.0.0/16"
     },
@@ -62,9 +59,7 @@
     "AppFWFileShareDirectory": {
       "value": "app"
     },
-    "storageName": {
-      "value": "lbstor"
-    },
+
     "mgmtSubnetName": {
       "value": "Mgmt"
     },
@@ -104,9 +99,6 @@
     "ipFirewalltrustSubnetPrefix": {
       "value": "10.0.6.0/24"
     },
-    "mgmtPublicIPName": {
-      "value": "mgmt-pip"
-    },
     "loadBalancerName": {
       "value": "panwfwlb"
     },
@@ -127,9 +119,6 @@
     },
     "password": {
       "value": "Dem0pa$$w0rd"
-    },
-    "mgmtPublicIPDns": {
-      "value": "fwpubip"
     },
     "networkSecurityGroupName": {
       "value": "nsg"
